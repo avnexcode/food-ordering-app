@@ -6,8 +6,7 @@ export const getDefaultFormValues = <T extends FieldValues>(formFields: FormFiel
     (acc, field) => {
       acc[field.name] = "";
       return acc;
-    },
-    {} as Partial<Record<keyof T, string>>,
+    }, {} as Partial<Record<keyof T, string>>,
   );
 
   return defaultValues as T;

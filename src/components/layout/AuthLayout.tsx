@@ -1,15 +1,17 @@
-import { Container } from "./Container"
+import { Container } from "./Container";
 
 type AuthLayoutProps = {
-    children: React.ReactNode
-    className?: string
-}
+    children: React.ReactNode;
+    className?: string;
+};
 
 export const AuthLayout: React.FC<AuthLayoutProps> = (props) => {
-    const { children, className } = props
+    const { children, className } = props;
     return (
-        <Container className={`min-h-screen flex items-center md:max-w-[700px] ${className}`}>
+        <Container
+            className={`flex min-h-screen items-center md:max-w-[700px] ${className}`}
+        >
             {children}
         </Container>
-    )
-}
+    );
+};

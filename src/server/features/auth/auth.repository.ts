@@ -1,4 +1,4 @@
-import { db } from "@/server/db";
+import { db } from "@/server/database/db";
 import { type User } from "@prisma/client";
 import { v4 as uuid } from "uuid";
 

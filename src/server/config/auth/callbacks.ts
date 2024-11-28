@@ -1,5 +1,5 @@
 import { loginWithGoogle } from "@/server/features/auth";
-import { type UpdateUserRequest } from "@/server/model/user.model";
+import { type UpdateUserRequest } from "@/server/features/user/user.model";
 import { type UserRole } from "@prisma/client";
 import { type NextAuthConfig } from "next-auth";
 
@@ -10,8 +10,6 @@ export const callbacks: NextAuthConfig["callbacks"] = {
             token.name = user.name;
             token.role = user.role;
         }
-
-        console.log(account)
 
         if (account?.provider === 'google') {
             const payload = {

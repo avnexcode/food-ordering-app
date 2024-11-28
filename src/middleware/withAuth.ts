@@ -17,7 +17,6 @@ export const withAuth: MiddlewareFactory = (middleware, requireAuth = []) => {
             req: request,
             secret: env.AUTH_SECRET
         });
-        console.log({ token })
 
         if (PATHS.PUBLIC_ONLY.some(path => pathname.startsWith(path))) {
             if (token) {

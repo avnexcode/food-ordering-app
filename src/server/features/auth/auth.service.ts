@@ -1,11 +1,7 @@
 import {
-    type LoginRequest,
-    type RegisterRequest,
-} from "@/server/model/auth.model";
-import {
     loginSchema,
     registerSchema,
-} from "@/server/validation-schema/auth.validation";
+} from "@/server/features/auth/auth.validation";
 import {
     countUserByEmail,
     findUserByEmail,
@@ -17,13 +13,13 @@ import { validateSchema } from "@/server/service";
 import { setToken } from "./auth.repository";
 import { BadRequestException } from "@/server/lib/error.exception";
 import { toUserResponse } from "@/server/utils/toUserResponse";
-import { type UpdateUserRequest } from "@/server/model/user.model";
-import { updateUserSchema } from "@/server/validation-schema/user.validation";
+import { updateUserSchema } from "@/server/features/user/user.validation";
+import { type LoginRequest, type RegisterRequest } from "./auth.model";
+import { type UpdateUserRequest } from "../user/user.model";
 
 export const register = async (request: RegisterRequest) => {
-
     if (!request.password) {
-        throw new BadRequestException('Password required')
+        throw new BadRequestException("Password required");
     }
 
     const validatedRegisterRequest: RegisterRequest = validateSchema(
@@ -86,10 +82,10 @@ export const loginWithGoogle = async (request: UpdateUserRequest) => {
 
         await updateUserOne(user.id, updateUserData);
     } else {
-        const { name, email, } = validatedUpdateUserRequest as {
-            name: string,
-            email: string
-        }
+        const { name, email } = validatedUpdateUserRequest as {
+            name: string;
+            email: string;
+        };
 
         const newUserData = {
             ...validatedUpdateUserRequest,

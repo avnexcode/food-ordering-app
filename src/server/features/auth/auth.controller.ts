@@ -7,10 +7,10 @@ import { ErrorFilter } from "@/server/filter/error.filter";
 
 export const handlers = {
     POST: async (
-        req: NextRequest,
+        request: NextRequest,
     ): Promise<NextResponse<WebModel<UserModel>>> => {
         try {
-            const user = (await req.json()) as RegisterRequest;
+            const user = (await request.json()) as RegisterRequest;
 
             const data = await register(user);
 

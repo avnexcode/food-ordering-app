@@ -1,6 +1,6 @@
 import { type UserRole } from "@prisma/client";
 import type { z } from "zod";
-import type { updateUserSchema } from "../validation-schema/user.validation";
+import type { updateUserSchema } from "./user.validation";
 
 export interface UserModel {
   id?: string;

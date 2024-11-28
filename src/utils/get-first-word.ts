@@ -1,4 +1,1 @@
-export const getFirstWord = (text: string) => {
-  if (!text) return "";
-  return text.split(" ")[0];
-};
+export const getFirstWord = (text: string) => (text ? text.split(' ')[0] : '');
