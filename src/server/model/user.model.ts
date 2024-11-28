@@ -1,4 +1,4 @@
-import { type Role } from "@prisma/client";
+import { type UserRole } from "@prisma/client";
 import type { z } from "zod";
 import type { updateUserSchema } from "../validation-schema/user.validation";
 
@@ -7,7 +7,8 @@ export interface UserModel {
   username: string;
   name: string;
   email: string;
-  role: Role;
+  role: UserRole;
+  provider?: string
 }
 
 export type UpdateUserRequest = z.infer<typeof updateUserSchema>

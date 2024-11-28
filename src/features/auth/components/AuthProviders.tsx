@@ -11,9 +11,9 @@ export const AuthProviders = () => {
             </div>
             <div className="w-full flex flex-col justify-center gap-2">
                 <Google />
-                {/* <Facebook /> */}
+                {/* <Facebook />
                 <GitHub />
-                {/* <Discord /> */}
+                <Discord /> */}
             </div>
         </div>
     )

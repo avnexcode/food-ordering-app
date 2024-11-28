@@ -1,11 +1,16 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { ErrorFilter } from "./server/filter/error.filter";
+import { withAuth } from "./middleware/withAuth";
 
-export async function middleware(request: NextRequest) {
-    try {
-        console.log('From Middleware')
-        return NextResponse.next();
-    } catch (error) {
-        return ErrorFilter.catch(error);
-    }
+const middleware = async (request: NextRequest) => {
+    return NextResponse.next();
 }
+
+const middlewareHandler = withAuth(middleware, ['/dashboard', '/profile'])
+
+export default middlewareHandler
+
+export const config = {
+    matcher: [
+        "/:path*",
+    ]
+}; 

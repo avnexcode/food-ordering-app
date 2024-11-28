@@ -1,3 +1,3 @@
-import { handlers } from "@/server/features/auth/auth.controller";
+import { handlers } from "@/server/features/auth";
 
 export const { POST } = handlers;

@@ -30,6 +30,7 @@ export const updateUserSchema = z.object({
         .optional(),
     role: z.string().optional(),
     token: z.string().optional(),
+    provider: z.string().optional(),
     password: z
         .string()
         .min(1, { message: "Password is required." })

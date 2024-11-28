@@ -9,16 +9,23 @@ import {
 import {
     countUserByEmail,
     findUserByEmail,
-    insertUser,
+    insertUserOne,
+    updateUserOne,
 } from "../user/user.repository";
 import bcrypt from "bcrypt";
 import { validateSchema } from "@/server/service";
 import { setToken } from "./auth.repository";
 import { BadRequestException } from "@/server/lib/error.exception";
 import { toUserResponse } from "@/server/utils/toUserResponse";
-import { type User } from "@prisma/client";
+import { type UpdateUserRequest } from "@/server/model/user.model";
+import { updateUserSchema } from "@/server/validation-schema/user.validation";
 
 export const register = async (request: RegisterRequest) => {
+
+    if (!request.password) {
+        throw new BadRequestException('Password required')
+    }
+
     const validatedRegisterRequest: RegisterRequest = validateSchema(
         registerSchema,
         request,
@@ -30,9 +37,9 @@ export const register = async (request: RegisterRequest) => {
         throw new BadRequestException(`Email already exists`);
     }
 
-    const user = await insertUser(validatedRegisterRequest);
+    const user = await insertUserOne(validatedRegisterRequest);
 
-    return toUserResponse(user)
+    return toUserResponse(user);
 };
 
 export const login = async (request: LoginRequest) => {
@@ -47,18 +54,51 @@ export const login = async (request: LoginRequest) => {
         throw new BadRequestException(`Email or password is invalid`);
     }
 
-    const validatedPassword = await bcrypt.compare(
-        validatedLoginRequest.password,
-        user.password,
-    );
-
-    if (!validatedPassword) {
-        throw new BadRequestException(`Email or password is invalid`);
+    if (user.password && user.provider === "credentials") {
+        const validatedPassword = await bcrypt.compare(
+            validatedLoginRequest.password,
+            user.password,
+        );
+        if (!validatedPassword) {
+            throw new BadRequestException(`Email or password is invalid`);
+        }
     }
 
     user = await setToken(validatedLoginRequest.email);
 
-    return toUserResponse(user)
+    return toUserResponse(user);
 };
 
-// export const loginWithGoole = async (user: User) => { }
+export const loginWithGoogle = async (request: UpdateUserRequest) => {
+    const validatedUpdateUserRequest: UpdateUserRequest = validateSchema(
+        updateUserSchema,
+        request,
+    );
+
+    const user = await findUserByEmail(validatedUpdateUserRequest.email!);
+
+    if (user) {
+        const updateUserData = {
+            provider: user.provider ?? undefined,
+            name: user.name,
+            email: user.email,
+        };
+
+        await updateUserOne(user.id, updateUserData);
+    } else {
+        const { name, email, } = validatedUpdateUserRequest as {
+            name: string,
+            email: string
+        }
+
+        const newUserData = {
+            ...validatedUpdateUserRequest,
+            name,
+            email,
+        };
+
+        await insertUserOne(newUserData);
+    }
+
+    return user;
+};

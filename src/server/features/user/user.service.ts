@@ -1,6 +1,5 @@
 import { NotFoundException } from "@/server/lib/error.exception";
-import { findUserByEmail, findUserById, findUsers, destroyUser, updateUser as updateUserRepo } from "./user.repository";
-import { type User } from "@prisma/client";
+import { findUserByEmail, findUserById, findUsers, destroyUser, updateUserOne } from "./user.repository";
 import { type UpdateUserRequest } from "@/server/model/user.model";
 import { toUserResponse } from "@/server/utils/toUserResponse";
 
@@ -35,7 +34,7 @@ export const getUserByEmail = async (email: string) => {
 export const updateUser = async (id: string, data: UpdateUserRequest) => {
     await getUserById(id)
 
-    const user = await updateUserRepo(id, data)
+    const user = await updateUserOne(id, data)
 
     return toUserResponse(user)
 }

@@ -1,8 +1,7 @@
-type FormField<T> = {
-  name: keyof T;
-  type: string;
-};
-export const getDefaultFormValues = <T>(formFields: FormField<T>[]) => {
+import { type FormField } from "@/types/form";
+import { type FieldValues } from "react-hook-form";
+
+export const getDefaultFormValues = <T extends FieldValues>(formFields: FormField<T>[]) => {
   const defaultValues = formFields.reduce(
     (acc, field) => {
       acc[field.name] = "";

@@ -1,4 +1,4 @@
-import { GeistSans } from "geist/font/sans";
+import { Poppins } from "next/font/google";
 import { type AppProps, type AppType } from "next/app";
 
 import "@/styles/globals.css";
@@ -14,10 +14,18 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
 const MyApp: AppType = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <div className={GeistSans.className}>
+    <div className={poppins.className}>
       <AppProviders>{getLayout(<Component {...pageProps} />)}</AppProviders>
       <Toaster />
     </div>

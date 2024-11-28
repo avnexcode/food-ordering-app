@@ -16,7 +16,6 @@ export const useLogin = ({
                 redirect: false,
                 ...values,
             });
-            console.log(response)
 
             if (response?.error) {
                 throw new Error('Invalid email or password');

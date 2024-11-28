@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { type RegisterRequest } from "@/server/model/auth.model";
 import { type UpdateUserRequest } from "@/server/model/user.model";
-import { Role, type User } from "@prisma/client";
+import { UserRole, type User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 
@@ -35,20 +35,25 @@ export const countUserById = async (id: string): Promise<number> => {
   return userCount;
 };
 
-export const insertUser = async (data: RegisterRequest): Promise<User> => {
+export const insertUserOne = async (data: RegisterRequest): Promise<User> => {
   const id = uuid();
 
-  const passwordHashed = await bcrypt.hash(data.password, 10);
+  let passwordHashed
+
+  if (data.password) {
+    passwordHashed = await bcrypt.hash(data.password, 10);
+  }
 
   const username = `user-${id.slice(0, 8)}`;
 
   const newUserData = {
     id,
-    name: data.name,
     username,
+    name: data.name,
     email: data.email,
-    password: passwordHashed,
-    role: Role.USER
+    role: UserRole.USER,
+    password: passwordHashed ?? null,
+    provider: data.provider ?? 'credentials'
   };
 
   const user = await db.user.create({
@@ -58,7 +63,7 @@ export const insertUser = async (data: RegisterRequest): Promise<User> => {
   return user;
 };
 
-export const updateUser = async (id: string, data: UpdateUserRequest): Promise<User> => {
+export const updateUserOne = async (id: string, data: UpdateUserRequest): Promise<User> => {
   const oldUserData = await findUserById(id)
 
   let passwordHashed
@@ -71,7 +76,8 @@ export const updateUser = async (id: string, data: UpdateUserRequest): Promise<U
     name: data.name ?? oldUserData?.name,
     username: data.username ?? oldUserData?.username,
     email: data.email ?? oldUserData?.email,
-    role: data.role as Role ?? oldUserData?.role,
+    role: data.role as UserRole ?? oldUserData?.role,
+    provider: data.provider ?? oldUserData?.provider,
     password: passwordHashed ?? oldUserData?.password
   }
 

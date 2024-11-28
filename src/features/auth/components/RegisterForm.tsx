@@ -14,15 +14,8 @@ import { useRouter } from "next/navigation"
 import { registerFormSchema, type RegisterFormSchema } from "@/features/auth/types"
 
 export const RegisterForm = () => {
-    const { toast } = useToast()
     const router = useRouter()
-
-    const defaultValues = getDefaultFormValues(registerFormFields)
-
-    const form = useForm<RegisterFormSchema>({
-        defaultValues,
-        resolver: zodResolver(registerFormSchema)
-    })
+    const { toast } = useToast()
 
     const { mutate: register, isPending: signUpPending } = useRegister({
         onSettled: () => {
@@ -42,6 +35,13 @@ export const RegisterForm = () => {
     })
 
     const onSubmit = (values: RegisterFormSchema) => register(values)
+
+    const defaultValues = getDefaultFormValues(registerFormFields)
+
+    const form = useForm<RegisterFormSchema>({
+        defaultValues,
+        resolver: zodResolver(registerFormSchema)
+    })
 
     return (
         <Card className="w-full">

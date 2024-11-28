@@ -3,7 +3,6 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    APP_NAME: z.string().min(1, { message: "App name must be defined" }),
     AUTH_SECRET: z.string().min(32, { message: "AUTH_SECRET must be at least 32 characters long" }),
     DATABASE_URL: z.string().url({ message: "Invalid DATABASE_URL format" }),
     // DIRECT_URL: z.string().url({ message: "Invalid DIRECT_URL format" }),
@@ -21,11 +20,12 @@ export const env = createEnv({
   },
 
   client: {
+    NEXT_PUBLIC_APP_NAME: z.string().min(1, { message: "App name must be defined" }),
     NEXT_PUBLIC_API_URL: z.string().url({ message: "Invalid API Url format" }),
   },
 
   runtimeEnv: {
-    APP_NAME: process.env.APP_NAME,
+    NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
     AUTH_SECRET: process.env.AUTH_SECRET,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     DATABASE_URL: process.env.DATABASE_URL,

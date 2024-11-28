@@ -13,7 +13,7 @@ export const authConfig = {
     maxAge: 60 * 60 * 1,
   },
   secret: env.AUTH_SECRET,
-  adapter: PrismaAdapter(db),
+  // adapter: PrismaAdapter(db),
   providers,
   callbacks,
   pages,

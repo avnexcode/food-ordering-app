@@ -1,4 +1,6 @@
-import { type Role } from "@prisma/client";
+import { loginWithGoogle } from "@/server/features/auth";
+import { type UpdateUserRequest } from "@/server/model/user.model";
+import { type UserRole } from "@prisma/client";
 import { type NextAuthConfig } from "next-auth";
 
 export const callbacks: NextAuthConfig["callbacks"] = {
@@ -8,13 +10,32 @@ export const callbacks: NextAuthConfig["callbacks"] = {
             token.name = user.name;
             token.role = user.role;
         }
+
+        console.log(account)
+
+        if (account?.provider === 'google') {
+            const payload = {
+                name: user?.name,
+                email: user?.email,
+                provider: 'google'
+            }
+
+            const response = await loginWithGoogle(payload as UpdateUserRequest)
+            if (response) {
+                token.email = response.email
+                token.name = response.name
+                token.role = response.role
+                token.provider = response.provider
+            }
+        }
+
         return token;
     },
     session: async ({ session, token }) => {
         if ('email' in token && 'name' in token && 'role' in token) {
             session.user.email = token.email!;
             session.user.name = token.name!;
-            session.user.role = token.role as Role;
+            session.user.role = token.role as UserRole;
         }
 
         return {

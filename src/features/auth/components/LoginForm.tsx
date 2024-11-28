@@ -13,7 +13,6 @@ import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { getDefaultFormValues } from "@/utils"
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { loginFormFields } from "../config/form"
 import { loginFormSchema, type LoginFormSchema } from "../types"
@@ -22,34 +21,34 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 
 export const LoginForm = () => {
-
-    const defaultValues = getDefaultFormValues<LoginFormSchema>(loginFormFields)
-    const { toast } = useToast()
     const router = useRouter()
+    const { toast } = useToast()
 
     const { mutate: login, isPending: signInPending } = useLogin({
         onSettled: () => {
             toast({
                 title: 'Success',
-                description: 'Register Successfully'
+                description: 'Login Successfully'
             })
             router.push('/')
         },
         onError: (error) => {
             toast({
-                title: 'Register Error',
+                title: 'Login Error',
                 description: error || 'Invalid credentials',
                 variant: 'destructive'
             })
         }
     })
 
+    const onSubmit = (values: LoginFormSchema) => login({ ...values, callbackUrl: '' })
+
+    const defaultValues = getDefaultFormValues<LoginFormSchema>(loginFormFields)
+
     const form = useForm<LoginFormSchema>({
         defaultValues,
         resolver: zodResolver(loginFormSchema)
     })
-
-    const onSubmit = (values: LoginFormSchema) => login({ ...values, callbackUrl: '' })
 
     return (
         <Card className="w-full">

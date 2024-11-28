@@ -3,8 +3,8 @@ import type { FieldValues, Path } from "react-hook-form";
 export type FormField<T extends FieldValues> = {
   name: Path<T>;
   type: string;
-  label?: string;
-  placeholder?: string;
+  label: string;
+  placeholder: string;
 };
 
 
