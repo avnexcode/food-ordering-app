@@ -69,15 +69,15 @@ model ProductCategory {
 }
 
 model Product {
-    id          String          @id @default(cuid())
-    name        String          @db.VarChar(100)
-    price       Decimal         @db.Decimal(10, 2)
-    description String?         @db.Text
-    stock       Int             @default(0)
-    category_id String
+    id          String           @id @default(cuid())
+    name        String           @db.VarChar(100)
+    price       Decimal          @db.Decimal(10, 2)
+    description String           @db.VarChar(255)
+    stock       Int              @default(0)
+    category_id String?
     store_id    String
-    store       Store           @relation(fields: [store_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    category    ProductCategory @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+    store       Store            @relation(fields: [store_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    category    ProductCategory? @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
     @@index([store_id])
     @@index([category_id])

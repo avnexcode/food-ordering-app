@@ -1,10 +1,13 @@
 import { toUserResponse } from './toUserResponse';
-import type { User, Store } from '@prisma/client';
+import type { User, Store, Product } from '@prisma/client';
 
-type StoreWithOwner = Store & { owner: User | null };
+type StoreRelation = Store & { owner: User | null } & {
+    products: Product[] | null;
+};
 
-export const toStoreResponse = (store: StoreWithOwner) => ({
+export const toStoreResponse = (store: StoreRelation) => ({
     id: store.id,
     name: store.name,
     owner: store.owner ? toUserResponse(store.owner) : null,
+    products: store.products,
 });

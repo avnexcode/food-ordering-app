@@ -2,7 +2,9 @@ import { db } from '@/server/database/db';
 import type { CreateStoreRequest, UpdateStoreRequest } from './store.model';
 
 export const findStores = async () => {
-    const stores = await db.store.findMany({ include: { owner: true } });
+    const stores = await db.store.findMany({
+        include: { owner: true, products: true },
+    });
     return stores;
 };
 
