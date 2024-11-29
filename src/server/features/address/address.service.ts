@@ -14,7 +14,7 @@ export const addressService = {
     },
 
     getById: async (id: string) => {
-        const address = await addressRepository.findUniqueById(id);
+        const address = await addressRepository.findUniqueId(id);
 
         if (!address) {
             throw new NotFoundException('Address not found');

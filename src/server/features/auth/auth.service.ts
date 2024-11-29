@@ -42,9 +42,7 @@ export const authService = {
             request,
         );
 
-        let user = await userRepository.findUniqueByEmail(
-            validatedRequest.email,
-        );
+        let user = await userRepository.findUniqueEmail(validatedRequest.email);
 
         if (!user) {
             throw new BadRequestException(`Email or password is invalid`);
@@ -71,7 +69,7 @@ export const authService = {
             request,
         );
 
-        const user = await userRepository.findUniqueByEmail(
+        const user = await userRepository.findUniqueEmail(
             validatedRequest.email!,
         );
 

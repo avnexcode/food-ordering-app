@@ -10,7 +10,7 @@ export const storeRepository = {
         return stores;
     },
 
-    findUniqueById: async (id: string) => {
+    findUniqueId: async (id: string) => {
         const store = await db.store.findUnique({
             where: { id },
             include: { owner: true, products: true, productCategories: true },

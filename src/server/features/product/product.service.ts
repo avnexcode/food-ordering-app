@@ -12,7 +12,7 @@ export const productService = {
     },
 
     getById: async (id: string) => {
-        const product = await productRepository.findUniqueById(id);
+        const product = await productRepository.findUniqueId(id);
 
         if (!product) {
             throw new NotFoundException('Product not found');

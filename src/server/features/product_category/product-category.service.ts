@@ -18,7 +18,7 @@ export const productCategoryService = {
 
     getById: async (id: string) => {
         const productCategory =
-            await productCategoryRepository.findUniqueById(id);
+            await productCategoryRepository.findUniqueId(id);
 
         if (!productCategory) {
             throw new NotFoundException('Product Category not found');

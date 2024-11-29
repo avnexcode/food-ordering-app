@@ -15,7 +15,7 @@ export const storeService = {
     },
 
     getById: async (id: string) => {
-        const store = await storeRepository.findUniqueById(id);
+        const store = await storeRepository.findUniqueId(id);
 
         if (!store) {
             throw new NotFoundException('Store not found`');

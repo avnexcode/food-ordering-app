@@ -12,7 +12,7 @@ export const productRepository = {
         return products;
     },
 
-    findUniqueById: async (id: string) => {
+    findUniqueId: async (id: string) => {
         const product = await db.product.findUnique({ where: { id } });
         return product;
     },
@@ -36,7 +36,7 @@ export const productRepository = {
     },
 
     updateOne: async (id: string, request: UpdateProductRequest) => {
-        const oldProduct = await productRepository.findUniqueById(id);
+        const oldProduct = await productRepository.findUniqueId(id);
 
         const updateProductData = {
             ...request,
