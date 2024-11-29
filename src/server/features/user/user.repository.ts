@@ -5,94 +5,97 @@ import { v4 as uuid } from 'uuid';
 import { type RegisterRequest } from '../auth/auth.model';
 import { type UpdateUserRequest } from './user.model';
 
-export const findUsers = async (): Promise<User[]> => {
-    const users = await db.user.findMany({ include: { store: true } });
+export const userRepository = {
+    findMany: async (): Promise<User[]> => {
+        const users = await db.user.findMany({ include: { store: true } });
 
-    return users;
-};
+        return users;
+    },
 
-export const findUserByEmail = async (email: string): Promise<User | null> => {
-    const user = await db.user.findUnique({ where: { email } });
+    findUniqueByEmail: async (email: string): Promise<User | null> => {
+        const user = await db.user.findUnique({ where: { email } });
 
-    return user;
-};
+        return user;
+    },
 
-export const findUserById = async (id: string): Promise<User | null> => {
-    const user = await db.user.findUnique({ where: { id } });
+    findUniqueById: async (id: string): Promise<User | null> => {
+        const user = await db.user.findUnique({ where: { id } });
 
-    return user;
-};
+        return user;
+    },
 
-export const countUserByEmail = async (email: string): Promise<number> => {
-    const userCount = await db.user.count({ where: { email } });
+    countByEmail: async (email: string): Promise<number> => {
+        const userCount = await db.user.count({ where: { email } });
 
-    return userCount;
-};
+        return userCount;
+    },
 
-export const countUserById = async (id: string): Promise<number> => {
-    const userCount = await db.user.count({ where: { id } });
+    countById: async (id: string): Promise<number> => {
+        const userCount = await db.user.count({ where: { id } });
 
-    return userCount;
-};
+        return userCount;
+    },
 
-export const insertUserOne = async (
-    request: RegisterRequest,
-): Promise<User> => {
-    const id = uuid();
+    insertOne: async (request: RegisterRequest): Promise<User> => {
+        const id = uuid();
 
-    let passwordHashed;
+        let passwordHashed;
 
-    if (request.password) {
-        passwordHashed = await bcrypt.hash(request.password, 10);
-    }
+        if (request.password) {
+            passwordHashed = await bcrypt.hash(request.password, 10);
+        }
 
-    const username = `user-${id.slice(0, 8)}`;
+        const username = `user-${id.slice(0, 8)}`;
 
-    const newUserData = {
-        id,
-        username,
-        name: request.name,
-        email: request.email,
-        role: UserRole.USER,
-        password: passwordHashed ?? null,
-        provider: request.provider ?? 'credentials',
-    };
+        const newUserData = {
+            id,
+            username,
+            name: request.name,
+            email: request.email,
+            role: UserRole.USER,
+            password: passwordHashed ?? null,
+            provider: request.provider ?? 'credentials',
+        };
 
-    const user = await db.user.create({
-        data: newUserData,
-    });
+        const user = await db.user.create({
+            data: newUserData,
+        });
 
-    return user;
-};
+        return user;
+    },
 
-export const updateUserOne = async (
-    id: string,
-    request: UpdateUserRequest,
-): Promise<User> => {
-    const oldUserData = await findUserById(id);
+    updateOne: async (
+        id: string,
+        request: UpdateUserRequest,
+    ): Promise<User> => {
+        const oldUserData = await userRepository.findUniqueById(id);
 
-    let passwordHashed;
+        let passwordHashed;
 
-    if (request.password) {
-        passwordHashed = await bcrypt.hash(request.password, 10);
-    }
+        if (request.password) {
+            passwordHashed = await bcrypt.hash(request.password, 10);
+        }
 
-    const updateUserData = {
-        name: request.name ?? oldUserData?.name,
-        username: request.username ?? oldUserData?.username,
-        email: request.email ?? oldUserData?.email,
-        role: (request.role as UserRole) ?? oldUserData?.role,
-        provider: request.provider ?? oldUserData?.provider,
-        password: passwordHashed ?? oldUserData?.password,
-    };
+        const updateUserData = {
+            name: request.name ?? oldUserData?.name,
+            username: request.username ?? oldUserData?.username,
+            email: request.email ?? oldUserData?.email,
+            role: (request.role as UserRole) ?? oldUserData?.role,
+            provider: request.provider ?? oldUserData?.provider,
+            password: passwordHashed ?? oldUserData?.password,
+        };
 
-    const user = await db.user.update({ where: { id }, data: updateUserData });
+        const user = await db.user.update({
+            where: { id },
+            data: updateUserData,
+        });
 
-    return user;
-};
+        return user;
+    },
 
-export const destroyUser = async (id: string): Promise<User> => {
-    const user = await db.user.delete({ where: { id } });
+    deleteOne: async (id: string): Promise<User> => {
+        const user = await db.user.delete({ where: { id } });
 
-    return user;
+        return user;
+    },
 };

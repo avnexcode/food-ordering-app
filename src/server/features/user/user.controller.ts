@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { deleteUser, getUserById, getUsers, updateUser } from './user.service';
+import { userService } from './user.service';
 import { type WebModel } from '@/server/model/web.model';
 import { ErrorFilter } from '@/server/filter/error.filter';
 import { NotFoundException } from '@/server/lib/error.exception';
@@ -14,7 +14,9 @@ export const handlers = {
             const params = await context.params;
             const id = params?.id;
 
-            const data = id ? await getUserById(id) : await getUsers();
+            const data = id
+                ? await userService.getById(id)
+                : await userService.getAll();
 
             return NextResponse.json(
                 {
@@ -54,7 +56,7 @@ export const handlers = {
                 throw new NotFoundException(`Some fields are missing`);
             }
 
-            const data = await updateUser(id, user);
+            const data = await userService.update(id, user);
 
             return NextResponse.json(
                 {
@@ -80,7 +82,7 @@ export const handlers = {
 
             const user = (await req.json()) as UpdateUserRequest;
 
-            const data = await updateUser(id, user);
+            const data = await userService.update(id, user);
 
             return NextResponse.json(
                 {
@@ -104,7 +106,7 @@ export const handlers = {
             const params = await context.params;
             const id = params?.id;
 
-            const data = await deleteUser(id);
+            const data = await userService.delete(id);
 
             return NextResponse.json(
                 {

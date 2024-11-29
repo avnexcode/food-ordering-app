@@ -1,13 +1,11 @@
-import { ErrorFilter } from "@/server/filter/error.filter";
-import { NextResponse, type NextRequest } from "next/server";
-import {
-    createAddress,
-    getAddressById,
-    getAddresses,
-    updateAddress,
-} from "./address.service";
-import { CreateAddressRequest, UpdateAddressRequest } from "./address.model";
-import { NotFoundException } from "@/server/lib/error.exception";
+import { ErrorFilter } from '@/server/filter/error.filter';
+import { NextResponse, type NextRequest } from 'next/server';
+import { addressService } from './address.service';
+import type {
+    CreateAddressRequest,
+    UpdateAddressRequest,
+} from './address.model';
+import { NotFoundException } from '@/server/lib/error.exception';
 
 export const handlers = {
     GET: async (
@@ -17,12 +15,14 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
-            const data = id ? await getAddressById(id) : await getAddresses();
+            const data = id
+                ? await addressService.getById(id)
+                : await addressService.getAll();
 
             return NextResponse.json({
                 status: true,
                 statusCode: 200,
-                message: "Success",
+                message: 'Success',
                 data,
             });
         } catch (error) {
@@ -32,13 +32,13 @@ export const handlers = {
     POST: async (request: NextRequest) => {
         try {
             const requestBody = (await request.json()) as CreateAddressRequest;
-            const data = await createAddress(requestBody);
+            const data = await addressService.create(requestBody);
 
             return NextResponse.json(
                 {
                     status: true,
                     statusCode: 201,
-                    message: "Success",
+                    message: 'Success',
                     data,
                 },
                 { status: 201 },
@@ -66,16 +66,16 @@ export const handlers = {
                     requestBody.street
                 )
             ) {
-                throw new NotFoundException("Missing some fields");
+                throw new NotFoundException('Missing some fields');
             }
 
-            const data = await updateAddress(id, requestBody);
+            const data = await addressService.update(id, requestBody);
 
             return NextResponse.json(
                 {
                     status: true,
                     statusCode: 200,
-                    message: "Success",
+                    message: 'Success',
                     data,
                 },
                 { status: 200 },
@@ -91,7 +91,20 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
-            return NextResponse.json({ message: "Hello" });
+
+            const requestBody = (await request.json()) as UpdateAddressRequest;
+
+            const data = await addressService.update(id, requestBody);
+
+            return NextResponse.json(
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: 'Success',
+                    data,
+                },
+                { status: 200 },
+            );
         } catch (error) {
             return ErrorFilter.catch(error);
         }
@@ -103,7 +116,16 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
-            return NextResponse.json({ message: "Hello" });
+            const data = await addressService.delete(id);
+            return NextResponse.json(
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: 'Success',
+                    data,
+                },
+                { status: 200 },
+            );
         } catch (error) {
             return ErrorFilter.catch(error);
         }

@@ -1,54 +1,50 @@
 import { NotFoundException } from '@/server/lib/error.exception';
-import {
-    findUserByEmail,
-    findUserById,
-    findUsers,
-    destroyUser,
-    updateUserOne,
-} from './user.repository';
+import { userRepository } from './user.repository';
 import { toUserResponse } from '@/server/utils/toUserResponse';
 import { type UpdateUserRequest } from './user.model';
 
-export const getUsers = async () => {
-    const data = await findUsers();
+export const userService = {
+    getAll: async () => {
+        const data = await userRepository.findMany();
 
-    const users = data.map(user => toUserResponse(user));
+        const users = data.map(user => toUserResponse(user));
 
-    return users;
-};
+        return users;
+    },
 
-export const getUserById = async (id: string) => {
-    const user = await findUserById(id);
+    getById: async (id: string) => {
+        const user = await userRepository.findUniqueById(id);
 
-    if (!user) {
-        throw new NotFoundException('User not found');
-    }
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
 
-    return toUserResponse(user);
-};
+        return toUserResponse(user);
+    },
 
-export const getUserByEmail = async (email: string) => {
-    const user = await findUserByEmail(email);
+    getByEmail: async (email: string) => {
+        const user = await userRepository.findUniqueByEmail(email);
 
-    if (!user) {
-        throw new NotFoundException('User not found');
-    }
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
 
-    return toUserResponse(user);
-};
+        return toUserResponse(user);
+    },
 
-export const updateUser = async (id: string, data: UpdateUserRequest) => {
-    await getUserById(id);
+    update: async (id: string, data: UpdateUserRequest) => {
+        await userService.getById(id);
 
-    const user = await updateUserOne(id, data);
+        const user = await userRepository.updateOne(id, data);
 
-    return toUserResponse(user);
-};
+        return toUserResponse(user);
+    },
 
-export const deleteUser = async (id: string) => {
-    await getUserById(id);
+    delete: async (id: string) => {
+        await userService.getById(id);
 
-    await destroyUser(id);
+        await userRepository.deleteOne(id);
 
-    return { id };
+        return { id };
+    },
 };

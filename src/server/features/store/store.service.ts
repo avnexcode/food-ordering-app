@@ -1,62 +1,58 @@
 import { NotFoundException } from '@/server/lib/error.exception';
-import {
-    destroyStore,
-    findStoreById,
-    findStores,
-    insertStore,
-    updateStoreOne,
-} from './store.repository';
+import { storeRepository } from './store.repository';
 import type { CreateStoreRequest, UpdateStoreRequest } from './store.model';
 import { validateSchema } from '@/server/service';
 import { createStoreSchema, updateStoreSchema } from './store.validation';
 import { toStoreResponse } from '@/server/utils/toStoreResponse';
 
-export const getStores = async () => {
-    const data = await findStores();
+export const storeService = {
+    getAll: async () => {
+        const data = await storeRepository.findMany();
 
-    const stores = data.map(store => toStoreResponse(store));
+        const stores = data.map(store => toStoreResponse(store));
 
-    return stores;
-};
+        return stores;
+    },
 
-export const getStoreById = async (id: string) => {
-    const store = await findStoreById(id);
+    getById: async (id: string) => {
+        const store = await storeRepository.findUniqueById(id);
 
-    if (!store) {
-        throw new NotFoundException('Store not found`');
-    }
+        if (!store) {
+            throw new NotFoundException('Store not found`');
+        }
 
-    return toStoreResponse(store);
-};
+        return toStoreResponse(store);
+    },
 
-export const createStore = async (request: CreateStoreRequest) => {
-    const validatedCreateStoreRequest: CreateStoreRequest = validateSchema(
-        createStoreSchema,
-        request,
-    );
+    create: async (request: CreateStoreRequest) => {
+        const validatedRequest: CreateStoreRequest = validateSchema(
+            createStoreSchema,
+            request,
+        );
 
-    const store = await insertStore(validatedCreateStoreRequest);
+        const store = await storeRepository.insertOne(validatedRequest);
 
-    return store;
-};
+        return store;
+    },
 
-export const updateStore = async (id: string, request: UpdateStoreRequest) => {
-    await getStoreById(id);
+    update: async (id: string, request: UpdateStoreRequest) => {
+        await storeService.getById(id);
 
-    const validatedUpdateStoreRequest: UpdateStoreRequest = validateSchema(
-        updateStoreSchema,
-        request,
-    );
+        const validatedRequest: UpdateStoreRequest = validateSchema(
+            updateStoreSchema,
+            request,
+        );
 
-    const store = await updateStoreOne(id, validatedUpdateStoreRequest);
+        const store = await storeRepository.updateOne(id, validatedRequest);
 
-    return store;
-};
+        return store;
+    },
 
-export const deleteStore = async (id: string) => {
-    await getStoreById(id);
+    delete: async (id: string) => {
+        await storeService.getById(id);
 
-    await destroyStore(id);
+        await storeRepository.deleteOne(id);
 
-    return { id };
+        return { id };
+    },
 };

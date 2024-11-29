@@ -1,55 +1,54 @@
 import { db } from '@/server/database/db';
 import type { CreateStoreRequest, UpdateStoreRequest } from './store.model';
 
-export const findStores = async () => {
-    const stores = await db.store.findMany({
-        include: { owner: true, products: true, productCategories: true },
-    });
+export const storeRepository = {
+    findMany: async () => {
+        const stores = await db.store.findMany({
+            include: { owner: true, products: true, productCategories: true },
+        });
 
-    return stores;
-};
+        return stores;
+    },
 
-export const findStoreById = async (id: string) => {
-    const store = await db.store.findUnique({
-        where: { id },
-        include: { owner: true, products: true, productCategories: true },
-    });
+    findUniqueById: async (id: string) => {
+        const store = await db.store.findUnique({
+            where: { id },
+            include: { owner: true, products: true, productCategories: true },
+        });
 
-    return store;
-};
+        return store;
+    },
 
-export const countStoreById = async (id: string) => {
-    const storeCount = await db.store.count({ where: { id } });
-    return storeCount;
-};
+    countById: async (id: string) => {
+        const storeCount = await db.store.count({ where: { id } });
+        return storeCount;
+    },
 
-export const insertStore = async (request: CreateStoreRequest) => {
-    const newStoreData = {
-        name: request.name,
-    };
+    insertOne: async (request: CreateStoreRequest) => {
+        const newStoreData = {
+            name: request.name,
+        };
 
-    const store = await db.store.create({ data: newStoreData });
+        const store = await db.store.create({ data: newStoreData });
 
-    return store;
-};
+        return store;
+    },
 
-export const updateStoreOne = async (
-    id: string,
-    request: UpdateStoreRequest,
-) => {
-    const updateStoreData = {
-        name: request.name,
-    };
+    updateOne: async (id: string, request: UpdateStoreRequest) => {
+        const updateStoreData = {
+            name: request.name,
+        };
 
-    const store = await db.store.update({
-        where: { id },
-        data: updateStoreData,
-    });
+        const store = await db.store.update({
+            where: { id },
+            data: updateStoreData,
+        });
 
-    return store;
-};
+        return store;
+    },
 
-export const destroyStore = async (id: string) => {
-    const store = await db.store.delete({ where: { id } });
-    return store;
+    deleteOne: async (id: string) => {
+        const store = await db.store.delete({ where: { id } });
+        return store;
+    },
 };

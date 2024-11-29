@@ -1,64 +1,57 @@
-import { validateSchema } from "@/server/service";
+import { validateSchema } from '@/server/service';
 import type {
     CreateAddressRequest,
     UpdateAddressRequest,
-} from "./address.model";
-import {
-    destroyAddress,
-    findAddressById,
-    findAddresses,
-    insertAddressOne,
-    updateAddressOne,
-} from "./address.repository";
-import { createAddressSchema, updateAddressSchema } from "./address.validation";
-import { NotFoundException } from "@/server/lib/error.exception";
+} from './address.model';
+import { addressRepository } from './address.repository';
+import { createAddressSchema, updateAddressSchema } from './address.validation';
+import { NotFoundException } from '@/server/lib/error.exception';
 
-export const getAddresses = async () => {
-    const addresses = await findAddresses();
-    return addresses;
-};
+export const addressService = {
+    getAll: async () => {
+        const addresses = await addressRepository.findMany();
+        return addresses;
+    },
 
-export const getAddressById = async (id: string) => {
-    const address = await findAddressById(id);
+    getById: async (id: string) => {
+        const address = await addressRepository.findUniqueById(id);
 
-    if (!address) {
-        throw new NotFoundException('Address not found')
-    }
+        if (!address) {
+            throw new NotFoundException('Address not found');
+        }
 
-    return address;
-};
+        return address;
+    },
 
-export const createAddress = async (request: CreateAddressRequest) => {
-    const validatedCreateAddressRequest: CreateAddressRequest = validateSchema(
-        createAddressSchema,
-        request,
-    );
+    create: async (request: CreateAddressRequest) => {
+        const validatedRequest: CreateAddressRequest = validateSchema(
+            createAddressSchema,
+            request,
+        );
 
-    const address = await insertAddressOne(validatedCreateAddressRequest);
+        const address = await addressRepository.insertOne(validatedRequest);
 
-    return address;
-};
+        return address;
+    },
 
-export const updateAddress = async (
-    id: string,
-    request: UpdateAddressRequest,
-) => {
-    await getAddressById(id)
+    update: async (id: string, request: UpdateAddressRequest) => {
+        await addressService.getById(id);
 
-    const validatedUpdateAddressRequest: UpdateAddressRequest = validateSchema(
-        updateAddressSchema,
-        request,
-    );
+        const validatedRequest: UpdateAddressRequest = validateSchema(
+            updateAddressSchema,
+            request,
+        );
 
-    const address = await updateAddressOne(id, validatedUpdateAddressRequest);
+        const address = await addressRepository.updateOne(id, validatedRequest);
 
-    return address;
-};
+        return address;
+    },
 
-export const deleteAddress = async (id: string) => {
-    await getAddressById(id)
+    delete: async (id: string) => {
+        await addressService.getById(id);
 
-    await destroyAddress(id);
+        await addressRepository.deleteOne(id);
 
-    return { id };
+        return { id };
+    },
 };

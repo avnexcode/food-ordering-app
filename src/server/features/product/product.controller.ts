@@ -1,12 +1,6 @@
 import { ErrorFilter } from '@/server/filter/error.filter';
 import { NextResponse, type NextRequest } from 'next/server';
-import {
-    createProduct,
-    deleteProduct,
-    getProductById,
-    getProducts,
-    updateProduct,
-} from './product.service';
+import { productService } from './product.service';
 import type {
     CreateProductRequest,
     UpdateProductRequest,
@@ -22,7 +16,9 @@ export const handlers = {
             const params = await context.params;
             const id = params?.id;
 
-            const data = id ? await getProductById(id) : await getProducts();
+            const data = id
+                ? await productService.getById(id)
+                : await productService.getAll();
 
             return NextResponse.json(
                 { status: true, statusCode: 200, message: 'Success', data },
@@ -39,7 +35,7 @@ export const handlers = {
         try {
             const requestBody = (await request.json()) as CreateProductRequest;
 
-            const data = await createProduct(
+            const data = await productService.create(
                 requestBody,
                 'cm41dvsts0001rf2wyh0ajkne',
             );
@@ -59,6 +55,7 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
+
             const requestBody = (await request.json()) as UpdateProductRequest;
 
             if (
@@ -74,7 +71,7 @@ export const handlers = {
                 throw new NotFoundException('Some fields are missing');
             }
 
-            const data = await updateProduct(id, requestBody);
+            const data = await productService.update(id, requestBody);
 
             return NextResponse.json(
                 { status: true, statusCode: 200, message: 'Success', data },
@@ -93,7 +90,7 @@ export const handlers = {
             const id = params?.id;
             const requestBody = (await request.json()) as UpdateProductRequest;
 
-            const data = await updateProduct(id, requestBody);
+            const data = await productService.update(id, requestBody);
 
             return NextResponse.json(
                 { status: true, statusCode: 200, message: 'Success', data },
@@ -111,7 +108,7 @@ export const handlers = {
             const params = await context.params;
             const id = params?.id;
 
-            const data = await deleteProduct(id);
+            const data = await productService.delete(id);
 
             return NextResponse.json(
                 { status: true, statusCode: 200, message: 'Success', data },

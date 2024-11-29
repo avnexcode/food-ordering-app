@@ -1,12 +1,6 @@
 import { ErrorFilter } from '@/server/filter/error.filter';
 import { NextResponse, type NextRequest } from 'next/server';
-import {
-    createProductCategory,
-    deleteProductCategory,
-    getProductCategories,
-    getProductCategoryById,
-    updateProductCategory,
-} from './product-category.service';
+import { productCategoryService } from './product-category.service';
 import type {
     CreateProductCategoryRequest,
     UpdateProductCategoryRequest,
@@ -22,8 +16,8 @@ export const handlers = {
             const params = await context.params;
             const id = params?.id;
             const data = id
-                ? await getProductCategoryById(id)
-                : await getProductCategories();
+                ? await productCategoryService.getById(id)
+                : await productCategoryService.getAll();
 
             return NextResponse.json(
                 { status: true, statusCode: 200, message: 'Success', data },
@@ -41,7 +35,7 @@ export const handlers = {
             const requestBody =
                 (await request.json()) as CreateProductCategoryRequest;
 
-            const data = await createProductCategory(
+            const data = await productCategoryService.create(
                 requestBody,
                 'cm41dvsts0001rf2wyh0ajkne',
             );
@@ -68,7 +62,7 @@ export const handlers = {
             if (!requestBody.name) {
                 throw new NotFoundException('Some fields are missing');
             }
-            const data = await updateProductCategory(id, requestBody);
+            const data = await productCategoryService.update(id, requestBody);
 
             return NextResponse.json(
                 { status: true, statusCode: 200, message: 'Success', data },
@@ -89,7 +83,7 @@ export const handlers = {
             const requestBody =
                 (await request.json()) as UpdateProductCategoryRequest;
 
-            const data = await updateProductCategory(id, requestBody);
+            const data = await productCategoryService.update(id, requestBody);
 
             return NextResponse.json(
                 { status: true, statusCode: 200, message: 'Success', data },
@@ -107,7 +101,7 @@ export const handlers = {
             const params = await context.params;
             const id = params?.id;
 
-            const data = await deleteProductCategory(id);
+            const data = await productCategoryService.delete(id);
 
             return NextResponse.json(
                 { status: true, statusCode: 200, message: 'Success', data },
