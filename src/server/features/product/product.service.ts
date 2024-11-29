@@ -1,55 +1,45 @@
 import { NotFoundException } from '@/server/lib/error.exception';
-import {
-    destroyProduct,
-    findProductById,
-    findProducts,
-    insertProductOne,
-    updateProductOne,
-} from './product.repository';
+import { productRepository } from './product.repository';
 import type {
     CreateProductRequest,
     UpdateProductRequest,
 } from './product.model';
 
-export const getProducts = async () => {
-    const products = await findProducts();
-    return products;
-};
+export const productService = {
+    getAll: async () => {
+        const products = await productRepository.findMany();
+        return products;
+    },
 
-export const getProductById = async (id: string) => {
-    const product = await findProductById(id);
+    getById: async (id: string) => {
+        const product = await productRepository.findUniqueById(id);
 
-    if (!product) {
-        throw new NotFoundException('Product not found');
-    }
+        if (!product) {
+            throw new NotFoundException('Product not found');
+        }
 
-    return product;
-};
+        return product;
+    },
 
-export const createProduct = async (
-    request: CreateProductRequest,
-    store_id: string,
-) => {
-    const product = await insertProductOne(request, store_id);
+    create: async (request: CreateProductRequest, store_id: string) => {
+        const product = await productRepository.insertOne(request, store_id);
 
-    return product;
-};
+        return product;
+    },
 
-export const updateProduct = async (
-    id: string,
-    request: UpdateProductRequest,
-) => {
-    await getProductById(id);
+    update: async (id: string, request: UpdateProductRequest) => {
+        await productService.getById(id);
 
-    const product = await updateProductOne(id, request);
+        const product = await productRepository.updateOne(id, request);
 
-    return product;
-};
+        return product;
+    },
 
-export const deleteProduct = async (id: string) => {
-    await getProductById(id);
+    delete: async (id: string) => {
+        await productService.getById(id);
 
-    await destroyProduct(id);
+        await productRepository.deleteOne(id);
 
-    return { id };
+        return { id };
+    },
 };

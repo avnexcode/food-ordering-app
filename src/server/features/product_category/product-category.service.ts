@@ -1,11 +1,5 @@
 import { NotFoundException } from '@/server/lib/error.exception';
-import {
-    destroyProductCategory,
-    findProductCategories,
-    findProductCategoryById,
-    insertProductCategoryOne,
-    updateProductCategoryOne,
-} from './product-category.repository';
+import { productCategoryRepository } from './product-category.repository';
 import type {
     CreateProductCategoryRequest,
     UpdateProductCategoryRequest,
@@ -16,56 +10,57 @@ import {
     updateProductCategorySchema,
 } from './product-category.validation';
 
-export const getProductCategories = async () => {
-    const productsCategories = await findProductCategories();
-    return productsCategories;
-};
+export const productCategoryService = {
+    getAll: async () => {
+        const productsCategories = await productCategoryRepository.findMany();
+        return productsCategories;
+    },
 
-export const getProductCategoryById = async (id: string) => {
-    const productCategory = await findProductCategoryById(id);
+    getById: async (id: string) => {
+        const productCategory =
+            await productCategoryRepository.findUniqueById(id);
 
-    if (!productCategory) {
-        throw new NotFoundException('Product Category not found');
-    }
+        if (!productCategory) {
+            throw new NotFoundException('Product Category not found');
+        }
 
-    return productCategory;
-};
+        return productCategory;
+    },
 
-export const createProductCategory = async (
-    request: CreateProductCategoryRequest,
-    store_id: string,
-) => {
-    const validatedCreateProductCategoryRequest: CreateProductCategoryRequest =
-        validateSchema(createProductCategorySchema, request);
+    create: async (request: CreateProductCategoryRequest, store_id: string) => {
+        const validatedRequest: CreateProductCategoryRequest = validateSchema(
+            createProductCategorySchema,
+            request,
+        );
 
-    const productCategory = await insertProductCategoryOne(
-        validatedCreateProductCategoryRequest,
-        store_id,
-    );
+        const productCategory = await productCategoryRepository.insertOne(
+            validatedRequest,
+            store_id,
+        );
 
-    return productCategory;
-};
+        return productCategory;
+    },
 
-export const updateProductCategory = async (
-    id: string,
-    request: UpdateProductCategoryRequest,
-) => {
-    const validatedUpdateProductCategoryRequest: UpdateProductCategoryRequest =
-        validateSchema(updateProductCategorySchema, request);
-    await getProductCategoryById(id);
+    update: async (id: string, request: UpdateProductCategoryRequest) => {
+        const validatedRequest: UpdateProductCategoryRequest = validateSchema(
+            updateProductCategorySchema,
+            request,
+        );
+        await productCategoryService.getById(id);
 
-    const productCategory = await updateProductCategoryOne(
-        id,
-        validatedUpdateProductCategoryRequest,
-    );
+        const productCategory = await productCategoryRepository.updateOne(
+            id,
+            validatedRequest,
+        );
 
-    return productCategory;
-};
+        return productCategory;
+    },
 
-export const deleteProductCategory = async (id: string) => {
-    await getProductCategoryById(id);
+    delete: async (id: string) => {
+        await productCategoryService.getById(id);
 
-    await destroyProductCategory(id);
+        await productCategoryRepository.deleteOne(id);
 
-    return { id };
+        return { id };
+    },
 };

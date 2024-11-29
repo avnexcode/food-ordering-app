@@ -1,15 +1,16 @@
 // import { type Provider } from "next-auth/providers";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
-import DiscordProvider from "next-auth/providers/discord";
-import FacebookProvider from "next-auth/providers/facebook";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { login } from "@/server/features/auth/auth.service";
-import { BadRequestException } from "@/server/lib/error.exception";
-import { env } from "@/env";
-import { type NextAuthConfig } from "next-auth";
+import GoogleProvider from 'next-auth/providers/google';
+import GitHubProvider from 'next-auth/providers/github';
+import DiscordProvider from 'next-auth/providers/discord';
+import FacebookProvider from 'next-auth/providers/facebook';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { authService } from '@/server/features/auth/auth.service';
+import { BadRequestException } from '@/server/lib/error.exception';
+import { env } from '@/env';
+import { type NextAuthConfig } from 'next-auth';
 
-export const providers: NextAuthConfig["providers"] = [ // : optional type Provider[]
+export const providers: NextAuthConfig['providers'] = [
+    // : optional type Provider[]
     GoogleProvider({
         clientId: env.GOOGLE_CLIENT_ID,
         clientSecret: env.GOOGLE_CLIENT_SECRET,
@@ -27,10 +28,14 @@ export const providers: NextAuthConfig["providers"] = [ // : optional type Provi
         clientSecret: env.FACEBOOK_CLIENT_SECRET,
     }),
     CredentialsProvider({
-        name: "Credentials",
+        name: 'Credentials',
         credentials: {
-            email: { label: "Email", type: "text", placeholder: "email" },
-            password: { label: "Password", type: "password", placeholder: "********" },
+            email: { label: 'Email', type: 'text', placeholder: 'email' },
+            password: {
+                label: 'Password',
+                type: 'password',
+                placeholder: '********',
+            },
         },
         async authorize(credentials, req) {
             if (!credentials?.email || !credentials.password) {
@@ -38,11 +43,11 @@ export const providers: NextAuthConfig["providers"] = [ // : optional type Provi
             }
 
             const { email, password } = credentials as {
-                email: string,
-                password: string
+                email: string;
+                password: string;
             };
 
-            const user = await login({ email, password });
+            const user = await authService.login({ email, password });
 
             if (user) return user;
 

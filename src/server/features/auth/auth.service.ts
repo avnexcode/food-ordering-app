@@ -1,100 +1,103 @@
 import {
     loginSchema,
     registerSchema,
-} from "@/server/features/auth/auth.validation";
-import {
-    countUserByEmail,
-    findUserByEmail,
-    insertUserOne,
-    updateUserOne,
-} from "../user/user.repository";
-import bcrypt from "bcrypt";
-import { validateSchema } from "@/server/service";
-import { setToken } from "./auth.repository";
-import { BadRequestException } from "@/server/lib/error.exception";
-import { toUserResponse } from "@/server/utils/toUserResponse";
-import { updateUserSchema } from "@/server/features/user/user.validation";
-import { type LoginRequest, type RegisterRequest } from "./auth.model";
-import { type UpdateUserRequest } from "../user/user.model";
+} from '@/server/features/auth/auth.validation';
+import { userRepository } from '../user/user.repository';
+import bcrypt from 'bcrypt';
+import { validateSchema } from '@/server/service';
+import { authRepository } from './auth.repository';
+import { BadRequestException } from '@/server/lib/error.exception';
+import { toUserResponse } from '@/server/utils/toUserResponse';
+import { updateUserSchema } from '@/server/features/user/user.validation';
+import { type LoginRequest, type RegisterRequest } from './auth.model';
+import { type UpdateUserRequest } from '../user/user.model';
 
-export const register = async (request: RegisterRequest) => {
-    if (!request.password) {
-        throw new BadRequestException("Password required");
-    }
+export const authService = {
+    register: async (request: RegisterRequest) => {
+        if (!request.password) {
+            throw new BadRequestException('Password required');
+        }
 
-    const validatedRegisterRequest: RegisterRequest = validateSchema(
-        registerSchema,
-        request,
-    );
-
-    const emailExists = await countUserByEmail(validatedRegisterRequest.email);
-
-    if (emailExists !== 0) {
-        throw new BadRequestException(`Email already exists`);
-    }
-
-    const user = await insertUserOne(validatedRegisterRequest);
-
-    return toUserResponse(user);
-};
-
-export const login = async (request: LoginRequest) => {
-    const validatedLoginRequest: LoginRequest = validateSchema(
-        loginSchema,
-        request,
-    );
-
-    let user = await findUserByEmail(validatedLoginRequest.email);
-
-    if (!user) {
-        throw new BadRequestException(`Email or password is invalid`);
-    }
-
-    if (user.password && user.provider === "credentials") {
-        const validatedPassword = await bcrypt.compare(
-            validatedLoginRequest.password,
-            user.password,
+        const validatedRequest: RegisterRequest = validateSchema(
+            registerSchema,
+            request,
         );
-        if (!validatedPassword) {
+
+        const emailExists = await userRepository.countByEmail(
+            validatedRequest.email,
+        );
+
+        if (emailExists !== 0) {
+            throw new BadRequestException(`Email already exists`);
+        }
+
+        const user = await userRepository.insertOne(validatedRequest);
+
+        return toUserResponse(user);
+    },
+
+    login: async (request: LoginRequest) => {
+        const validatedRequest: LoginRequest = validateSchema(
+            loginSchema,
+            request,
+        );
+
+        let user = await userRepository.findUniqueByEmail(
+            validatedRequest.email,
+        );
+
+        if (!user) {
             throw new BadRequestException(`Email or password is invalid`);
         }
-    }
 
-    user = await setToken(validatedLoginRequest.email);
+        if (user.password && user.provider === 'credentials') {
+            const validatedPassword = await bcrypt.compare(
+                validatedRequest.password,
+                user.password,
+            );
+            if (!validatedPassword) {
+                throw new BadRequestException(`Email or password is invalid`);
+            }
+        }
 
-    return toUserResponse(user);
-};
+        user = await authRepository.setToken(validatedRequest.email);
 
-export const loginWithGoogle = async (request: UpdateUserRequest) => {
-    const validatedUpdateUserRequest: UpdateUserRequest = validateSchema(
-        updateUserSchema,
-        request,
-    );
+        return toUserResponse(user);
+    },
 
-    const user = await findUserByEmail(validatedUpdateUserRequest.email!);
+    loginWithGoogle: async (request: UpdateUserRequest) => {
+        const validatedRequest: UpdateUserRequest = validateSchema(
+            updateUserSchema,
+            request,
+        );
 
-    if (user) {
-        const updateUserData = {
-            provider: user.provider ?? undefined,
-            name: user.name,
-            email: user.email,
-        };
+        const user = await userRepository.findUniqueByEmail(
+            validatedRequest.email!,
+        );
 
-        await updateUserOne(user.id, updateUserData);
-    } else {
-        const { name, email } = validatedUpdateUserRequest as {
-            name: string;
-            email: string;
-        };
+        if (user) {
+            const updateUserData = {
+                provider: user.provider ?? undefined,
+                name: user.name,
+                email: user.email,
+            };
 
-        const newUserData = {
-            ...validatedUpdateUserRequest,
-            name,
-            email,
-        };
+            await userRepository.updateOne(user.id, updateUserData);
+        } else {
+            const { name, email } = validatedRequest as {
+                name: string;
+                email: string;
+            };
 
-        await insertUserOne(newUserData);
-    }
+            const newUserData = {
+                ...validatedRequest,
+                name,
+                email,
+            };
 
-    return user;
+            await userRepository.insertOne(newUserData);
+        }
+
+        return user;
+    },
 };

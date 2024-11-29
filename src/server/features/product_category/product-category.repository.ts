@@ -4,55 +4,56 @@ import type {
     UpdateProductCategoryRequest,
 } from './product-category.model';
 
-export const findProductCategories = async () => {
-    const productCategories = await db.productCategory.findMany({
-        include: { products: true },
-    });
+export const productCategoryRepository = {
+    findMany: async () => {
+        const productCategories = await db.productCategory.findMany({
+            include: { products: true },
+        });
 
-    return productCategories;
-};
+        return productCategories;
+    },
 
-export const findProductCategoryById = async (id: string) => {
-    const productCategory = await db.productCategory.findUnique({
-        where: { id },
-    });
+    findUniqueById: async (id: string) => {
+        const productCategory = await db.productCategory.findUnique({
+            where: { id },
+        });
 
-    return productCategory;
-};
+        return productCategory;
+    },
 
-export const insertProductCategoryOne = async (
-    request: CreateProductCategoryRequest,
-    store_id: string,
-) => {
-    const newProductCategoryData = {
-        ...request,
-        store_id,
-    };
+    insertOne: async (
+        request: CreateProductCategoryRequest,
+        store_id: string,
+    ) => {
+        const newProductCategoryData = {
+            ...request,
+            store_id,
+        };
 
-    const productCategory = await db.productCategory.create({
-        data: newProductCategoryData,
-    });
+        const productCategory = await db.productCategory.create({
+            data: newProductCategoryData,
+        });
 
-    return productCategory;
-};
+        return productCategory;
+    },
 
-export const updateProductCategoryOne = async (
-    id: string,
-    request: UpdateProductCategoryRequest,
-) => {
-    const updateProductCategoryData = {
-        ...request,
-    };
+    updateOne: async (id: string, request: UpdateProductCategoryRequest) => {
+        const updateProductCategoryData = {
+            ...request,
+        };
 
-    const productCategory = await db.productCategory.update({
-        where: { id },
-        data: updateProductCategoryData,
-    });
+        const productCategory = await db.productCategory.update({
+            where: { id },
+            data: updateProductCategoryData,
+        });
 
-    return productCategory;
-};
+        return productCategory;
+    },
 
-export const destroyProductCategory = async (id: string) => {
-    const productCategory = await db.productCategory.delete({ where: { id } });
-    return productCategory;
+    deleteOne: async (id: string) => {
+        const productCategory = await db.productCategory.delete({
+            where: { id },
+        });
+        return productCategory;
+    },
 };
