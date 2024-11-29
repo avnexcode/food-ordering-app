@@ -1,5 +1,11 @@
-import { env } from "@/env";
+import { env } from '@/env';
+import { useRouter } from 'next/navigation';
 
 export const NavbarIcon = () => {
-    return <h1 className="">{env.NEXT_PUBLIC_APP_NAME}</h1>;
+    const router = useRouter();
+    return (
+        <h1 className="hover:cursor-pointer" onClick={() => router.push('/')}>
+            {env.NEXT_PUBLIC_APP_NAME}
+        </h1>
+    );
 };

@@ -6,7 +6,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { FormInner } from "./FormInner"
 import { AuthFormFooter } from "./AuthFormFooter"
 import { Loader2 } from "lucide-react"
 import Link from "next/link"
@@ -19,6 +18,7 @@ import { loginFormSchema, type LoginFormSchema } from "../types"
 import { useLogin } from "../api/useLogin"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
+import { RenderFormFields } from "@/utils/RenderFormInner"
 
 export const LoginForm = () => {
     const router = useRouter()
@@ -58,7 +58,7 @@ export const LoginForm = () => {
             </CardHeader>
 
             <CardContent>
-                <FormInner form_id="login-form" form={form} formFields={loginFormFields} onSubmit={onSubmit} />
+                <RenderFormFields form_id="login-form" form={form} formFields={loginFormFields} onSubmit={onSubmit} />
             </CardContent>
 
             <CardFooter className="flex flex-col">

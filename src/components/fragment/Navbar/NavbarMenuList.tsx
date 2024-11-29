@@ -3,60 +3,50 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { getFirstWord } from "@/utils";
+import { getFirstWord, renderElements } from "@/utils";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { NavbarMenuItem } from "./NavbarMenuItem";
+import { CircleUserRound, LayoutDashboard, LogIn, LogOut, ShoppingCart, Store } from "lucide-react";
 
 export const NavbarMenuList = () => {
-    const { data: session } = useSession();
-    const router = useRouter();
+    const { data: session, status: sessionStatus } = useSession();
 
-    const AUTH_PATH = [
-        {
-            label: "profile",
-            url: "profile",
-        },
-        {
-            label: "store",
-            url: "store",
-        },
-        {
-            label: "dashboard",
-            url: "dashboard",
-        },
-    ];
-
-    const SELLER_PATH = []
+    const dropDownMenu = {
+        USER_MENU: [
+            { label: "profile", url: "profile", icon: <CircleUserRound /> },
+            { label: "store", url: "profile/store", icon: <Store /> },
+            { label: "cart", url: "cart", icon: <ShoppingCart /> },
+        ],
+        SELLER_MENU: [
+            { label: "store", url: "profile/store", icon: <Store /> },
+        ],
+        ADMIN_MENU: [
+            { label: "dashboard", url: "dashboard", icon: <LayoutDashboard /> },
+        ]
+    }
 
     return (
         <>
             <DropdownMenuLabel className="w-full capitalize">
-                Hello{" "}
-                {session?.user.name ? ", " + getFirstWord(session?.user.name) : "World"}
+                {session?.user.name ? `Hello, ${getFirstWord(session?.user.name)}` : `Welcome 👉👌💦`}
             </DropdownMenuLabel>
+
             <DropdownMenuSeparator />
             <div className="[&>*]:hover:cursor-pointer">
-                {session ? (
-                    <>
-                        {AUTH_PATH.map((path, i) => (
-                            <DropdownMenuItem
-                                key={i}
-                                onClick={() => router.push(path.url)}
-                                className="capitalize"
-                            >
-                                {path.label}
-                            </DropdownMenuItem>
-                        ))}
-                        <DropdownMenuItem onClick={() => signOut()}>
-                            Logout
-                        </DropdownMenuItem>
-                    </>
-                ) : (
-                    <>
-                        <DropdownMenuItem onClick={() => signIn()}>
-                            Login
-                        </DropdownMenuItem>
-                    </>
+                {session?.user.role === "ADMIN" && renderElements({ of: dropDownMenu.ADMIN_MENU, render: (menu, index) => <NavbarMenuItem key={index} menu={menu} /> })}
+                {session?.user.role === "SELLER" && renderElements({ of: dropDownMenu.SELLER_MENU, render: (menu, index) => <NavbarMenuItem key={index} menu={menu} /> })}
+                {session?.user.role === "USER" && renderElements({ of: dropDownMenu.USER_MENU, render: (menu, index) => <NavbarMenuItem key={index} menu={menu} /> })}
+
+                {sessionStatus === "unauthenticated" && (
+                    <DropdownMenuItem onClick={() => signIn()}>
+                        <LogIn />Login
+                    </DropdownMenuItem>
+                )}
+
+                {sessionStatus === "authenticated" && (
+                    <DropdownMenuItem onClick={() => signOut()}>
+                        <LogOut />Logout
+                    </DropdownMenuItem>
                 )}
             </div>
         </>

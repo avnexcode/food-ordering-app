@@ -2,7 +2,6 @@ import { getDefaultFormValues } from "@/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { FormInner } from "./FormInner"
 import { AuthFormFooter } from "./AuthFormFooter"
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
@@ -12,6 +11,7 @@ import { useRegister } from "../api/useRegister"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { registerFormSchema, type RegisterFormSchema } from "@/features/auth/types"
+import { RenderFormFields } from "@/utils/RenderFormInner"
 
 export const RegisterForm = () => {
     const router = useRouter()
@@ -50,7 +50,7 @@ export const RegisterForm = () => {
                 <CardDescription>Create an account to get started.</CardDescription>
             </CardHeader>
             <CardContent>
-                <FormInner form_id="register-form" form={form} formFields={registerFormFields} onSubmit={onSubmit} />
+                <RenderFormFields form_id="register-form" form={form} formFields={registerFormFields} onSubmit={onSubmit} />
             </CardContent>
             <CardFooter className="flex flex-col">
                 <AuthFormFooter>

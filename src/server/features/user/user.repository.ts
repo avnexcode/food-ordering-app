@@ -55,6 +55,7 @@ export const userRepository = {
             role: UserRole.USER,
             password: passwordHashed ?? null,
             provider: request.provider ?? 'credentials',
+            image: request.image ?? null,
         };
 
         const user = await db.user.create({
@@ -77,12 +78,14 @@ export const userRepository = {
         }
 
         const updateUserData = {
-            name: request.name ?? oldUserData?.name,
             username: request.username ?? oldUserData?.username,
+            name: request.name ?? oldUserData?.name,
             email: request.email ?? oldUserData?.email,
             role: (request.role as UserRole) ?? oldUserData?.role,
             provider: request.provider ?? oldUserData?.provider,
             password: passwordHashed ?? oldUserData?.password,
+            store_id: request.store_id ?? oldUserData?.store_id,
+            image: request.image ?? oldUserData?.image,
         };
 
         const user = await db.user.update({

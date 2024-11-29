@@ -9,6 +9,7 @@ export const callbacks: NextAuthConfig['callbacks'] = {
             token.email = user.email;
             token.name = user.name;
             token.role = user.role;
+            token.image = user.image;
         }
 
         if (account?.provider === 'google') {
@@ -16,16 +17,19 @@ export const callbacks: NextAuthConfig['callbacks'] = {
                 name: user?.name,
                 email: user?.email,
                 provider: 'google',
+                image: user?.image,
             };
 
             const response = await authService.loginWithGoogle(
                 payload as UpdateUserRequest,
             );
+
             if (response) {
                 token.email = response.email;
                 token.name = response.name;
                 token.role = response.role;
                 token.provider = response.provider;
+                token.image = response.image;
             }
         }
 
@@ -36,6 +40,7 @@ export const callbacks: NextAuthConfig['callbacks'] = {
             session.user.email = token.email!;
             session.user.name = token.name!;
             session.user.role = token.role as UserRole;
+            session.user.image = token.image as string;
         }
 
         return {

@@ -23,9 +23,10 @@ model User {
     provider String?   @db.VarChar(100)
     token    String?
     password String?   @db.VarChar(100)
-    address  Address[]
     store_id String?   @unique
-    store    Store?    @relation(fields: [store_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    image    String?   @db.VarChar(100)
+    store    Store?
+    address  Address[]
 
     @@map("users")
 }
@@ -49,7 +50,8 @@ model Address {
 model Store {
     id                 String            @id @default(cuid())
     name               String            @db.VarChar(100)
-    owner              User?             @relation()
+    owner_id           String            @unique
+    owner              User              @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
     products           Product[]
     product_categories ProductCategory[]
 

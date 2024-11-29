@@ -53,6 +53,7 @@ export const authService = {
                 validatedRequest.password,
                 user.password,
             );
+
             if (!validatedPassword) {
                 throw new BadRequestException(`Email or password is invalid`);
             }
@@ -69,33 +70,41 @@ export const authService = {
             request,
         );
 
-        const user = await userRepository.findUniqueEmail(
+        const userExists = await userRepository.findUniqueEmail(
             validatedRequest.email!,
         );
 
-        if (user) {
+        if (userExists) {
             const updateUserData = {
-                provider: user.provider ?? undefined,
-                name: user.name,
-                email: user.email,
+                provider: validatedRequest.provider,
+                name: validatedRequest.name,
+                email: validatedRequest.email,
+                image: validatedRequest.image,
             };
 
-            await userRepository.updateOne(user.id, updateUserData);
+            const user = await userRepository.updateOne(
+                userExists.id,
+                updateUserData,
+            );
+
+            return user;
         } else {
-            const { name, email } = validatedRequest as {
+            const { name, email, image } = validatedRequest as {
                 name: string;
                 email: string;
+                image: string;
             };
 
             const newUserData = {
                 ...validatedRequest,
                 name,
                 email,
+                image,
             };
 
-            await userRepository.insertOne(newUserData);
-        }
+            const user = await userRepository.insertOne(newUserData);
 
-        return user;
+            return user;
+        }
     },
 };

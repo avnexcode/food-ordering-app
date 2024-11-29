@@ -1,5 +1,5 @@
 import React from "react";
-import { RenderElements } from "@/utils";
+import { renderElements } from "@/utils";
 import { Form } from "@/components/ui/form";
 import type { UseFormReturn, FieldValues } from "react-hook-form";
 import { InputField } from "@/components/element/InputField";
@@ -19,7 +19,7 @@ export const RenderFormFields = <T extends FieldValues>(props: RenderFormFieldsP
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} id={form_id} className={`space-y-4 w-full ${className}`}>
-                <RenderElements of={formFields} render={(input) => (<InputField key={input.name} input={input} form={form} />)} />
+                {renderElements({ of: formFields, render: (input) => <InputField key={input.name} input={input} form={form} /> })}
             </form>
         </Form>
     );

@@ -30,7 +30,7 @@ export const storeService = {
             request,
         );
 
-        const store = await storeRepository.insertOne(validatedRequest);
+        const store = await storeRepository.insertOne(validatedRequest, '');
 
         return store;
     },

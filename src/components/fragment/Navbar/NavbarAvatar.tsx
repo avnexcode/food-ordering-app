@@ -14,7 +14,7 @@ export const NavbarAvatar = () => {
         <Avatar>
             <AvatarImage
                 className="capitalize"
-                src={session?.user.image ?? "https://github.com/shadcn.png"}
+                src={session?.user.image ?? ""}
                 alt={session?.user?.name ?? "User avatar"}
                 referrerPolicy="no-referrer"
             />
