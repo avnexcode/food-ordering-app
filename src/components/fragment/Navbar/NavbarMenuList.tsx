@@ -14,11 +14,11 @@ export const NavbarMenuList = () => {
     const dropDownMenu = {
         USER_MENU: [
             { label: "profile", url: "profile", icon: <CircleUserRound /> },
-            { label: "store", url: "profile/store", icon: <Store /> },
+            { label: "store", url: "store", icon: <Store /> },
             { label: "cart", url: "cart", icon: <ShoppingCart /> },
         ],
         SELLER_MENU: [
-            { label: "store", url: "profile/store", icon: <Store /> },
+            { label: "store", url: "store", icon: <Store /> },
         ],
         ADMIN_MENU: [
             { label: "dashboard", url: "dashboard", icon: <LayoutDashboard /> },
