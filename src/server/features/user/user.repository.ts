@@ -12,13 +12,13 @@ export const userRepository = {
         return users;
     },
 
-    findUniqueByEmail: async (email: string): Promise<User | null> => {
+    findUniqueEmail: async (email: string): Promise<User | null> => {
         const user = await db.user.findUnique({ where: { email } });
 
         return user;
     },
 
-    findUniqueById: async (id: string): Promise<User | null> => {
+    findUniqueId: async (id: string): Promise<User | null> => {
         const user = await db.user.findUnique({ where: { id } });
 
         return user;
@@ -68,7 +68,7 @@ export const userRepository = {
         id: string,
         request: UpdateUserRequest,
     ): Promise<User> => {
-        const oldUserData = await userRepository.findUniqueById(id);
+        const oldUserData = await userRepository.findUniqueId(id);
 
         let passwordHashed;
 

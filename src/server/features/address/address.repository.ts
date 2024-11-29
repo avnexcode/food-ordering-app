@@ -10,7 +10,7 @@ export const addressRepository = {
         return addresses;
     },
 
-    findUniqueById: async (id: string) => {
+    findUniqueId: async (id: string) => {
         const address = await db.address.findUnique({ where: { id } });
         return address;
     },

@@ -13,7 +13,7 @@ export const productCategoryRepository = {
         return productCategories;
     },
 
-    findUniqueById: async (id: string) => {
+    findUniqueId: async (id: string) => {
         const productCategory = await db.productCategory.findUnique({
             where: { id },
         });

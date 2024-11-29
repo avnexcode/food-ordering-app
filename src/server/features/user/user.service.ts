@@ -13,7 +13,7 @@ export const userService = {
     },
 
     getById: async (id: string) => {
-        const user = await userRepository.findUniqueById(id);
+        const user = await userRepository.findUniqueId(id);
 
         if (!user) {
             throw new NotFoundException('User not found');
@@ -23,7 +23,7 @@ export const userService = {
     },
 
     getByEmail: async (email: string) => {
-        const user = await userRepository.findUniqueByEmail(email);
+        const user = await userRepository.findUniqueEmail(email);
 
         if (!user) {
             throw new NotFoundException('User not found');
