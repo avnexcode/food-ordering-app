@@ -47,11 +47,11 @@ model Address {
 }
 
 model Store {
-    id                String            @id @default(cuid())
-    name              String            @db.VarChar(100)
-    owner             User?             @relation()
-    products          Product[]
-    productCategories ProductCategory[]
+    id                 String            @id @default(cuid())
+    name               String            @db.VarChar(100)
+    owner              User?             @relation()
+    products           Product[]
+    product_categories ProductCategory[]
 
     @@map("stores")
 }
