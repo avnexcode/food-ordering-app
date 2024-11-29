@@ -26,7 +26,7 @@ export const getStoreById = async (id: string) => {
         throw new NotFoundException('Store not found`');
     }
 
-    return store;
+    return toStoreResponse(store);
 };
 
 export const createStore = async (request: CreateStoreRequest) => {

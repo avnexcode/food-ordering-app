@@ -3,13 +3,17 @@ import type { CreateStoreRequest, UpdateStoreRequest } from './store.model';
 
 export const findStores = async () => {
     const stores = await db.store.findMany({
-        include: { owner: true, products: true },
+        include: { owner: true, products: true, productCategories: true },
     });
+
     return stores;
 };
 
 export const findStoreById = async (id: string) => {
-    const store = await db.store.findUnique({ where: { id } });
+    const store = await db.store.findUnique({
+        where: { id },
+        include: { owner: true, products: true, productCategories: true },
+    });
 
     return store;
 };
