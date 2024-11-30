@@ -1,28 +1,64 @@
 import { db } from '@/server/database/db';
 import type {
     CreateProductRequest,
+    ProductReturn,
     UpdateProductRequest,
 } from './product.model';
+import type { Product } from '@prisma/client';
 
 export const productRepository = {
-    findMany: async () => {
+    findMany: async (): Promise<ProductReturn[] | null> => {
         const products = await db.product.findMany({
-            include: { store: true },
+            include: {
+                store: {
+                    include: {
+                        owner: {
+                            include: {
+                                addresses: true,
+                                store: true,
+                            },
+                        },
+                        products: true,
+                        product_categories: true,
+                    },
+                },
+                category: true,
+            },
         });
         return products;
     },
 
-    findUniqueId: async (id: string) => {
-        const product = await db.product.findUnique({ where: { id } });
+    findUniqueId: async (id: string): Promise<ProductReturn | null> => {
+        const product = await db.product.findUnique({
+            where: { id },
+            include: {
+                store: {
+                    include: {
+                        owner: {
+                            include: {
+                                addresses: true,
+                                store: true,
+                            },
+                        },
+                        products: true,
+                        product_categories: true,
+                    },
+                },
+                category: true,
+            },
+        });
         return product;
     },
 
-    countById: async (id: string) => {
+    countById: async (id: string): Promise<number> => {
         const productCount = await db.product.count({ where: { id } });
         return productCount;
     },
 
-    insertOne: async (request: CreateProductRequest, store_id: string) => {
+    insertOne: async (
+        request: CreateProductRequest,
+        store_id: string,
+    ): Promise<Product> => {
         const newProductData = {
             ...request,
             store_id,
@@ -35,7 +71,10 @@ export const productRepository = {
         return product;
     },
 
-    updateOne: async (id: string, request: UpdateProductRequest) => {
+    updateOne: async (
+        id: string,
+        request: UpdateProductRequest,
+    ): Promise<Product> => {
         const oldProduct = await productRepository.findUniqueId(id);
 
         const updateProductData = {
@@ -51,7 +90,7 @@ export const productRepository = {
         return product;
     },
 
-    deleteOne: async (id: string) => {
+    deleteOne: async (id: string): Promise<Product> => {
         const product = await db.product.delete({ where: { id } });
         return product;
     },

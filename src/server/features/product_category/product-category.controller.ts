@@ -3,15 +3,22 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { productCategoryService } from './product-category.service';
 import type {
     CreateProductCategoryRequest,
+    ProductCategoryResponse,
     UpdateProductCategoryRequest,
 } from './product-category.model';
 import { NotFoundException } from '@/server/lib/error.exception';
+import type { WebModel } from '@/server/model/web.model';
+import { ProductCategory } from '@prisma/client';
 
 export const handlers = {
     GET: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<
+        NextResponse<
+            WebModel<ProductCategoryResponse[] | ProductCategoryResponse>
+        >
+    > => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -30,7 +37,7 @@ export const handlers = {
     POST: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<ProductCategory>>> => {
         try {
             const requestBody =
                 (await request.json()) as CreateProductCategoryRequest;
@@ -51,7 +58,7 @@ export const handlers = {
     PUT: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<ProductCategory>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -75,7 +82,7 @@ export const handlers = {
     PATCH: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<ProductCategory>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -96,7 +103,7 @@ export const handlers = {
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<{ id: string }>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

@@ -9,11 +9,15 @@ import { authRepository } from './auth.repository';
 import { BadRequestException } from '@/server/lib/error.exception';
 import { toUserResponse } from '@/server/utils/toUserResponse';
 import { updateUserSchema } from '@/server/features/user/user.validation';
-import { type LoginRequest, type RegisterRequest } from './auth.model';
-import { type UpdateUserRequest } from '../user/user.model';
+import type { LoginRequest, RegisterRequest } from './auth.model';
+import type {
+    UserResponse,
+    UpdateUserRequest,
+    UserReturn,
+} from '../user/user.model';
 
 export const authService = {
-    register: async (request: RegisterRequest) => {
+    register: async (request: RegisterRequest): Promise<UserResponse> => {
         if (!request.password) {
             throw new BadRequestException('Password required');
         }
@@ -31,12 +35,14 @@ export const authService = {
             throw new BadRequestException(`Email already exists`);
         }
 
-        const user = await userRepository.insertOne(validatedRequest);
+        const user = (await userRepository.insertOne(
+            validatedRequest,
+        )) as UserReturn;
 
         return toUserResponse(user);
     },
 
-    login: async (request: LoginRequest) => {
+    login: async (request: LoginRequest): Promise<UserResponse> => {
         const validatedRequest: LoginRequest = validateSchema(
             loginSchema,
             request,
@@ -59,12 +65,16 @@ export const authService = {
             }
         }
 
-        user = await authRepository.setToken(validatedRequest.email);
+        user = (await authRepository.setToken(
+            validatedRequest.email,
+        )) as UserReturn;
 
         return toUserResponse(user);
     },
 
-    loginWithGoogle: async (request: UpdateUserRequest) => {
+    loginWithGoogle: async (
+        request: UpdateUserRequest,
+    ): Promise<UserResponse> => {
         const validatedRequest: UpdateUserRequest = validateSchema(
             updateUserSchema,
             request,
@@ -82,12 +92,12 @@ export const authService = {
                 image: validatedRequest.image,
             };
 
-            const user = await userRepository.updateOne(
+            const user = (await userRepository.updateOne(
                 userExists.id,
                 updateUserData,
-            );
+            )) as UserReturn;
 
-            return user;
+            return toUserResponse(user);
         } else {
             const { name, email, image } = validatedRequest as {
                 name: string;
@@ -102,9 +112,11 @@ export const authService = {
                 image,
             };
 
-            const user = await userRepository.insertOne(newUserData);
+            const user = (await userRepository.insertOne(
+                newUserData,
+            )) as UserReturn;
 
-            return user;
+            return toUserResponse(user);
         }
     },
 };

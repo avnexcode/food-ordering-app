@@ -3,15 +3,17 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { productService } from './product.service';
 import type {
     CreateProductRequest,
+    ProductResponse,
     UpdateProductRequest,
 } from './product.model';
 import { NotFoundException } from '@/server/lib/error.exception';
+import type { WebModel } from '@/server/model/web.model';
 
 export const handlers = {
     GET: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<ProductResponse | ProductResponse[]>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

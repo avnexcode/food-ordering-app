@@ -1,14 +1,20 @@
 import { ErrorFilter } from '@/server/filter/error.filter';
 import { NextResponse, type NextRequest } from 'next/server';
 import { storeService } from './store.service';
-import type { CreateStoreRequest, UpdateStoreRequest } from './store.model';
+import type {
+    CreateStoreRequest,
+    StoreResponse,
+    UpdateStoreRequest,
+} from './store.model';
 import { NotFoundException } from '@/server/lib/error.exception';
+import type { WebModel } from '@/server/model/web.model';
+import type { Store } from '@prisma/client';
 
 export const handlers = {
     GET: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<StoreResponse | StoreResponse[]>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -27,7 +33,7 @@ export const handlers = {
     POST: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<Store>>> => {
         try {
             const requestBody = (await request.json()) as CreateStoreRequest;
 
@@ -44,7 +50,7 @@ export const handlers = {
     PUT: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<Store>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -68,7 +74,7 @@ export const handlers = {
     PATCH: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<Store>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -88,7 +94,7 @@ export const handlers = {
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<{ id: string }>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

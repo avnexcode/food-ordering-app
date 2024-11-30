@@ -6,14 +6,15 @@ import type {
 import { addressRepository } from './address.repository';
 import { createAddressSchema, updateAddressSchema } from './address.validation';
 import { NotFoundException } from '@/server/lib/error.exception';
+import type { Address } from '@prisma/client';
 
 export const addressService = {
-    getAll: async () => {
+    getAll: async (): Promise<Address[]> => {
         const addresses = await addressRepository.findMany();
-        return addresses;
+        return addresses!;
     },
 
-    getById: async (id: string) => {
+    getById: async (id: string): Promise<Address> => {
         const address = await addressRepository.findUniqueId(id);
 
         if (!address) {
@@ -23,18 +24,21 @@ export const addressService = {
         return address;
     },
 
-    create: async (request: CreateAddressRequest) => {
+    create: async (request: CreateAddressRequest): Promise<Address> => {
         const validatedRequest: CreateAddressRequest = validateSchema(
             createAddressSchema,
             request,
         );
 
-        const address = await addressRepository.insertOne(validatedRequest);
+        const address = await addressRepository.insertOne(validatedRequest, '');
 
         return address;
     },
 
-    update: async (id: string, request: UpdateAddressRequest) => {
+    update: async (
+        id: string,
+        request: UpdateAddressRequest,
+    ): Promise<Address> => {
         await addressService.getById(id);
 
         const validatedRequest: UpdateAddressRequest = validateSchema(
@@ -47,7 +51,7 @@ export const addressService = {
         return address;
     },
 
-    delete: async (id: string) => {
+    delete: async (id: string): Promise<{ id: string }> => {
         await addressService.getById(id);
 
         await addressRepository.deleteOne(id);

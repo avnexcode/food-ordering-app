@@ -3,13 +3,13 @@ import { userService } from './user.service';
 import { type WebModel } from '@/server/model/web.model';
 import { ErrorFilter } from '@/server/filter/error.filter';
 import { NotFoundException } from '@/server/lib/error.exception';
-import type { UpdateUserRequest, UserModel } from './user.model';
+import type { UpdateUserRequest, UserResponse } from './user.model';
 
 export const handlers = {
     GET: async (
         req: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<UserModel | UserModel[]>>> => {
+    ): Promise<NextResponse<WebModel<UserResponse | UserResponse[]>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -37,7 +37,7 @@ export const handlers = {
     PUT: async (
         req: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<UserModel>>> => {
+    ): Promise<NextResponse<WebModel<UserResponse>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -75,7 +75,7 @@ export const handlers = {
     PATCH: async (
         req: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<UserModel>>> => {
+    ): Promise<NextResponse<WebModel<UserResponse>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

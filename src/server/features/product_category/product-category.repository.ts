@@ -1,11 +1,13 @@
 import { db } from '@/server/database/db';
 import type {
     CreateProductCategoryRequest,
+    ProductCategoryReturn,
     UpdateProductCategoryRequest,
 } from './product-category.model';
+import type { ProductCategory } from '@prisma/client';
 
 export const productCategoryRepository = {
-    findMany: async () => {
+    findMany: async (): Promise<ProductCategoryReturn[] | null> => {
         const productCategories = await db.productCategory.findMany({
             include: { products: true },
         });
@@ -13,9 +15,10 @@ export const productCategoryRepository = {
         return productCategories;
     },
 
-    findUniqueId: async (id: string) => {
+    findUniqueId: async (id: string): Promise<ProductCategoryReturn | null> => {
         const productCategory = await db.productCategory.findUnique({
             where: { id },
+            include: { products: true },
         });
 
         return productCategory;
@@ -24,7 +27,7 @@ export const productCategoryRepository = {
     insertOne: async (
         request: CreateProductCategoryRequest,
         store_id: string,
-    ) => {
+    ): Promise<ProductCategory> => {
         const newProductCategoryData = {
             ...request,
             store_id,
@@ -37,7 +40,10 @@ export const productCategoryRepository = {
         return productCategory;
     },
 
-    updateOne: async (id: string, request: UpdateProductCategoryRequest) => {
+    updateOne: async (
+        id: string,
+        request: UpdateProductCategoryRequest,
+    ): Promise<ProductCategory> => {
         const updateProductCategoryData = {
             ...request,
         };
@@ -50,7 +56,7 @@ export const productCategoryRepository = {
         return productCategory;
     },
 
-    deleteOne: async (id: string) => {
+    deleteOne: async (id: string): Promise<ProductCategory> => {
         const productCategory = await db.productCategory.delete({
             where: { id },
         });

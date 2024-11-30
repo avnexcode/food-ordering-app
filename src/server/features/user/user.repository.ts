@@ -3,23 +3,31 @@ import { UserRole, type User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 import { type RegisterRequest } from '../auth/auth.model';
-import { type UpdateUserRequest } from './user.model';
+import type { UserReturn, UpdateUserRequest } from './user.model';
 
 export const userRepository = {
-    findMany: async (): Promise<User[]> => {
-        const users = await db.user.findMany({ include: { store: true } });
+    findMany: async (): Promise<UserReturn[] | null> => {
+        const users = await db.user.findMany({
+            include: { store: true, addresses: true },
+        });
 
         return users;
     },
 
-    findUniqueEmail: async (email: string): Promise<User | null> => {
-        const user = await db.user.findUnique({ where: { email } });
+    findUniqueEmail: async (email: string): Promise<UserReturn | null> => {
+        const user = await db.user.findUnique({
+            where: { email },
+            include: { store: true, addresses: true },
+        });
 
         return user;
     },
 
-    findUniqueId: async (id: string): Promise<User | null> => {
-        const user = await db.user.findUnique({ where: { id } });
+    findUniqueId: async (id: string): Promise<UserReturn | null> => {
+        const user = await db.user.findUnique({
+            where: { id },
+            include: { store: true, addresses: true },
+        });
 
         return user;
     },
