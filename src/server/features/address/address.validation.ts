@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
 export const createAddressSchema = z.object({
-    street: z.string().max(255, 'Street must be at most 255 characters long'),
+    street: z.string().max(100, 'Street must be at most 100 characters long'),
+    village: z.string().max(100, 'Village must be at most 100 characters long'),
+    district: z
+        .string()
+        .max(100, 'District must be at most 100 characters long'),
     city: z.string().max(100, 'City must be at most 100 characters long'),
     province: z
         .string()

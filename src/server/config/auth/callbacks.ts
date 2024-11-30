@@ -28,8 +28,6 @@ export const callbacks: NextAuthConfig['callbacks'] = {
                 token.email = response.email;
                 token.name = response.name;
                 token.role = response.role;
-                token.provider = response.provider;
-                token.image = response.image;
             }
         }
 

@@ -3,29 +3,31 @@ import {
     type UpdateAddressRequest,
     type CreateAddressRequest,
 } from '@/server/features/address/address.model';
+import type { Address } from '@prisma/client';
 
 export const addressRepository = {
-    findMany: async () => {
+    findMany: async (): Promise<Address[] | null> => {
         const addresses = await db.address.findMany();
         return addresses;
     },
 
-    findUniqueId: async (id: string) => {
+    findUniqueId: async (id: string): Promise<Address | null> => {
         const address = await db.address.findUnique({ where: { id } });
         return address;
     },
 
-    countById: async (id: string) => {
-        const address = await db.address.count({ where: { id } });
-        return address;
+    countById: async (id: string): Promise<number> => {
+        const addressCount = await db.address.count({ where: { id } });
+        return addressCount;
     },
 
-    insertOne: async (request: CreateAddressRequest) => {
+    insertOne: async (
+        request: CreateAddressRequest,
+        user_id: string,
+    ): Promise<Address> => {
         const newAddressData = {
             ...request,
-            street: request.street,
-            city: request.city,
-            province: request.province,
+            user_id,
         };
 
         const address = await db.address.create({ data: newAddressData });
@@ -33,7 +35,10 @@ export const addressRepository = {
         return address;
     },
 
-    updateOne: async (id: string, request: UpdateAddressRequest) => {
+    updateOne: async (
+        id: string,
+        request: UpdateAddressRequest,
+    ): Promise<Address> => {
         const updateAddressData = {
             ...request,
         };
@@ -46,7 +51,7 @@ export const addressRepository = {
         return address;
     },
 
-    deleteOne: async (id: string) => {
+    deleteOne: async (id: string): Promise<Address> => {
         const address = await db.address.delete({ where: { id } });
 
         return address;

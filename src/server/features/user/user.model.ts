@@ -1,14 +1,21 @@
-import { type UserRole } from "@prisma/client";
-import type { z } from "zod";
-import type { updateUserSchema } from "./user.validation";
+import type { Address, Store, User, UserRole } from '@prisma/client';
+import type { z } from 'zod';
+import type { updateUserSchema } from './user.validation';
 
-export interface UserModel {
-  id?: string;
-  username: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  provider?: string
+export type UpdateUserRequest = z.infer<typeof updateUserSchema>;
+
+export interface UserReturn extends User {
+    store?: Store | null;
+    addresses: Address[];
 }
 
-export type UpdateUserRequest = z.infer<typeof updateUserSchema>
+export interface UserResponse {
+    id?: string;
+    username: string;
+    name: string;
+    email: string;
+    role: UserRole;
+    provider?: string;
+    store?: Store | null;
+    addresses: Address[];
+}

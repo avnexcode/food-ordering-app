@@ -6,12 +6,14 @@ import type {
     UpdateAddressRequest,
 } from './address.model';
 import { NotFoundException } from '@/server/lib/error.exception';
+import type { WebModel } from '@/server/model/web.model';
+import type { Address } from '@prisma/client';
 
 export const handlers = {
     GET: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<Address | Address[]>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -29,7 +31,9 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
-    POST: async (request: NextRequest) => {
+    POST: async (
+        request: NextRequest,
+    ): Promise<NextResponse<WebModel<Address>>> => {
         try {
             const requestBody = (await request.json()) as CreateAddressRequest;
             const data = await addressService.create(requestBody);
@@ -50,7 +54,7 @@ export const handlers = {
     PUT: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<Address>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -87,7 +91,7 @@ export const handlers = {
     PATCH: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<Address>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -112,7 +116,7 @@ export const handlers = {
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<{ id: string }>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

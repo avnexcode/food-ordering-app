@@ -1,20 +1,25 @@
 import { NotFoundException } from '@/server/lib/error.exception';
 import { storeRepository } from './store.repository';
-import type { CreateStoreRequest, UpdateStoreRequest } from './store.model';
+import type {
+    CreateStoreRequest,
+    StoreResponse,
+    UpdateStoreRequest,
+} from './store.model';
 import { validateSchema } from '@/server/service';
 import { createStoreSchema, updateStoreSchema } from './store.validation';
 import { toStoreResponse } from '@/server/utils/toStoreResponse';
+import type { Store } from '@prisma/client';
 
 export const storeService = {
-    getAll: async () => {
+    getAll: async (): Promise<StoreResponse[]> => {
         const data = await storeRepository.findMany();
 
-        const stores = data.map(store => toStoreResponse(store));
+        const stores = data?.map(store => toStoreResponse(store));
 
-        return stores;
+        return stores!;
     },
 
-    getById: async (id: string) => {
+    getById: async (id: string): Promise<StoreResponse> => {
         const store = await storeRepository.findUniqueId(id);
 
         if (!store) {
@@ -24,7 +29,7 @@ export const storeService = {
         return toStoreResponse(store);
     },
 
-    create: async (request: CreateStoreRequest) => {
+    create: async (request: CreateStoreRequest): Promise<Store> => {
         const validatedRequest: CreateStoreRequest = validateSchema(
             createStoreSchema,
             request,
@@ -35,7 +40,7 @@ export const storeService = {
         return store;
     },
 
-    update: async (id: string, request: UpdateStoreRequest) => {
+    update: async (id: string, request: UpdateStoreRequest): Promise<Store> => {
         await storeService.getById(id);
 
         const validatedRequest: UpdateStoreRequest = validateSchema(
@@ -48,7 +53,7 @@ export const storeService = {
         return store;
     },
 
-    delete: async (id: string) => {
+    delete: async (id: string): Promise<{ id: string }> => {
         await storeService.getById(id);
 
         await storeRepository.deleteOne(id);

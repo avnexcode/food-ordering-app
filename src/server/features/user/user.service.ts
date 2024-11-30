@@ -1,13 +1,13 @@
 import { NotFoundException } from '@/server/lib/error.exception';
 import { userRepository } from './user.repository';
 import { toUserResponse } from '@/server/utils/toUserResponse';
-import { type UpdateUserRequest } from './user.model';
+import type { UserReturn, UpdateUserRequest } from './user.model';
 
 export const userService = {
     getAll: async () => {
         const data = await userRepository.findMany();
 
-        const users = data.map(user => toUserResponse(user));
+        const users = data?.map(user => toUserResponse(user));
 
         return users;
     },
@@ -35,7 +35,7 @@ export const userService = {
     update: async (id: string, data: UpdateUserRequest) => {
         await userService.getById(id);
 
-        const user = await userRepository.updateOne(id, data);
+        const user = (await userRepository.updateOne(id, data)) as UserReturn;
 
         return toUserResponse(user);
     },

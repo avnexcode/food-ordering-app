@@ -15,18 +15,18 @@ enum UserRole {
 }
 
 model User {
-    id       String    @id @default(cuid())
-    username String    @unique @db.VarChar(100)
-    name     String    @db.VarChar(100)
-    email    String    @unique
-    role     UserRole  @default(USER)
-    provider String?   @db.VarChar(100)
-    token    String?
-    password String?   @db.VarChar(100)
-    store_id String?   @unique
-    image    String?   @db.VarChar(100)
-    store    Store?
-    address  Address[]
+    id        String    @id @default(cuid())
+    username  String    @unique @db.VarChar(100)
+    name      String    @db.VarChar(100)
+    email     String    @unique
+    role      UserRole  @default(USER)
+    provider  String?   @db.VarChar(100)
+    token     String?
+    password  String?   @db.VarChar(100)
+    store_id  String?   @unique
+    image     String?   @db.VarChar(100)
+    store     Store?
+    addresses Address[]
 
     @@map("users")
 }
@@ -84,4 +84,53 @@ model Product {
     @@index([store_id])
     @@index([category_id])
     @@map("products")
+}
+
+model Province {
+    id        BigInt    @id @default(autoincrement())
+    name      String
+    altName   String    @default("")
+    latitude  Float     @default(0)
+    longitude Float     @default(0)
+    regencies Regency[]
+
+    @@map("provinces")
+}
+
+model Regency {
+    id         BigInt     @id @default(autoincrement())
+    provinceId BigInt
+    name       String
+    altName    String     @default("")
+    latitude   Float      @default(0)
+    longitude  Float      @default(0)
+    province   Province   @relation(fields: [provinceId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    districts  District[]
+
+    @@map("regencies")
+}
+
+model District {
+    id        BigInt    @id @default(autoincrement())
+    regencyId BigInt
+    name      String
+    altName   String    @default("")
+    latitude  Float     @default(0)
+    longitude Float     @default(0)
+    regency   Regency   @relation(fields: [regencyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    villages  Village[]
+
+    @@map("districts")
+}
+
+model Village {
+    id         BigInt   @id @default(autoincrement())
+    districtId BigInt
+    name       String
+    altName    String   @default("")
+    latitude   Float    @default(0)
+    longitude  Float    @default(0)
+    district   District @relation(fields: [districtId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+    @@map("villages")
 }
