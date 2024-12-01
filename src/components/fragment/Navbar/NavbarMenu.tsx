@@ -2,9 +2,9 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { NavbarAvatar } from "./NavbarAvatar";
-import { NavbarMenuList } from "./NavbarMenuList";
+} from '@/components/ui/dropdown-menu';
+import { NavbarAvatar } from './NavbarAvatar';
+import { NavbarMenuList } from './NavbarMenuList';
 
 export const NavbarMenu = () => {
     return (

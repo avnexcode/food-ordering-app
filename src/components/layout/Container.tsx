@@ -3,7 +3,7 @@ type ContainerProps = {
     className?: string;
 };
 
-export const Container: React.FC<ContainerProps> = (props) => {
+export const Container: React.FC<ContainerProps> = props => {
     const { children, className } = props;
 
     return <div className={`container ${className}`}>{children}</div>;

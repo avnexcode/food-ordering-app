@@ -11,6 +11,7 @@ export const callbacks: NextAuthConfig['callbacks'] = {
             token.role = user.role;
             token.image = user.image;
             token.token = user.token;
+            token.sub = user.id;
         }
 
         if (account?.provider === 'google') {
@@ -31,6 +32,7 @@ export const callbacks: NextAuthConfig['callbacks'] = {
                 token.role = response.role;
                 token.image = response.image;
                 token.token = response.token;
+                token.sub = response.id;
             }
         }
 
@@ -47,6 +49,7 @@ export const callbacks: NextAuthConfig['callbacks'] = {
             session.user.name = token.name;
             session.user.role = token.role as UserRole;
             session.user.token = token.token as string;
+            session.user.id = token.sub!;
 
             if ('image' in token && token.image) {
                 session.user.image = token.image as string;

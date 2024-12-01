@@ -1,11 +1,10 @@
-import { axiosInstance } from "@/lib/axios";
-import { useMutation } from "@tanstack/react-query";
-import { type RegisterFormSchema } from "../types";
-import { type AxiosError } from "axios";
+import { axiosInstance } from '@/lib/axios';
+import { useMutation } from '@tanstack/react-query';
+import { type RegisterFormSchema } from '../types';
+import { type AxiosError } from 'axios';
 
 interface ErrorResponse {
     message: string;
-    // Add other error response fields f-rom your API
     statusCode?: number;
     error?: string;
 }
@@ -18,10 +17,10 @@ export const useRegister = ({
     onError?: (error: string) => void;
 }) => {
     return useMutation({
-        mutationKey: ["register"],
+        mutationKey: ['register'],
         mutationFn: async (values: RegisterFormSchema) => {
             const response = await axiosInstance.post<RegisterFormSchema>(
-                "/auth/register",
+                '/auth/register',
                 values,
             );
 
@@ -31,8 +30,7 @@ export const useRegister = ({
             onSettled?.();
         },
         onError: (error: AxiosError<ErrorResponse>) => {
-            console.log(error)
-            // Get error message from response data
+            console.log(error);
             const errorMessage = error.response?.data?.error ?? error.message;
             onError?.(errorMessage);
         },

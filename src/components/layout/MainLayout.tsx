@@ -1,11 +1,11 @@
-import { Navbar } from "../fragment/Navbar/Navbar";
+import { Navbar } from '../fragment/Navbar/Navbar';
 
 type MainLayoutProps = {
     children: React.ReactNode;
     className?: string;
 };
 
-export const MainLayout: React.FC<MainLayoutProps> = (props) => {
+export const MainLayout: React.FC<MainLayoutProps> = props => {
     const { children, className } = props;
 
     return (
