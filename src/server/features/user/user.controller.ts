@@ -11,6 +11,14 @@ export const handlers = {
         context: { params: Promise<{ id: string }> },
     ): Promise<NextResponse<WebModel<UserResponse | UserResponse[]>>> => {
         try {
+            console.log(
+                'Raw headers:',
+                Object.fromEntries(req.headers.entries()),
+            );
+
+            const userId = req.headers.get('x-user-id');
+            console.log('Controller userId:', userId);
+
             const params = await context.params;
             const id = params?.id;
 

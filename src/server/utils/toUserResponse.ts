@@ -8,4 +8,5 @@ export const toUserResponse = (user: UserReturn): UserResponse => ({
     role: user.role,
     store: user.store,
     addresses: user.addresses,
+    token: user.token,
 });

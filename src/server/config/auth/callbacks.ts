@@ -5,11 +5,13 @@ import { type NextAuthConfig } from 'next-auth';
 
 export const callbacks: NextAuthConfig['callbacks'] = {
     jwt: async ({ token, account, profile, user }) => {
-        if (account?.provider === 'credentials' && user) {
+        if (account?.provider === 'credentials') {
             token.email = user.email;
             token.name = user.name;
             token.role = user.role;
             token.image = user.image;
+            token.token = user.token;
+            console.log('ni credentials ni');
         }
 
         if (account?.provider === 'google') {
@@ -28,6 +30,7 @@ export const callbacks: NextAuthConfig['callbacks'] = {
                 token.email = response.email;
                 token.name = response.name;
                 token.role = response.role;
+                token.token = response.token;
             }
         }
 
@@ -36,9 +39,10 @@ export const callbacks: NextAuthConfig['callbacks'] = {
     session: async ({ session, token }) => {
         if ('email' in token && 'name' in token && 'role' in token) {
             session.user.email = token.email!;
-            session.user.name = token.name!;
+            session.user.name = token.name;
             session.user.role = token.role as UserRole;
             session.user.image = token.image as string;
+            session.user.token = token.token as string;
         }
 
         return {

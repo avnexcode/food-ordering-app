@@ -1,17 +1,19 @@
-import { useMutation } from "@tanstack/react-query";
-import { signIn } from "next-auth/react";
-import { type LoginFormSchema } from "../types";
+import { useMutation } from '@tanstack/react-query';
+import { signIn } from 'next-auth/react';
+import { type LoginFormSchema } from '../types';
 
 export const useLogin = ({
     onSettled,
-    onError
+    onError,
 }: {
-    onSettled?: () => void,
-    onError?: (error: string) => void
+    onSettled?: () => void;
+    onError?: (error: string) => void;
 }) => {
     return useMutation({
         mutationKey: ['login'],
-        mutationFn: async (values: LoginFormSchema & { callbackUrl: string }) => {
+        mutationFn: async (
+            values: LoginFormSchema & { callbackUrl: string },
+        ) => {
             const response = await signIn('credentials', {
                 redirect: false,
                 ...values,
@@ -28,6 +30,6 @@ export const useLogin = ({
         },
         onError: (error: Error) => {
             onError?.(error.message);
-        }
+        },
     });
-}
+};

@@ -1,8 +1,11 @@
-import { env } from '@/env';
 import { ErrorFilter } from '@/server/filter/error.filter';
 import { UnauthorizedException } from '@/server/lib/error.exception';
 import { type MiddlewareFactory } from '@/types/middleware';
-import { type NextFetchEvent, NextRequest } from 'next/server';
+import { type NextFetchEvent, type NextRequest } from 'next/server';
+import * as jose from 'jose';
+import { jwtService } from '@/server/service/jwt.service';
+import { createRequestHeaders } from '@/server/utils/createRequestHeader';
+import { validateAuthHeader } from '@/server/utils/validateAuthHeader';
 
 export const withAuthToken: MiddlewareFactory<string[]> = (
     middleware,
@@ -10,45 +13,34 @@ export const withAuthToken: MiddlewareFactory<string[]> = (
 ) => {
     return async (request: NextRequest, next: NextFetchEvent) => {
         const pathname = request.nextUrl.pathname;
-        if (protectedApiPaths.some(path => pathname.startsWith(path))) {
-            try {
-                const authHeader = request.headers.get('authorization');
 
-                if (!authHeader?.startsWith('Bearer ')) {
-                    throw new UnauthorizedException(
-                        'Missing or invalid authorization token',
-                    );
-                }
-
-                const token = authHeader.split(' ')[1];
-
-                if (token !== env.AUTH_SECRET) {
-                    throw new UnauthorizedException(
-                        'Invalid authorization token',
-                    );
-                }
-
-                const requestHeaders = new Headers(request.headers);
-                requestHeaders.set('x-api-token', token);
-
-                const newRequest = new NextRequest(request.url, {
-                    headers: requestHeaders,
-                    method: request.method,
-                    body: request.body,
-                    cache: request.cache,
-                    credentials: request.credentials,
-                    integrity: request.integrity,
-                    keepalive: request.keepalive,
-                    mode: request.mode,
-                    redirect: request.redirect,
-                });
-
-                return middleware(newRequest, next);
-            } catch (error) {
-                return ErrorFilter.catch(error);
-            }
+        if (!protectedApiPaths.some(path => pathname.startsWith(path))) {
+            return middleware(request, next);
         }
 
-        return middleware(request, next);
+        try {
+            const token = validateAuthHeader(request);
+            const user = await jwtService.verifyToken(token);
+
+            const requestHeaders = new Headers(request.headers);
+            requestHeaders.set('x-api-token', token);
+            requestHeaders.set('x-user-id', user.id);
+
+            const newRequest = createRequestHeaders(request, requestHeaders);
+
+            return middleware(newRequest, next);
+        } catch (error) {
+            if (error instanceof jose.errors.JWTExpired) {
+                return ErrorFilter.catch(
+                    new UnauthorizedException('Token has expired'),
+                );
+            }
+            if (error instanceof jose.errors.JWSSignatureVerificationFailed) {
+                return ErrorFilter.catch(
+                    new UnauthorizedException('Invalid token signature'),
+                );
+            }
+            return ErrorFilter.catch(error);
+        }
     };
 };
