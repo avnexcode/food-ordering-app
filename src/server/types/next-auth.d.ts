@@ -7,16 +7,19 @@ declare module 'next-auth' {
             id: string;
             role: UserRole;
             token: string;
+            image: string;
         } & DefaultSession['user'];
     }
 
     interface User extends DefaultSession.user {
         role: UserRole;
         token: string;
+        image: string;
     }
 
     interface JWT {
         role: UserRole;
         token: string;
+        image: string;
     }
 }

@@ -84,6 +84,8 @@ export const authService = {
             validatedRequest.email!,
         );
 
+        let user: UserReturn;
+
         if (userExists) {
             const updateUserData = {
                 provider: validatedRequest.provider,
@@ -92,12 +94,10 @@ export const authService = {
                 image: validatedRequest.image,
             };
 
-            const user = (await userRepository.updateOne(
+            user = (await userRepository.updateOne(
                 userExists.id,
                 updateUserData,
             )) as UserReturn;
-
-            return toUserResponse(user);
         } else {
             const { name, email, image } = validatedRequest as {
                 name: string;
@@ -112,11 +112,13 @@ export const authService = {
                 image,
             };
 
-            const user = (await userRepository.insertOne(
-                newUserData,
-            )) as UserReturn;
-
-            return toUserResponse(user);
+            user = (await userRepository.insertOne(newUserData)) as UserReturn;
         }
+
+        user = (await authRepository.setToken(
+            validatedRequest.email!,
+        )) as UserReturn;
+
+        return toUserResponse(user);
     },
 };
