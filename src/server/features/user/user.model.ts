@@ -16,6 +16,7 @@ export interface UserResponse {
     email: string;
     role: UserRole;
     provider?: string;
+    token?: string | null;
     store?: Store | null;
     addresses: Address[];
 }

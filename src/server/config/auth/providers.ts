@@ -38,7 +38,7 @@ export const providers: NextAuthConfig['providers'] = [
             },
         },
         async authorize(credentials, req) {
-            if (!credentials?.email || !credentials.password) {
+            if (!credentials?.email || !credentials?.password) {
                 throw new Error('Email and password are required');
             }
 

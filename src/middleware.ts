@@ -22,7 +22,12 @@ const roleConfig: RoleMiddlewareConfig[] = [
     { path: '/store', roles: [UserRole.SELLER] },
 ];
 
-const protectedApiPaths = ['/api/any'];
+const protectedApiPaths = [
+    '/api/users',
+    '/api/products',
+    '/api/stores',
+    '/api/users',
+];
 
 const middlewareHandler = withAuthToken(
     withRole(withAuth(middleware, protectedPaths), roleConfig),

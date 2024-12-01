@@ -5,7 +5,7 @@ import { callbacks } from './callbacks';
 import { pages } from './pages';
 
 import { env } from '@/env';
-import { db } from '@/server/db';
+import { db } from '@/server/database/db';
 
 export const authConfig = {
     session: {
