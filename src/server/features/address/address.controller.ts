@@ -8,6 +8,13 @@ import type {
 import { NotFoundException } from '@/server/lib/error.exception';
 import type { WebModel } from '@/server/model/web.model';
 import type { Address } from '@prisma/client';
+import {
+    createMessageDeleteSuccess,
+    createMessageGetSuccess,
+    createMessageGetUniqueSuccess,
+    createMessagePatchSuccess,
+    createMessagePutSuccess,
+} from '@/server/helper';
 
 export const handlers = {
     GET: async (
@@ -24,7 +31,9 @@ export const handlers = {
             return NextResponse.json({
                 status: true,
                 statusCode: 200,
-                message: 'Success',
+                message: id
+                    ? createMessageGetUniqueSuccess('Address', `id : ${id}`)
+                    : createMessageGetSuccess('Addresses'),
                 data,
             });
         } catch (error) {
@@ -79,7 +88,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 200,
-                    message: 'Success',
+                    message: createMessagePutSuccess('Address'),
                     data,
                 },
                 { status: 200 },
@@ -104,7 +113,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 200,
-                    message: 'Success',
+                    message: createMessagePatchSuccess('Address'),
                     data,
                 },
                 { status: 200 },
@@ -125,7 +134,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 200,
-                    message: 'Success',
+                    message: createMessageDeleteSuccess('Address'),
                     data,
                 },
                 { status: 200 },

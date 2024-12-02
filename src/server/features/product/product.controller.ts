@@ -8,6 +8,14 @@ import type {
 } from './product.model';
 import { NotFoundException } from '@/server/lib/error.exception';
 import type { WebModel } from '@/server/model/web.model';
+import {
+    createMessageDeleteSuccess,
+    createMessageGetSuccess,
+    createMessageGetUniqueSuccess,
+    createMessagePatchSuccess,
+    createMessagePostSuccess,
+    createMessagePutSuccess,
+} from '@/server/helper';
 
 export const handlers = {
     GET: async (
@@ -23,7 +31,14 @@ export const handlers = {
                 : await productService.getAll();
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: id
+                        ? createMessageGetUniqueSuccess('Product', `id : ${id}`)
+                        : createMessageGetSuccess('Products'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -43,7 +58,12 @@ export const handlers = {
             );
 
             return NextResponse.json(
-                { status: true, statusCode: 201, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 201,
+                    message: createMessagePostSuccess('Product'),
+                    data,
+                },
                 { status: 201 },
             );
         } catch (error) {
@@ -76,7 +96,12 @@ export const handlers = {
             const data = await productService.update(id, requestBody);
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessagePutSuccess('Product'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -95,7 +120,12 @@ export const handlers = {
             const data = await productService.update(id, requestBody);
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessagePatchSuccess('Product'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -113,7 +143,12 @@ export const handlers = {
             const data = await productService.delete(id);
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessageDeleteSuccess('Product'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {

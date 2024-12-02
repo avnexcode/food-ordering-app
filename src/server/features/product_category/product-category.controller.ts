@@ -8,7 +8,15 @@ import type {
 } from './product-category.model';
 import { NotFoundException } from '@/server/lib/error.exception';
 import type { WebModel } from '@/server/model/web.model';
-import { ProductCategory } from '@prisma/client';
+import { type ProductCategory } from '@prisma/client';
+import {
+    createMessageDeleteSuccess,
+    createMessageGetSuccess,
+    createMessageGetUniqueSuccess,
+    createMessagePatchSuccess,
+    createMessagePostSuccess,
+    createMessagePutSuccess,
+} from '@/server/helper';
 
 export const handlers = {
     GET: async (
@@ -27,7 +35,17 @@ export const handlers = {
                 : await productCategoryService.getAll();
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: id
+                        ? createMessageGetUniqueSuccess(
+                              'Product Category',
+                              `id : ${id}`,
+                          )
+                        : createMessageGetSuccess('Product Categories'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -48,7 +66,12 @@ export const handlers = {
             );
 
             return NextResponse.json(
-                { status: true, statusCode: 201, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 201,
+                    message: createMessagePostSuccess('Product Category'),
+                    data,
+                },
                 { status: 201 },
             );
         } catch (error) {
@@ -72,7 +95,12 @@ export const handlers = {
             const data = await productCategoryService.update(id, requestBody);
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessagePutSuccess('Product Category'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -93,7 +121,12 @@ export const handlers = {
             const data = await productCategoryService.update(id, requestBody);
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessagePatchSuccess('Product Category'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -111,7 +144,12 @@ export const handlers = {
             const data = await productCategoryService.delete(id);
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessageDeleteSuccess('Product Category'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {

@@ -3,7 +3,7 @@ import {
     NotFoundException,
 } from '@/server/lib/error.exception';
 import { userRepository } from './user.repository';
-import { toUserResponse } from '@/server/utils/toUserResponse';
+import { toUserResponse } from '@/server/utils/user-api-response';
 import type { UserReturn, UpdateUserRequest } from './user.model';
 import bcrypt from 'bcrypt';
 

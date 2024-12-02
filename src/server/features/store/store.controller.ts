@@ -9,6 +9,14 @@ import type {
 import { NotFoundException } from '@/server/lib/error.exception';
 import type { WebModel } from '@/server/model/web.model';
 import type { Store } from '@prisma/client';
+import {
+    createMessageDeleteSuccess,
+    createMessageGetSuccess,
+    createMessageGetUniqueSuccess,
+    createMessagePatchSuccess,
+    createMessagePostSuccess,
+    createMessagePutSuccess,
+} from '@/server/helper';
 
 export const handlers = {
     GET: async (
@@ -23,7 +31,14 @@ export const handlers = {
                 : await storeService.getAll();
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: id
+                        ? createMessageGetUniqueSuccess('Store', `id : ${id}`)
+                        : createMessageGetSuccess('Stores'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -40,7 +55,12 @@ export const handlers = {
             const data = await storeService.create(requestBody);
 
             return NextResponse.json(
-                { status: true, statusCode: 201, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 201,
+                    message: createMessagePostSuccess('Store'),
+                    data,
+                },
                 { status: 201 },
             );
         } catch (error) {
@@ -64,7 +84,12 @@ export const handlers = {
             const data = await storeService.update(id, requestBody);
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessagePutSuccess('Store'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -84,7 +109,12 @@ export const handlers = {
             const data = await storeService.update(id, requestBody);
 
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessagePatchSuccess('Store'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {
@@ -100,7 +130,12 @@ export const handlers = {
             const id = params?.id;
             const data = await storeService.delete(id);
             return NextResponse.json(
-                { status: true, statusCode: 200, message: 'Success', data },
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessageDeleteSuccess('Store'),
+                    data,
+                },
                 { status: 200 },
             );
         } catch (error) {

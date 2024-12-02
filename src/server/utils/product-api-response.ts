@@ -2,7 +2,7 @@ import type {
     ProductResponse,
     ProductReturn,
 } from '../features/product/product.model';
-import { toStoreResponse } from './toStoreResponse';
+import { toStoreResponse } from './store-api-response';
 
 export const toProductResponse = (product: ProductReturn): ProductResponse => ({
     id: product.id,

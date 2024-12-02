@@ -1,5 +1,5 @@
 import type { StoreResponse, StoreReturn } from '../features/store/store.model';
-import { toUserResponse } from './toUserResponse';
+import { toUserResponse } from './user-api-response';
 
 export const toStoreResponse = (store: StoreReturn): StoreResponse => ({
     id: store.id,

@@ -11,7 +11,7 @@ import {
     updateProductCategorySchema,
 } from './product-category.validation';
 import type { ProductCategory } from '@prisma/client';
-import { toProductCategoryResponse } from '@/server/utils/toProductCategoryResponse';
+import { toProductCategoryResponse } from '@/server/utils/product-category-api-response';
 
 export const productCategoryService = {
     getAll: async (): Promise<ProductCategoryResponse[]> => {

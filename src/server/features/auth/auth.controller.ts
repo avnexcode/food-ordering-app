@@ -18,7 +18,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 201,
-                    message: `Success register new user`,
+                    message: `User register successfully`,
                     data,
                 },
                 { status: 201 },

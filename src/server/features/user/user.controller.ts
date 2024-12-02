@@ -5,6 +5,13 @@ import { ErrorFilter } from '@/server/filter/error.filter';
 import { NotFoundException } from '@/server/lib/error.exception';
 import type { UpdateUserRequest, UserResponse } from './user.model';
 import { headers } from 'next/headers';
+import {
+    createMessageDeleteSuccess,
+    createMessageGetSuccess,
+    createMessageGetUniqueSuccess,
+    createMessagePatchSuccess,
+    createMessagePutSuccess,
+} from '@/server/helper';
 
 export const handlers = {
     GET: async (
@@ -27,8 +34,8 @@ export const handlers = {
                     status: true,
                     statusCode: 200,
                     message: id
-                        ? `Success retrieving user data by ID`
-                        : `Success retrieving all users data`,
+                        ? createMessageGetUniqueSuccess('User', `id : ${id}`)
+                        : createMessageGetSuccess('Users'),
                     data,
                 },
                 { status: 200 },
@@ -66,7 +73,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 200,
-                    message: `User data successfully updated`,
+                    message: createMessagePutSuccess('User'),
                     data,
                 },
                 { status: 200 },
@@ -99,7 +106,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 200,
-                    message: `User data successfully patched`,
+                    message: createMessagePatchSuccess('User'),
                     data,
                 },
                 { status: 200 },
@@ -123,7 +130,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 200,
-                    message: `User data successfully deleted`,
+                    message: createMessageDeleteSuccess('User'),
                     data,
                 },
                 { status: 200 },

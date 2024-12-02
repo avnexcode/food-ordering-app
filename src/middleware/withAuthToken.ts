@@ -4,8 +4,8 @@ import { type MiddlewareFactory } from '@/types/middleware';
 import { type NextFetchEvent, type NextRequest } from 'next/server';
 import * as jose from 'jose';
 import { jwtService } from '@/server/service/jwt.service';
-import { createRequestHeaders } from '@/server/utils/createRequestHeader';
-import { validateAuthHeader } from '@/server/utils/validateAuthHeader';
+import { validateAuthHeader } from '@/server/utils';
+import { createRequestHeaders } from '@/server/utils';
 
 export const withAuthToken: MiddlewareFactory<string[]> = (
     middleware,

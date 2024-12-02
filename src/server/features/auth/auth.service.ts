@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 import { validateSchema } from '@/server/service';
 import { authRepository } from './auth.repository';
 import { BadRequestException } from '@/server/lib/error.exception';
-import { toUserResponse } from '@/server/utils/toUserResponse';
+import { toUserResponse } from '@/server/utils/user-api-response';
 import { updateUserSchema } from '@/server/features/user/user.validation';
 import type { LoginRequest, RegisterRequest } from './auth.model';
 import type {
