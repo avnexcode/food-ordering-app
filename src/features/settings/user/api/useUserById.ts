@@ -20,7 +20,12 @@ type UserData = {
     token: string;
 };
 
-export const useUserById = (id?: string, token?: string) => {
+type UseUserByIdProps = {
+    id?: string;
+    token?: string;
+};
+
+export const useUserById = ({ id, token }: UseUserByIdProps) => {
     return useQuery({
         queryKey: ['users', id],
         queryFn: async (): Promise<UserData> => {
