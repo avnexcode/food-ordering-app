@@ -44,7 +44,7 @@ export const userRepository = {
         return userCount;
     },
 
-    insertOne: async (request: RegisterRequest): Promise<User> => {
+    insertOne: async (request: RegisterRequest): Promise<UserReturn> => {
         const id = uuid();
 
         let passwordHashed;
@@ -68,6 +68,7 @@ export const userRepository = {
 
         const user = await db.user.create({
             data: newUserData,
+            include: { store: true, addresses: true },
         });
 
         return user;
@@ -76,7 +77,7 @@ export const userRepository = {
     updateOne: async (
         id: string,
         request: UpdateUserRequest,
-    ): Promise<User> => {
+    ): Promise<UserReturn> => {
         const oldUserData = await userRepository.findUniqueId(id);
 
         let passwordHashed;
@@ -99,13 +100,17 @@ export const userRepository = {
         const user = await db.user.update({
             where: { id },
             data: updateUserData,
+            include: { store: true, addresses: true },
         });
 
         return user;
     },
 
-    deleteOne: async (id: string): Promise<User> => {
-        const user = await db.user.delete({ where: { id } });
+    deleteOne: async (id: string): Promise<UserReturn> => {
+        const user = await db.user.delete({
+            where: { id },
+            include: { store: true, addresses: true },
+        });
 
         return user;
     },

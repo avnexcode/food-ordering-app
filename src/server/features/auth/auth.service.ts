@@ -35,9 +35,7 @@ export const authService = {
             throw new BadRequestException(`Email already exists`);
         }
 
-        const user = (await userRepository.insertOne(
-            validatedRequest,
-        )) as UserReturn;
+        const user = await userRepository.insertOne(validatedRequest);
 
         return toUserResponse(user);
     },
@@ -54,7 +52,7 @@ export const authService = {
             throw new BadRequestException(`Email or password is invalid`);
         }
 
-        if (user.password && user.provider === 'credentials') {
+        if (user.password) {
             const validatedPassword = await bcrypt.compare(
                 validatedRequest.password,
                 user.password,
@@ -94,10 +92,10 @@ export const authService = {
                 image: validatedRequest.image,
             };
 
-            user = (await userRepository.updateOne(
+            user = await userRepository.updateOne(
                 userExists.id,
                 updateUserData,
-            )) as UserReturn;
+            );
         } else {
             const { name, email, image } = validatedRequest as {
                 name: string;
@@ -112,7 +110,7 @@ export const authService = {
                 image,
             };
 
-            user = (await userRepository.insertOne(newUserData)) as UserReturn;
+            user = await userRepository.insertOne(newUserData);
         }
 
         user = (await authRepository.setToken(

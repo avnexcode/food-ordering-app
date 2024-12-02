@@ -10,15 +10,17 @@ import {
 import { Input } from '@/components/ui/input';
 
 type UpdatePasswordFormInnerProps = {
+    form_id: string;
     form: UseFormReturn<UpdatePasswordSchema>;
     onSubmit: (values: UpdatePasswordSchema) => void;
 };
 export const UpdatePasswordFormInner = (
     props: UpdatePasswordFormInnerProps,
 ) => {
-    const { form, onSubmit } = props;
+    const { form_id, form, onSubmit } = props;
     return (
         <form
+            id={form_id}
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4 w-full"
         >
@@ -58,7 +60,7 @@ export const UpdatePasswordFormInner = (
             />
             <FormField
                 control={form.control}
-                name="new_password_confirm"
+                name="confirm_password"
                 render={({ field }) => (
                     <FormItem>
                         <FormLabel>New Password Confirm</FormLabel>

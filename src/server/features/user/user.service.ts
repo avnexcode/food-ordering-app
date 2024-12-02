@@ -1,7 +1,11 @@
-import { NotFoundException } from '@/server/lib/error.exception';
+import {
+    BadRequestException,
+    NotFoundException,
+} from '@/server/lib/error.exception';
 import { userRepository } from './user.repository';
 import { toUserResponse } from '@/server/utils/toUserResponse';
 import type { UserReturn, UpdateUserRequest } from './user.model';
+import bcrypt from 'bcrypt';
 
 export const userService = {
     getAll: async () => {
@@ -35,7 +39,7 @@ export const userService = {
     update: async (id: string, data: UpdateUserRequest) => {
         await userService.getById(id);
 
-        const user = (await userRepository.updateOne(id, data)) as UserReturn;
+        const user = await userRepository.updateOne(id, data);
 
         return toUserResponse(user);
     },
@@ -46,5 +50,27 @@ export const userService = {
         await userRepository.deleteOne(id);
 
         return { id };
+    },
+    updatePassword: async (
+        id: string,
+        password: string,
+        newPassword: string,
+    ) => {
+        await userService.getById(id);
+
+        let user = await userRepository.findUniqueId(id);
+
+        let validatedPassword;
+
+        if (user) {
+            validatedPassword = await bcrypt.compare(password, user.password!);
+        }
+        if (!validatedPassword) {
+            throw new BadRequestException('Invalid password');
+        }
+
+        user = await userRepository.updateOne(id, { password: newPassword });
+
+        return toUserResponse(user);
     },
 };

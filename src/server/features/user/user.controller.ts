@@ -86,7 +86,14 @@ export const handlers = {
 
             const user = (await req.json()) as UpdateUserRequest;
 
-            const data = await userService.update(id, user);
+            const data =
+                user.password && user.new_password
+                    ? await userService.updatePassword(
+                          id,
+                          user.password,
+                          user.new_password,
+                      )
+                    : await userService.update(id, user);
 
             return NextResponse.json(
                 {

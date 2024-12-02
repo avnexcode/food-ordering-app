@@ -10,14 +10,16 @@ import type { UseFormReturn } from 'react-hook-form';
 import type { UpdateProfileSchema } from '../types';
 
 type UpdateProfileFormInnerProps = {
+    form_id: string;
     form: UseFormReturn<UpdateProfileSchema>;
     onSubmit: (values: UpdateProfileSchema) => void;
 };
 
 export const UpdateProfileFormInner = (props: UpdateProfileFormInnerProps) => {
-    const { form, onSubmit } = props;
+    const { form_id, form, onSubmit } = props;
     return (
         <form
+            id={form_id}
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full flex flex-col gap-y-5"
         >
@@ -41,7 +43,7 @@ export const UpdateProfileFormInner = (props: UpdateProfileFormInnerProps) => {
                     <FormItem>
                         <FormLabel>Name</FormLabel>
                         <FormControl>
-                            <Input placeholder="Name" {...field} />
+                            <Input placeholder="Name" {...field} disabled />
                         </FormControl>
                         <FormMessage />
                     </FormItem>

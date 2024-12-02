@@ -4,17 +4,11 @@ import { withRole } from './middleware/withRole';
 import { withAuthToken } from './middleware/withAuthToken';
 import { UserRole } from '@prisma/client';
 import type { RoleMiddlewareConfig } from './types/middleware';
-import { ErrorFilter } from './server/filter/error.filter';
 
-const middleware = async (request: NextRequest) => {
-    try {
-        return NextResponse.next({ request });
-    } catch (error) {
-        return ErrorFilter.catch(error);
-    }
-};
+const middleware = async (request: NextRequest) =>
+    NextResponse.next({ request });
 
-const protectedPaths = ['/dashboard', '/profile', '/settings'];
+const protectedPaths = ['/dashboard', '/settings'];
 
 const roleConfig: RoleMiddlewareConfig[] = [
     { path: '/dashboard', roles: [UserRole.ADMIN], redirect: '/' },

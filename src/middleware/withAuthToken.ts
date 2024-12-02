@@ -23,7 +23,6 @@ export const withAuthToken: MiddlewareFactory<string[]> = (
             const user = await jwtService.verifyToken(token);
 
             const requestHeaders = new Headers(request.headers);
-            requestHeaders.set('x-api-token', token);
             requestHeaders.set('x-user-id', String(user.id));
 
             const newRequest = createRequestHeaders(request, requestHeaders);

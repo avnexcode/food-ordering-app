@@ -35,6 +35,11 @@ export const updateUserSchema = z.object({
         .string()
         .min(1, { message: 'Password is required.' })
         .min(8, { message: 'Password must be at least 8 characters long.' })
+        .optional(),
+    new_password: z
+        .string()
+        .min(1, { message: 'Password is required.' })
+        .min(8, { message: 'Password must be at least 8 characters long.' })
         .max(100, { message: 'Password must not exceed 100 characters.' })
         .regex(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,

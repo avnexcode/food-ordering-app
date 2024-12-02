@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -10,15 +9,32 @@ import {
 import { UpdateProfileFormInner } from './UpdateProfileFormInner';
 import { useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import type { UpdateProfileSchema } from '../types';
+import { updateProfileSchema, type UpdateProfileSchema } from '../types';
 import { useUserById } from '../../user/api/useUserById';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
+import { useUpdateProfile } from '../api';
+import { useToast } from '@/hooks/use-toast';
+import { UpdateProfileImageForm } from './UpdateProfileImageForm';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export const UpdateProfileForm = () => {
+    const { toast } = useToast();
     const { data: session } = useSession();
 
     const { data: user } = useUserById(session?.user?.id, session?.user?.token);
+
+    const { mutate: updateProfile, isPending: isUpdateProfilePending } =
+        useUpdateProfile({
+            id: user?.id,
+            token: user?.token,
+            onSuccess: () => {
+                toast({
+                    title: 'Success',
+                    description: 'Success update profile',
+                });
+            },
+        });
 
     const form = useForm<UpdateProfileSchema>({
         defaultValues: {
@@ -26,9 +42,10 @@ export const UpdateProfileForm = () => {
             name: '',
             email: '',
         },
+        resolver: zodResolver(updateProfileSchema),
     });
 
-    const onSubmit = (values: UpdateProfileSchema) => console.log(values);
+    const onSubmit = (values: UpdateProfileSchema) => updateProfile(values);
 
     useEffect(() => {
         if (user) {
@@ -42,23 +59,26 @@ export const UpdateProfileForm = () => {
         <Card>
             <CardHeader>
                 <CardTitle className="text-2xl capitalize">
-                    Display Name
+                    {session?.user.name}
                 </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-4">
-                <Avatar className="w-28 h-28">
-                    <AvatarImage src="https://placehold.co/400x400" alt={''} />
-                    <AvatarFallback>{''}</AvatarFallback>
-                </Avatar>
-                <Button variant="outline" size="sm">
-                    Upload Foto
-                </Button>
+                <UpdateProfileImageForm />
                 <Form {...form}>
-                    <UpdateProfileFormInner form={form} onSubmit={onSubmit} />
+                    <UpdateProfileFormInner
+                        form_id="update-user-profile"
+                        form={form}
+                        onSubmit={onSubmit}
+                    />
                 </Form>
             </CardContent>
             <CardFooter className="place-content-end pt-5">
-                <Button>Simpan</Button>
+                <Button
+                    form="update-user-profile"
+                    disabled={isUpdateProfilePending}
+                >
+                    {isUpdateProfilePending ? 'Updating...' : 'Update'}
+                </Button>
             </CardFooter>
         </Card>
     );
