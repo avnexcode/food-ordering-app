@@ -6,10 +6,16 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 export const NavHeroCarousel = () => {
     return (
         <Carousel
+            plugins={[
+                Autoplay({
+                    delay: 3000,
+                }),
+            ]}
             opts={{
                 align: 'start',
             }}

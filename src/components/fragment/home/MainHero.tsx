@@ -6,10 +6,18 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from '@/components/ui/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 export const MainHero = () => {
     return (
-        <Carousel className="w-3/4">
+        <Carousel
+            plugins={[
+                Autoplay({
+                    delay: 4000,
+                }),
+            ]}
+            className="w-3/4"
+        >
             <CarouselContent>
                 {Array.from({ length: 5 }).map((_, index) => (
                     <CarouselItem key={index}>
