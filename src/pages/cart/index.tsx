@@ -1,1 +1,1 @@
-export { CartPage as default } from "@/app/pages/cart"
+export { CartPage as default } from '@/app/pages/beranda/cart';

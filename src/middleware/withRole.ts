@@ -11,10 +11,6 @@ import {
     NextResponse,
 } from 'next/server';
 
-const PATHS = {
-    DEFAULT_REDIRECT: '/',
-} as const;
-
 export const withRole: MiddlewareFactory<RoleMiddlewareConfig[]> = (
     middleware,
     roleConfig = [],
@@ -33,11 +29,12 @@ export const withRole: MiddlewareFactory<RoleMiddlewareConfig[]> = (
         const matchedConfig = roleConfig.find(config =>
             pathname.startsWith(config.path),
         );
+
         if (
             matchedConfig &&
             !matchedConfig.roles.includes(token.role as UserRole)
         ) {
-            const url = new URL(PATHS.DEFAULT_REDIRECT, request.url);
+            const url = new URL(matchedConfig.redirect, request.url);
             return NextResponse.redirect(url);
         }
 

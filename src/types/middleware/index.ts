@@ -13,4 +13,5 @@ export type MiddlewareFactory<T> = (
 export interface RoleMiddlewareConfig {
     path: string;
     roles: UserRole[];
+    redirect: string;
 }

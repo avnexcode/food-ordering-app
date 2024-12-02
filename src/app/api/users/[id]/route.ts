@@ -1,3 +1,3 @@
-import { handlers } from "@/server/features/user";
+import { handlers } from '@/server/features/user';
 
-export const { GET, PUT, PATCH, DELETE } = handlers
+export const { GET, PUT, PATCH, DELETE } = handlers;

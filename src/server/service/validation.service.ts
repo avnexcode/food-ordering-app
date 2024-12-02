@@ -1,5 +1,5 @@
-import { type ZodType } from "zod";
+import { type ZodType } from 'zod';
 
 export const validateSchema = <T>(zodType: ZodType<T>, data: T): T => {
-  return zodType.parse(data);
+    return zodType.parse(data);
 };
