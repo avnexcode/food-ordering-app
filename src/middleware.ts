@@ -8,18 +8,21 @@ import { ErrorFilter } from './server/filter/error.filter';
 
 const middleware = async (request: NextRequest) => {
     try {
-        return NextResponse.next();
+        return NextResponse.next({ request });
     } catch (error) {
         return ErrorFilter.catch(error);
     }
 };
 
-const protectedPaths = ['/dashboard', '/profile'];
+const protectedPaths = ['/dashboard', '/profile', '/settings'];
 
 const roleConfig: RoleMiddlewareConfig[] = [
-    { path: '/dashboard', roles: [UserRole.ADMIN] },
-    { path: '/profile', roles: [UserRole.ADMIN, UserRole.USER] },
-    { path: '/store', roles: [UserRole.SELLER] },
+    { path: '/dashboard', roles: [UserRole.ADMIN], redirect: '/' },
+    {
+        path: '/settings/store',
+        roles: [UserRole.SELLER],
+        redirect: '/settings/create-store',
+    },
 ];
 
 const protectedApiPaths = [

@@ -1,6 +1,6 @@
-import { type NextAuthConfig } from "next-auth";
+import { type NextAuthConfig } from 'next-auth';
 
-export const pages: NextAuthConfig["pages"] = {
-    signIn: "/auth/login",
-    signOut: "/auth/register",
+export const pages: NextAuthConfig['pages'] = {
+    signIn: '/auth/login',
+    signOut: '/auth/register',
 } as const;

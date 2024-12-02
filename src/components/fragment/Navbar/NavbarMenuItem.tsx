@@ -1,23 +1,24 @@
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
-import { useRouter } from "next/navigation"
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
 
 type NavbarMenuItemProps = {
     menu: {
-        label: string,
-        url: string
-        icon: React.ReactElement
-    },
-}
+        label: string;
+        url: string;
+        icon: React.ReactElement;
+    };
+};
 
 export const NavbarMenuItem = (props: NavbarMenuItemProps) => {
-    const router = useRouter()
+    const router = useRouter();
 
     return (
         <DropdownMenuItem
             onClick={() => router.push(props.menu.url)}
             className="capitalize"
         >
-            {props.menu.icon}{props.menu.label}
+            {props.menu.icon}
+            {props.menu.label}
         </DropdownMenuItem>
-    )
-}
+    );
+};

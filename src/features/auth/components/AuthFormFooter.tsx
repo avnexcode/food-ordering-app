@@ -1,11 +1,11 @@
-import { AuthProviders } from "./AuthProviders"
+import { AuthProviders } from './AuthProviders';
 
 type AuthFormFooterProps = {
-    children: React.ReactNode
-}
+    children: React.ReactNode;
+};
 
 export const AuthFormFooter = (props: AuthFormFooterProps) => {
-    const { children } = props
+    const { children } = props;
     return (
         <div className="pb-5 w-full">
             <div className="flex justify-end w-full items-center">
@@ -15,5 +15,5 @@ export const AuthFormFooter = (props: AuthFormFooterProps) => {
                 <AuthProviders />
             </div>
         </div>
-    )
-}
+    );
+};
