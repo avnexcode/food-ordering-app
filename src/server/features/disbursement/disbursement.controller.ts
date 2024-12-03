@@ -6,6 +6,7 @@ import {
     createMessageGetSuccess,
     createMessageGetUniqueSuccess,
     createMessagePatchSuccess,
+    createMessagePostSuccess,
     createMessagePutSuccess,
 } from '@/server/helper';
 
@@ -42,7 +43,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 201,
-                    message: 'Address created successfully',
+                    message: createMessagePostSuccess('Address'),
                     data,
                 },
                 { status: 201 },

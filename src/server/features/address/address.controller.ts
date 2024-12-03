@@ -18,23 +18,33 @@ import {
 } from '@/server/helper';
 
 export const handlers = {
-    GET: async (
-        request: NextRequest,
-        context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<Address | Address[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<Address[]>>> => {
         try {
-            const params = await context.params;
-            const id = params?.id;
-            const data = id
-                ? await addressService.getById(id)
-                : await addressService.getAll();
+            const data = await addressService.getAll();
 
             return NextResponse.json({
                 status: true,
                 statusCode: 200,
-                message: id
-                    ? createMessageGetUniqueSuccess('Address', `id : ${id}`)
-                    : createMessageGetSuccess('Addresses'),
+                message: createMessageGetSuccess('Addresses'),
+                data,
+            });
+        } catch (error) {
+            return ErrorFilter.catch(error);
+        }
+    },
+    GET_ID: async (
+        request: NextRequest,
+        context: { params: Promise<{ id: string }> },
+    ): Promise<NextResponse<WebModel<Address>>> => {
+        try {
+            const params = await context.params;
+            const id = params?.id;
+            const data = await addressService.getById(id);
+
+            return NextResponse.json({
+                status: true,
+                statusCode: 200,
+                message: createMessageGetUniqueSuccess('Address', `id : ${id}`),
                 data,
             });
         } catch (error) {
@@ -74,11 +84,9 @@ export const handlers = {
 
             if (
                 !(
-                    requestBody.city &&
                     requestBody.country &&
                     requestBody.description &&
                     requestBody.postal_code &&
-                    requestBody.province &&
                     requestBody.street
                 )
             ) {

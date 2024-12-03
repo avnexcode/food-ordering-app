@@ -3,7 +3,11 @@ import { userService } from './user.service';
 import { type WebModel } from '@/server/model/web.model';
 import { ErrorFilter } from '@/server/filter/error.filter';
 import { NotFoundException } from '@/server/lib/error.exception';
-import type { UpdateUserRequest, UserResponse } from './user.model';
+import type {
+    SafeUserWithRelations,
+    UpdateUserRequest,
+    UserResponse,
+} from './user.model';
 import { headers } from 'next/headers';
 import {
     createMessageDeleteSuccess,
@@ -14,28 +18,44 @@ import {
 } from '@/server/helper';
 
 export const handlers = {
-    GET: async (
-        req: NextRequest,
-        context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<UserResponse | UserResponse[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<SafeUserWithRelations[]>>> => {
         try {
             const headersList = await headers();
             const userId = headersList.get('x-user-id');
-            console.log({ userId });
-            const params = await context.params;
-            const id = params?.id;
 
-            const data = id
-                ? await userService.getById(id)
-                : await userService.getAll();
+            const data = await userService.getAll();
 
             return NextResponse.json(
                 {
                     status: true,
                     statusCode: 200,
-                    message: id
-                        ? createMessageGetUniqueSuccess('User', `id : ${id}`)
-                        : createMessageGetSuccess('Users'),
+                    message: createMessageGetSuccess('Users'),
+                    data,
+                },
+                { status: 200 },
+            );
+        } catch (error) {
+            return ErrorFilter.catch(error);
+        }
+    },
+    GET_ID: async (
+        req: NextRequest,
+        context: { params: Promise<{ id: string }> },
+    ): Promise<NextResponse<WebModel<SafeUserWithRelations>>> => {
+        try {
+            const params = await context.params;
+            const id = params?.id;
+
+            const data = await userService.getById(id);
+
+            return NextResponse.json(
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessageGetUniqueSuccess(
+                        'User',
+                        `id : ${id}`,
+                    ),
                     data,
                 },
                 { status: 200 },
@@ -60,7 +80,7 @@ export const handlers = {
                     user.username &&
                     user.email &&
                     user.name &&
-                    user.password &&
+                    user.phone &&
                     user.role
                 )
             ) {
@@ -91,16 +111,9 @@ export const handlers = {
             const params = await context.params;
             const id = params?.id;
 
-            const user = (await req.json()) as UpdateUserRequest;
+            const requestBody = (await req.json()) as UpdateUserRequest;
 
-            const data =
-                user.password && user.new_password
-                    ? await userService.updatePassword(
-                          id,
-                          user.password,
-                          user.new_password,
-                      )
-                    : await userService.update(id, user);
+            const data = await userService.update(id, requestBody);
 
             return NextResponse.json(
                 {
@@ -129,11 +142,11 @@ export const handlers = {
             return NextResponse.json(
                 {
                     status: true,
-                    statusCode: 200,
+                    statusCode: 204,
                     message: createMessageDeleteSuccess('User'),
                     data,
                 },
-                { status: 200 },
+                { status: 204 },
             );
         } catch (error) {
             return ErrorFilter.catch(error);

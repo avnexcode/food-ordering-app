@@ -1,17 +1,16 @@
-import {
-    BadRequestException,
-    NotFoundException,
-} from '@/server/lib/error.exception';
+import { NotFoundException } from '@/server/lib/error.exception';
 import { userRepository } from './user.repository';
-import { toUserResponse } from '@/server/utils/user-api-response';
-import type { UserReturn, UpdateUserRequest } from './user.model';
-import bcrypt from 'bcrypt';
+import {
+    toUserResponse,
+    toUserWithRelationResponse,
+} from '@/server/utils/user-api-response';
+import type { UpdateUserRequest } from './user.model';
 
 export const userService = {
     getAll: async () => {
         const data = await userRepository.findMany();
 
-        const users = data?.map(user => toUserResponse(user));
+        const users = data?.map(user => toUserWithRelationResponse(user));
 
         return users;
     },
@@ -23,7 +22,7 @@ export const userService = {
             throw new NotFoundException('User not found');
         }
 
-        return toUserResponse(user);
+        return toUserWithRelationResponse(user);
     },
 
     getByEmail: async (email: string) => {
@@ -33,7 +32,7 @@ export const userService = {
             throw new NotFoundException('User not found');
         }
 
-        return toUserResponse(user);
+        toUserWithRelationResponse(user);
     },
 
     update: async (id: string, data: UpdateUserRequest) => {
@@ -50,27 +49,5 @@ export const userService = {
         await userRepository.deleteOne(id);
 
         return { id };
-    },
-    updatePassword: async (
-        id: string,
-        password: string,
-        newPassword: string,
-    ) => {
-        await userService.getById(id);
-
-        let user = await userRepository.findUniqueId(id);
-
-        let validatedPassword;
-
-        if (user) {
-            validatedPassword = await bcrypt.compare(password, user.password!);
-        }
-        if (!validatedPassword) {
-            throw new BadRequestException('Invalid password');
-        }
-
-        user = await userRepository.updateOne(id, { password: newPassword });
-
-        return toUserResponse(user);
     },
 };

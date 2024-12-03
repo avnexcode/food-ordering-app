@@ -28,15 +28,11 @@ export const updateUserSchema = z.object({
             { message: 'Please enter a valid email provider.' },
         )
         .optional(),
+    phone: z.string().min(1).max(20).optional(),
     role: z.string().optional(),
     provider: z.string().optional(),
     token: z.string().optional(),
     password: z
-        .string()
-        .min(1, { message: 'Password is required.' })
-        .min(8, { message: 'Password must be at least 8 characters long.' })
-        .optional(),
-    new_password: z
         .string()
         .min(1, { message: 'Password is required.' })
         .min(8, { message: 'Password must be at least 8 characters long.' })

@@ -55,7 +55,7 @@ model User {
     email         String    @unique
     phone         String?   @db.VarChar(20)
     role          UserRole  @default(USER)
-    provider      String?   @db.VarChar(100)
+    provider      String    @db.VarChar(100)
     token         String?
     password      String?   @db.VarChar(100)
     store_id      String?   @unique
@@ -303,5 +303,3 @@ model Village {
 
     @@map("villages")
 }
-
-// jelaskan relasi seputar order dengan jelas

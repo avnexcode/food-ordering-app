@@ -5,13 +5,13 @@ export const createMessageGetError = (model: string): string =>
     `Failed to retrieve ${model}.`;
 
 export const createMessageGetUniqueSuccess = (
-    unique: string,
     model: string,
+    unique: string,
 ): string => `${model} with ${unique} retrieved successfully.`;
 
 export const createMessageGetUniqueError = (
-    unique: string,
     model: string,
+    unique: string,
 ): string => `Failed to retrieve ${model} with ${unique}.`;
 
 export const createMessagePostSuccess = (model: string): string =>

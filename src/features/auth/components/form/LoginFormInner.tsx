@@ -33,6 +33,7 @@ export const LoginFormInner = (props: LoginFormInnerProps) => {
                             <FormLabel>Email Address</FormLabel>
                             <FormControl>
                                 <Input
+                                    type="text"
                                     placeholder="Enter your email"
                                     {...field}
                                 />
@@ -51,6 +52,7 @@ export const LoginFormInner = (props: LoginFormInnerProps) => {
                             <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input
+                                    type="password"
                                     placeholder="Enter your password"
                                     {...field}
                                 />
