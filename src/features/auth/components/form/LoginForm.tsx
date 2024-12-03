@@ -11,21 +11,20 @@ import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getDefaultFormValues } from '@/utils';
 import { Button } from '@/components/ui/button';
-import { loginFormFields } from '../config/form';
-import { loginFormSchema, type LoginFormSchema } from '../types';
-import { useLogin } from '../api/useLogin';
+import { loginFormSchema, type LoginFormSchema } from '../../types';
+import { useLogin } from '../../api/useLogin';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { RenderFormFields } from '@/utils/RenderFormInner';
+import { LoginFormInner } from './LoginFormInner';
+import { Form } from '@/components/ui/form';
 
 export const LoginForm = () => {
     const router = useRouter();
     const { toast } = useToast();
 
     const { mutate: login, isPending: signInPending } = useLogin({
-        onSettled: () => {
+        onSuccess: () => {
             toast({
                 title: 'Success',
                 description: 'Login Successfully',
@@ -35,7 +34,7 @@ export const LoginForm = () => {
         onError: error => {
             toast({
                 title: 'Login Error',
-                description: error || 'Invalid credentials',
+                description: error.message || 'Invalid credentials',
                 variant: 'destructive',
             });
         },
@@ -44,11 +43,11 @@ export const LoginForm = () => {
     const onSubmit = (values: LoginFormSchema) =>
         login({ ...values, callbackUrl: '' });
 
-    const defaultValues =
-        getDefaultFormValues<LoginFormSchema>(loginFormFields);
-
     const form = useForm<LoginFormSchema>({
-        defaultValues,
+        defaultValues: {
+            email: '',
+            password: '',
+        },
         resolver: zodResolver(loginFormSchema),
     });
 
@@ -62,12 +61,13 @@ export const LoginForm = () => {
             </CardHeader>
 
             <CardContent>
-                <RenderFormFields
-                    form_id="login-form"
-                    form={form}
-                    formFields={loginFormFields}
-                    onSubmit={onSubmit}
-                />
+                <Form {...form}>
+                    <LoginFormInner
+                        form_id="login-form"
+                        form={form}
+                        onSubmit={onSubmit}
+                    />
+                </Form>
             </CardContent>
 
             <CardFooter className="flex flex-col">

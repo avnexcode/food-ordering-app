@@ -1,7 +1,7 @@
 import type {
     ProductCategoryResponse,
     ProductCategoryReturn,
-} from '../features/product_category/product-category.model';
+} from '../features/product-category/product-category.model';
 
 export const toProductCategoryResponse = (
     productCategory: ProductCategoryReturn,

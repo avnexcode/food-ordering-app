@@ -1,4 +1,3 @@
-import { getDefaultFormValues } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import {
@@ -13,22 +12,22 @@ import { AuthFormFooter } from './AuthFormFooter';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { registerFormFields } from '../config/form';
-import { useRegister } from '../api/useRegister';
+import { useRegister } from '../../api/useRegister';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import {
     registerFormSchema,
     type RegisterFormSchema,
 } from '@/features/auth/types';
-import { RenderFormFields } from '@/utils/RenderFormInner';
+import { RegisterFormInner } from './RegisterFormInner';
+import { Form } from '@/components/ui/form';
 
 export const RegisterForm = () => {
     const router = useRouter();
     const { toast } = useToast();
 
     const { mutate: register, isPending: signUpPending } = useRegister({
-        onSettled: () => {
+        onSuccess: () => {
             toast({
                 title: 'Success',
                 description: 'Register Successfully',
@@ -38,7 +37,7 @@ export const RegisterForm = () => {
         onError: error => {
             toast({
                 title: 'Register Error',
-                description: error || 'Invalid credentials',
+                description: error.message || 'Invalid credentials',
                 variant: 'destructive',
             });
         },
@@ -46,10 +45,13 @@ export const RegisterForm = () => {
 
     const onSubmit = (values: RegisterFormSchema) => register(values);
 
-    const defaultValues = getDefaultFormValues(registerFormFields);
-
     const form = useForm<RegisterFormSchema>({
-        defaultValues,
+        defaultValues: {
+            name: '',
+            email: '',
+            password: '',
+            confirm_password: '',
+        },
         resolver: zodResolver(registerFormSchema),
     });
 
@@ -62,12 +64,13 @@ export const RegisterForm = () => {
                 </CardDescription>
             </CardHeader>
             <CardContent>
-                <RenderFormFields
-                    form_id="register-form"
-                    form={form}
-                    formFields={registerFormFields}
-                    onSubmit={onSubmit}
-                />
+                <Form {...form}>
+                    <RegisterFormInner
+                        form_id="register-form"
+                        form={form}
+                        onSubmit={onSubmit}
+                    />
+                </Form>
             </CardContent>
             <CardFooter className="flex flex-col">
                 <AuthFormFooter>

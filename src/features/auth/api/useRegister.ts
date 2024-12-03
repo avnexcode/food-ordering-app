@@ -3,19 +3,12 @@ import { useMutation } from '@tanstack/react-query';
 import { type RegisterFormSchema } from '../types';
 import { type AxiosError } from 'axios';
 
-interface ErrorResponse {
-    message: string;
-    statusCode?: number;
-    error?: string;
-}
+type UseRegisterProps = {
+    onSuccess?: () => void;
+    onError?: (error: AxiosError) => void;
+};
 
-export const useRegister = ({
-    onSettled,
-    onError,
-}: {
-    onSettled?: () => void;
-    onError?: (error: string) => void;
-}) => {
+export const useRegister = ({ onSuccess, onError }: UseRegisterProps) => {
     return useMutation({
         mutationKey: ['register'],
         mutationFn: async (values: RegisterFormSchema) => {
@@ -26,13 +19,7 @@ export const useRegister = ({
 
             return response.data;
         },
-        onSuccess: () => {
-            onSettled?.();
-        },
-        onError: (error: AxiosError<ErrorResponse>) => {
-            console.log(error);
-            const errorMessage = error.response?.data?.error ?? error.message;
-            onError?.(errorMessage);
-        },
+        onSuccess,
+        onError,
     });
 };

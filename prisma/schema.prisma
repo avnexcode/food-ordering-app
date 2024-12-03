@@ -5,7 +5,6 @@ generator client {
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
-    // directUrl = env("DIRECT_URL")
 }
 
 enum UserRole {
@@ -14,35 +13,85 @@ enum UserRole {
     SELLER
 }
 
+enum OrderStatus {
+    PENDING
+    PROCESSING
+    SHIPPED
+    DELIVERED
+    CANCELLED
+}
+
+enum PaymentMethod {
+    BANK_TRANSFER
+    CREDIT_CARD
+    VIRTUAL_ACCOUNT
+    E_WALLET
+}
+
+enum PaymentStatus {
+    PENDING
+    EXPIRED
+    PAID
+    FAILED
+    REFUNDED
+}
+
+enum DisbursementStatus {
+    PENDING
+    PROCESSING
+    SUCCESS
+    FAILED
+}
+
+enum TransactionType {
+    INCOME
+    EXPENSE
+}
+
 model User {
-    id        String    @id @default(cuid())
-    username  String    @unique @db.VarChar(100)
-    name      String    @db.VarChar(100)
-    email     String    @unique
-    role      UserRole  @default(USER)
-    provider  String?   @db.VarChar(100)
-    token     String?
-    password  String?   @db.VarChar(100)
-    store_id  String?   @unique
-    image     String?   @db.VarChar(100)
-    store     Store?
-    addresses Address[]
+    id            String    @id @default(cuid())
+    username      String    @unique @db.VarChar(100)
+    name          String    @db.VarChar(100)
+    email         String    @unique
+    phone         String?   @db.VarChar(20)
+    role          UserRole  @default(USER)
+    provider      String?   @db.VarChar(100)
+    token         String?
+    password      String?   @db.VarChar(100)
+    store_id      String?   @unique
+    image         String?   @db.VarChar(255)
+    store         Store?
+    addresses     Address[]
+    orders        Order[]
+    created_at    DateTime  @default(now())
+    updated_at    DateTime  @updatedAt
+    refresh_token String?
 
     @@map("users")
 }
 
 model Address {
-    id          String  @id @default(cuid())
-    street      String  @db.VarChar(100)
-    village     String  @db.VarChar(100)
-    district    String  @db.VarChar(100)
-    city        String  @db.VarChar(100)
-    province    String  @db.VarChar(100)
-    country     String? @db.VarChar(100)
-    postal_code String? @db.VarChar(10)
-    description String? @db.VarChar(150)
+    id          String   @id @default(cuid())
+    label       String   @db.VarChar(50)
+    street      String   @db.VarChar(100)
+    village_id  BigInt
+    district_id BigInt
+    city_id     BigInt
+    province_id BigInt
+    country     String?  @db.VarChar(100)
+    postal_code String?  @db.VarChar(10)
+    description String?  @db.VarChar(150)
+    is_default  Boolean  @default(false)
     user_id     String?
-    user        User?   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    latitude    Float?
+    longitude   Float?
+    user        User?    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    village     Village  @relation(fields: [village_id], references: [id])
+    district    District @relation(fields: [district_id], references: [id])
+    regency     Regency  @relation(fields: [city_id], references: [id])
+    province    Province @relation(fields: [province_id], references: [id])
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
 
     @@map("addresses")
 }
@@ -50,20 +99,33 @@ model Address {
 model Store {
     id                 String            @id @default(cuid())
     name               String            @db.VarChar(100)
+    description        String?           @db.Text
+    image              String?           @db.VarChar(255)
+    bank_name          String?           @db.VarChar(100)
+    bank_account       String?           @db.VarChar(50)
+    bank_holder        String?           @db.VarChar(100)
     owner_id           String            @unique
-    owner              User              @relation(fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    owner              User              @relation(fields: [owner_id], references: [id], onDelete: Cascade)
     products           Product[]
     product_categories ProductCategory[]
+    orders             Order[]
+    transactions       Transaction[]
+    disbursements      Disbursement[]
+    created_at         DateTime          @default(now())
+    updated_at         DateTime          @updatedAt
 
     @@map("stores")
 }
 
 model ProductCategory {
-    id       String    @id @default(cuid())
-    name     String    @db.VarChar(100)
-    store_id String
-    products Product[]
-    store    Store     @relation(fields: [store_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    id          String    @id @default(cuid())
+    name        String    @db.VarChar(100)
+    description String?   @db.Text
+    store_id    String
+    products    Product[]
+    store       Store     @relation(fields: [store_id], references: [id], onDelete: Cascade)
+    created_at  DateTime  @default(now())
+    updated_at  DateTime  @updatedAt
 
     @@unique([name, store_id])
     @@index([store_id])
@@ -73,17 +135,120 @@ model ProductCategory {
 model Product {
     id          String           @id @default(cuid())
     name        String           @db.VarChar(100)
+    slug        String           @unique
     price       Decimal          @db.Decimal(10, 2)
-    description String           @db.VarChar(255)
+    description String           @db.Text
+    images      String[]
     stock       Int              @default(0)
+    weight      Float?           @db.DoublePrecision
     category_id String?
     store_id    String
-    store       Store            @relation(fields: [store_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    category    ProductCategory? @relation(fields: [category_id], references: [id], onDelete: Restrict, onUpdate: Cascade)
+    store       Store            @relation(fields: [store_id], references: [id], onDelete: Cascade)
+    category    ProductCategory? @relation(fields: [category_id], references: [id], onDelete: Restrict)
+    order_items OrderItem[]
+    created_at  DateTime         @default(now())
+    updated_at  DateTime         @updatedAt
 
     @@index([store_id])
     @@index([category_id])
     @@map("products")
+}
+
+model Order {
+    id              String        @id @default(cuid())
+    user_id         String
+    store_id        String
+    status          OrderStatus   @default(PENDING)
+    payment_status  PaymentStatus @default(PENDING)
+    total_amount    Decimal       @db.Decimal(10, 2)
+    shipping_cost   Decimal       @db.Decimal(10, 2)
+    tracking_number String?
+    note            String?       @db.Text
+    user            User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+    store           Store         @relation(fields: [store_id], references: [id], onDelete: Cascade)
+    order_items     OrderItem[]
+    transactions    Transaction[]
+    created_at      DateTime      @default(now())
+    updated_at      DateTime      @updatedAt
+    Payment         Payment?
+
+    @@index([user_id])
+    @@index([store_id])
+    @@map("orders")
+}
+
+model OrderItem {
+    id         String   @id @default(cuid())
+    order_id   String
+    product_id String
+    quantity   Int
+    price      Decimal  @db.Decimal(10, 2)
+    subtotal   Decimal  @db.Decimal(10, 2)
+    order      Order    @relation(fields: [order_id], references: [id], onDelete: Cascade)
+    product    Product  @relation(fields: [product_id], references: [id], onDelete: Restrict)
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@index([order_id])
+    @@index([product_id])
+    @@map("order_items")
+}
+
+model Payment {
+    id             String        @id @default(cuid())
+    order_id       String        @unique
+    amount         Decimal       @db.Decimal(10, 2)
+    payment_method PaymentMethod
+    status         PaymentStatus @default(PENDING)
+    midtrans_id    String        @unique
+    payment_url    String?
+    paid_at        DateTime?
+    expired_at     DateTime?
+    order          Order         @relation(fields: [order_id], references: [id], onDelete: Cascade)
+    disbursement   Disbursement?
+    created_at     DateTime      @default(now())
+    updated_at     DateTime      @updatedAt
+
+    @@index([order_id])
+    @@map("payments")
+}
+
+model Disbursement {
+    id             String             @id @default(cuid())
+    payment_id     String             @unique
+    store_id       String
+    amount         Decimal            @db.Decimal(10, 2)
+    status         DisbursementStatus @default(PENDING)
+    bank_name      String
+    account_number String
+    account_name   String
+    description    String?            @db.Text
+    disbursed_at   DateTime?
+    payment        Payment            @relation(fields: [payment_id], references: [id], onDelete: Cascade)
+    store          Store              @relation(fields: [store_id], references: [id], onDelete: Cascade)
+    created_at     DateTime           @default(now())
+    updated_at     DateTime           @updatedAt
+
+    @@index([payment_id])
+    @@index([store_id])
+    @@map("disbursements")
+}
+
+model Transaction {
+    id          String          @id @default(cuid())
+    type        TransactionType
+    amount      Decimal         @db.Decimal(10, 2)
+    description String?         @db.Text
+    store_id    String
+    order_id    String?
+    store       Store           @relation(fields: [store_id], references: [id], onDelete: Cascade)
+    order       Order?          @relation(fields: [order_id], references: [id], onDelete: SetNull)
+    created_at  DateTime        @default(now())
+    updated_at  DateTime        @updatedAt
+
+    @@index([store_id])
+    @@index([order_id])
+    @@map("transactions")
 }
 
 model Province {
@@ -93,6 +258,7 @@ model Province {
     latitude  Float     @default(0)
     longitude Float     @default(0)
     regencies Regency[]
+    addresses Address[]
 
     @@map("provinces")
 }
@@ -104,8 +270,9 @@ model Regency {
     altName    String     @default("")
     latitude   Float      @default(0)
     longitude  Float      @default(0)
-    province   Province   @relation(fields: [provinceId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    province   Province   @relation(fields: [provinceId], references: [id], onDelete: Cascade)
     districts  District[]
+    addresses  Address[]
 
     @@map("regencies")
 }
@@ -117,20 +284,24 @@ model District {
     altName   String    @default("")
     latitude  Float     @default(0)
     longitude Float     @default(0)
-    regency   Regency   @relation(fields: [regencyId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    regency   Regency   @relation(fields: [regencyId], references: [id], onDelete: Cascade)
     villages  Village[]
+    addresses Address[]
 
     @@map("districts")
 }
 
 model Village {
-    id         BigInt   @id @default(autoincrement())
+    id         BigInt    @id @default(autoincrement())
     districtId BigInt
     name       String
-    altName    String   @default("")
-    latitude   Float    @default(0)
-    longitude  Float    @default(0)
-    district   District @relation(fields: [districtId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    altName    String    @default("")
+    latitude   Float     @default(0)
+    longitude  Float     @default(0)
+    district   District  @relation(fields: [districtId], references: [id], onDelete: Cascade)
+    addresses  Address[]
 
     @@map("villages")
 }
+
+// jelaskan relasi seputar order dengan jelas

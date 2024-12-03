@@ -1,5 +1,5 @@
 import { SettingLayout } from '@/components/layout/SettingLayout';
-import { UpdateProfileForm } from '@/features/settings/profile/components/UpdateProfileForm';
+import { UpdateProfileForm } from '@/features/settings/profile/components/form/UpdateProfileForm';
 import Head from 'next/head';
 
 export const SettingProfilePage = () => {

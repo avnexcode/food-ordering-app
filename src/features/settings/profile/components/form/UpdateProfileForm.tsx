@@ -9,11 +9,11 @@ import {
 import { UpdateProfileFormInner } from './UpdateProfileFormInner';
 import { useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
-import { updateProfileSchema, type UpdateProfileSchema } from '../types';
-import { useUserById } from '../../user/api/useUserById';
+import { updateProfileSchema, type UpdateProfileSchema } from '../../types';
+import { useUserById } from '../../../user/api/useUserById';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
-import { useUpdateProfile } from '../api';
+import { useUpdateProfile } from '../../api';
 import { useToast } from '@/hooks/use-toast';
 import { UpdateProfileImageForm } from './UpdateProfileImageForm';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -22,7 +22,10 @@ export const UpdateProfileForm = () => {
     const { toast } = useToast();
     const { data: session } = useSession();
 
-    const { data: user } = useUserById(session?.user?.id, session?.user?.token);
+    const { data: user } = useUserById({
+        id: session?.user?.id,
+        token: session?.user?.token,
+    });
 
     const { mutate: updateProfile, isPending: isUpdateProfilePending } =
         useUpdateProfile({

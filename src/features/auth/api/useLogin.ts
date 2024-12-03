@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import { signIn } from 'next-auth/react';
 import { type LoginFormSchema } from '../types';
+import { type AxiosError } from 'axios';
 
-export const useLogin = ({
-    onSettled,
-    onError,
-}: {
-    onSettled?: () => void;
-    onError?: (error: string) => void;
-}) => {
+type UseLoginProps = {
+    onSuccess?: () => void;
+    onError?: (error: AxiosError) => void;
+};
+
+export const useLogin = ({ onSuccess, onError }: UseLoginProps) => {
     return useMutation({
         mutationKey: ['login'],
         mutationFn: async (
@@ -25,11 +25,7 @@ export const useLogin = ({
 
             return response;
         },
-        onSuccess: () => {
-            onSettled?.();
-        },
-        onError: (error: Error) => {
-            onError?.(error.message);
-        },
+        onSuccess,
+        onError,
     });
 };

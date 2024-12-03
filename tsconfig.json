@@ -38,7 +38,10 @@
         "**/*.tsx",
         "**/*.cjs",
         "**/*.js",
-        ".next/types/**/*.ts"
+        ".next/types/**/*.ts",
+        "src/server/features/order/.validation.ts",
+        "src/server/features/order/.model.ts",
+        "src/server/features/order/.controller.ts"
     ],
     "exclude": ["node_modules"]
 }

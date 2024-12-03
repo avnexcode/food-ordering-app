@@ -27,9 +27,4 @@ export const jwtService = {
 
         return payload as JWTPayload;
     },
-
-    // decodeToken: (token: string): JWTPayload => {
-    //     const decoder = new jose.UnsecuredJWT();
-    //     return decoder.decode(token).payload as JWTPayload;
-    // },
 };

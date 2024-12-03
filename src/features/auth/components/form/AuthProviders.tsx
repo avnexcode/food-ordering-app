@@ -1,7 +1,4 @@
-import { GitHub } from './button/GitHub';
-import { Google } from './button/Google';
-import { Discord } from './button/Discord';
-import { Facebook } from './button/Facebook';
+import { Google } from '../button/Google';
 
 export const AuthProviders = () => {
     return (
@@ -13,9 +10,6 @@ export const AuthProviders = () => {
             </div>
             <div className="w-full flex flex-col justify-center gap-2">
                 <Google />
-                {/* <Facebook />
-                <GitHub />
-                <Discord /> */}
             </div>
         </div>
     );

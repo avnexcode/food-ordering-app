@@ -13,6 +13,7 @@ import {
     createMessageGetSuccess,
     createMessageGetUniqueSuccess,
     createMessagePatchSuccess,
+    createMessagePostSuccess,
     createMessagePutSuccess,
 } from '@/server/helper';
 
@@ -40,6 +41,7 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     POST: async (
         request: NextRequest,
     ): Promise<NextResponse<WebModel<Address>>> => {
@@ -51,7 +53,7 @@ export const handlers = {
                 {
                     status: true,
                     statusCode: 201,
-                    message: 'Success',
+                    message: createMessagePostSuccess('Address'),
                     data,
                 },
                 { status: 201 },
@@ -60,6 +62,7 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     PUT: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
@@ -79,7 +82,9 @@ export const handlers = {
                     requestBody.street
                 )
             ) {
-                throw new NotFoundException('Missing some fields');
+                throw new NotFoundException(
+                    'All fields are required for PUT request',
+                );
             }
 
             const data = await addressService.update(id, requestBody);
@@ -97,6 +102,7 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     PATCH: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
@@ -104,7 +110,6 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
-
             const requestBody = (await request.json()) as UpdateAddressRequest;
 
             const data = await addressService.update(id, requestBody);
@@ -122,6 +127,7 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
@@ -129,15 +135,16 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
-            const data = await addressService.delete(id);
+            await addressService.delete(id);
+
             return NextResponse.json(
                 {
                     status: true,
-                    statusCode: 200,
+                    statusCode: 204,
                     message: createMessageDeleteSuccess('Address'),
-                    data,
+                    data: { id },
                 },
-                { status: 200 },
+                { status: 204 },
             );
         } catch (error) {
             return ErrorFilter.catch(error);

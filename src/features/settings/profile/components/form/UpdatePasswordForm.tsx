@@ -7,14 +7,14 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
-import { updatePasswordSchema, type UpdatePasswordSchema } from '../types';
+import { updatePasswordSchema, type UpdatePasswordSchema } from '../../types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UpdatePasswordFormInner } from './UpdatePasswordFormInner';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
-import { useUpdatePassword } from '../api';
+import { useUpdatePassword } from '../../api';
 import { useSession } from 'next-auth/react';
-import { useUserById } from '../../user/api/useUserById';
+import { useUserById } from '../../../user/api/useUserById';
 import { useToast } from '@/hooks/use-toast';
 
 export const UpdatePasswordForm = () => {
@@ -22,8 +22,10 @@ export const UpdatePasswordForm = () => {
 
     const { data: session } = useSession();
 
-    const { data: user } = useUserById(session?.user.id, session?.user.token);
-    console.log({ dari_password_form: user });
+    const { data: user } = useUserById({
+        id: session?.user.id,
+        token: session?.user.token,
+    });
 
     const { mutate: updatePassword, isPending: isUpdatePasswordPending } =
         useUpdatePassword({

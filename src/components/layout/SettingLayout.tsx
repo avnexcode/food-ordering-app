@@ -1,5 +1,5 @@
-import { Navbar } from '../fragment/Navbar/Navbar';
-import { NavSetting } from '../fragment/NavSetting/NavSetting';
+import { Navbar } from '../fragment/navbar/Navbar';
+import { NavSetting } from '../fragment/navbar-setting/NavSetting';
 import { Container } from './Container';
 
 type SettingLayoutProps = {

@@ -1,5 +1,5 @@
 import { AuthLayout } from '@/components/layout/AuthLayout';
-import { RegisterForm } from '@/features/auth/components/RegisterForm';
+import { RegisterForm } from '@/features/auth/components/form/RegisterForm';
 
 export const RegisterPage = () => {
     return <RegisterForm />;

@@ -1,5 +1,3 @@
-import { type UseFormReturn } from 'react-hook-form';
-import { type UpdatePasswordSchema } from '../types';
 import {
     FormControl,
     FormField,
@@ -8,34 +6,31 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import type { UseFormReturn } from 'react-hook-form';
+import type { UpdateProfileSchema } from '../../types';
 
-type UpdatePasswordFormInnerProps = {
+type UpdateProfileFormInnerProps = {
     form_id: string;
-    form: UseFormReturn<UpdatePasswordSchema>;
-    onSubmit: (values: UpdatePasswordSchema) => void;
+    form: UseFormReturn<UpdateProfileSchema>;
+    onSubmit: (values: UpdateProfileSchema) => void;
 };
-export const UpdatePasswordFormInner = (
-    props: UpdatePasswordFormInnerProps,
-) => {
+
+export const UpdateProfileFormInner = (props: UpdateProfileFormInnerProps) => {
     const { form_id, form, onSubmit } = props;
     return (
         <form
             id={form_id}
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4 w-full"
+            className="w-full flex flex-col gap-y-5"
         >
             <FormField
                 control={form.control}
-                name="password"
+                name="username"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel>Username</FormLabel>
                         <FormControl>
-                            <Input
-                                type="password"
-                                placeholder="Password"
-                                {...field}
-                            />
+                            <Input placeholder="Username" {...field} />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -43,16 +38,12 @@ export const UpdatePasswordFormInner = (
             />
             <FormField
                 control={form.control}
-                name="new_password"
+                name="name"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>New Password</FormLabel>
+                        <FormLabel>Name</FormLabel>
                         <FormControl>
-                            <Input
-                                type="password"
-                                placeholder="New Password"
-                                {...field}
-                            />
+                            <Input placeholder="Name" {...field} disabled />
                         </FormControl>
                         <FormMessage />
                     </FormItem>
@@ -60,14 +51,14 @@ export const UpdatePasswordFormInner = (
             />
             <FormField
                 control={form.control}
-                name="confirm_password"
+                name="email"
                 render={({ field }) => (
                     <FormItem>
-                        <FormLabel>New Password Confirm</FormLabel>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
                             <Input
-                                type="password"
-                                placeholder="New Password Confirm"
+                                type="email"
+                                placeholder="Email"
                                 {...field}
                             />
                         </FormControl>
