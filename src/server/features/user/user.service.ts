@@ -3,8 +3,10 @@ import { userRepository } from './user.repository';
 import {
     toUserResponse,
     toUserWithRelationResponse,
-} from '@/server/utils/user-api-response';
+} from '@/server/utils/response/user-api-response';
 import type { UpdateUserRequest } from './user.model';
+import { validateSchema } from '@/server/service';
+import { updateUserSchema } from './user.validation';
 
 export const userService = {
     getAll: async () => {
@@ -35,10 +37,15 @@ export const userService = {
         toUserWithRelationResponse(user);
     },
 
-    update: async (id: string, data: UpdateUserRequest) => {
+    update: async (id: string, request: UpdateUserRequest) => {
         await userService.getById(id);
 
-        const user = await userRepository.updateOne(id, data);
+        const validatedRequest: UpdateUserRequest = validateSchema(
+            updateUserSchema,
+            request,
+        );
+
+        const user = await userRepository.updateOne(id, validatedRequest);
 
         return toUserResponse(user);
     },

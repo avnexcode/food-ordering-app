@@ -7,14 +7,15 @@ import bcrypt from 'bcrypt';
 import { validateSchema } from '@/server/service';
 import { authRepository } from './auth.repository';
 import { BadRequestException } from '@/server/lib/error.exception';
-import { toUserResponse } from '@/server/utils/user-api-response';
+import { toUserResponse } from '@/server/utils/response/user-api-response';
 import { updateUserSchema } from '@/server/features/user/user.validation';
 import type { LoginRequest, RegisterRequest } from './auth.model';
 import type {
     UserResponse,
     UpdateUserRequest,
-    UserReturn,
+    UserWithRelations,
 } from '../user/user.model';
+import type { User } from '@prisma/client';
 
 export const authService = {
     register: async (request: RegisterRequest): Promise<UserResponse> => {
@@ -65,7 +66,7 @@ export const authService = {
 
         user = (await authRepository.setToken(
             validatedRequest.email,
-        )) as UserReturn;
+        )) as UserWithRelations;
 
         return toUserResponse(user);
     },
@@ -82,7 +83,7 @@ export const authService = {
             validatedRequest.email!,
         );
 
-        let user: UserReturn;
+        let user: User;
 
         if (userExists) {
             const updateUserData = {
@@ -113,9 +114,7 @@ export const authService = {
             user = await userRepository.insertOne(newUserData);
         }
 
-        user = (await authRepository.setToken(
-            validatedRequest.email!,
-        )) as UserReturn;
+        user = await authRepository.setToken(validatedRequest.email!);
 
         return toUserResponse(user);
     },

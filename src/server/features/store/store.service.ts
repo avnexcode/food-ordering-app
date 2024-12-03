@@ -7,7 +7,7 @@ import type {
 } from './store.model';
 import { validateSchema } from '@/server/service';
 import { createStoreSchema, updateStoreSchema } from './store.validation';
-import { toStoreResponse } from '@/server/utils/store-api-response';
+import { toStoreResponse } from '@/server/utils/response/store-api-response';
 import type { Store } from '@prisma/client';
 
 export const storeService = {

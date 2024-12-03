@@ -74,10 +74,10 @@ model Address {
     id          String   @id @default(cuid())
     label       String   @db.VarChar(50)
     street      String   @db.VarChar(100)
-    village_id  BigInt
-    district_id BigInt
-    city_id     BigInt
-    province_id BigInt
+    village_id  Int
+    district_id Int
+    city_id     Int
+    province_id Int
     country     String?  @db.VarChar(100)
     postal_code String?  @db.VarChar(10)
     description String?  @db.VarChar(150)
@@ -252,9 +252,9 @@ model Transaction {
 }
 
 model Province {
-    id        BigInt    @id @default(autoincrement())
+    id        Int       @id @default(autoincrement())
     name      String
-    altName   String    @default("")
+    alt_name  String    @default("")
     latitude  Float     @default(0)
     longitude Float     @default(0)
     regencies Regency[]
@@ -264,42 +264,42 @@ model Province {
 }
 
 model Regency {
-    id         BigInt     @id @default(autoincrement())
-    provinceId BigInt
-    name       String
-    altName    String     @default("")
-    latitude   Float      @default(0)
-    longitude  Float      @default(0)
-    province   Province   @relation(fields: [provinceId], references: [id], onDelete: Cascade)
-    districts  District[]
-    addresses  Address[]
+    id          Int        @id @default(autoincrement())
+    province_id Int
+    name        String
+    alt_name    String     @default("")
+    latitude    Float      @default(0)
+    longitude   Float      @default(0)
+    province    Province   @relation(fields: [province_id], references: [id], onDelete: Cascade)
+    districts   District[]
+    addresses   Address[]
 
     @@map("regencies")
 }
 
 model District {
-    id        BigInt    @id @default(autoincrement())
-    regencyId BigInt
-    name      String
-    altName   String    @default("")
-    latitude  Float     @default(0)
-    longitude Float     @default(0)
-    regency   Regency   @relation(fields: [regencyId], references: [id], onDelete: Cascade)
-    villages  Village[]
-    addresses Address[]
+    id         Int       @id @default(autoincrement())
+    regency_id Int
+    name       String
+    alt_name   String    @default("")
+    latitude   Float     @default(0)
+    longitude  Float     @default(0)
+    regency    Regency   @relation(fields: [regency_id], references: [id], onDelete: Cascade)
+    villages   Village[]
+    addresses  Address[]
 
     @@map("districts")
 }
 
 model Village {
-    id         BigInt    @id @default(autoincrement())
-    districtId BigInt
-    name       String
-    altName    String    @default("")
-    latitude   Float     @default(0)
-    longitude  Float     @default(0)
-    district   District  @relation(fields: [districtId], references: [id], onDelete: Cascade)
-    addresses  Address[]
+    id          Int       @id @default(autoincrement())
+    district_id Int
+    name        String
+    alt_name    String    @default("")
+    latitude    Float     @default(0)
+    longitude   Float     @default(0)
+    district    District  @relation(fields: [district_id], references: [id], onDelete: Cascade)
+    addresses   Address[]
 
     @@map("villages")
 }

@@ -24,7 +24,7 @@ export const handlers = {
                 );
             }
 
-            const data = await resetPasswordService.update(
+            const data = await resetPasswordService.updatePassword(
                 id,
                 requestBody.password,
                 requestBody.new_password,

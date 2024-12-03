@@ -5,8 +5,14 @@ import { toUserResponse } from '@/server/utils';
 import { validateSchema } from '@/server/service';
 import { resetPasswordSchema } from './reset-password.validation';
 import type { ResetPasswordRequest } from './reset-password.model';
+import type { UserResponse } from '../user/user.model';
+import { resetPasswordRepository } from './reset-password.repository';
 export const resetPasswordService = {
-    update: async (id: string, password: string, newPassword: string) => {
+    updatePassword: async (
+        id: string,
+        password: string,
+        newPassword: string,
+    ): Promise<UserResponse> => {
         await userService.getById(id);
 
         const validatedRequest: ResetPasswordRequest = validateSchema(
@@ -30,9 +36,7 @@ export const resetPasswordService = {
             throw new BadRequestException('Invalid password');
         }
 
-        const user = await userRepository.updateOne(id, {
-            password: newPassword,
-        });
+        const user = await resetPasswordRepository.update(id, password);
 
         return toUserResponse(user);
     },

@@ -6,7 +6,7 @@ import type {
     UpdateProductRequest,
 } from './product.model';
 import type { Product } from '@prisma/client';
-import { toProductResponse } from '@/server/utils/product-api-response';
+import { toProductResponse } from '@/server/utils/response/product-api-response';
 
 export const productService = {
     getAll: async (): Promise<ProductResponse[]> => {

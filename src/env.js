@@ -3,11 +3,9 @@ import { z } from 'zod';
 
 export const env = createEnv({
     server: {
-        AUTH_SECRET: z
-            .string()
-            .min(32, {
-                message: 'AUTH_SECRET must be at least 32 characters long',
-            }),
+        AUTH_SECRET: z.string().min(32, {
+            message: 'AUTH_SECRET must be at least 32 characters long',
+        }),
         DATABASE_URL: z
             .string()
             .url({ message: 'Invalid DATABASE_URL format' }),

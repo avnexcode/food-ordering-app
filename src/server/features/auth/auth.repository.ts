@@ -39,7 +39,9 @@ export const authRepository = {
 
     veryfyToken: async (token: string) => {
         const secret = env.AUTH_SECRET;
+
         const user = jwt.verify(token, secret);
+
         return user;
     },
 };

@@ -81,10 +81,6 @@ export const userRepository = {
     ): Promise<User> => {
         const existingUser = await userRepository.findUniqueId(id);
 
-        const passwordHashed = request.password
-            ? await bcrypt.hash(request.password, 10)
-            : existingUser?.password;
-
         const updateUserData = {
             username: request.username ?? existingUser?.username,
             name: request.name ?? existingUser?.name,
@@ -92,7 +88,6 @@ export const userRepository = {
             phone: request.phone ?? existingUser?.phone,
             role: (request.role as UserRole) ?? existingUser?.role,
             provider: request.provider ?? existingUser?.provider,
-            password: passwordHashed,
             store_id: request.store_id ?? existingUser?.store_id,
             image: request.image ?? existingUser?.image,
             updated_at: new Date(),
