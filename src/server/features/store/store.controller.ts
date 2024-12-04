@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { storeService } from './store.service';
 import type {
     CreateStoreRequest,
-    StoreResponse,
+    StoreWithRelations,
     UpdateStoreRequest,
 } from './store.model';
 import { NotFoundException } from '@/server/lib/error.exception';
@@ -19,24 +19,43 @@ import {
 } from '@/server/helper';
 
 export const handlers = {
-    GET: async (
-        request: NextRequest,
-        context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<StoreResponse | StoreResponse[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<StoreWithRelations[]>>> => {
         try {
-            const params = await context.params;
-            const id = params?.id;
-            const data = id
-                ? await storeService.getById(id)
-                : await storeService.getAll();
+            const data = await storeService.getAll();
 
             return NextResponse.json(
                 {
                     status: true,
                     statusCode: 200,
-                    message: id
-                        ? createMessageGetUniqueSuccess('Store', `id : ${id}`)
-                        : createMessageGetSuccess('Stores'),
+                    message: createMessageGetSuccess('Stores'),
+                    data,
+                },
+                { status: 200 },
+            );
+        } catch (error) {
+            return ErrorFilter.catch(error);
+        }
+    },
+
+    GET_ID: async (
+        request: NextRequest,
+        context: { params: Promise<{ id: string }> },
+    ): Promise<NextResponse<WebModel<StoreWithRelations>>> => {
+        try {
+            const params = await context.params;
+            const id = params?.id;
+
+            const data = await storeService.getById(id);
+
+            return NextResponse.json(
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessageGetUniqueSuccess(
+                        'Store',
+                        `id : ${id}`,
+                    ),
+
                     data,
                 },
                 { status: 200 },

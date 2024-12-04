@@ -1,13 +1,13 @@
 import { db } from '@/server/database/db';
 import type {
     CreateProductRequest,
-    ProductReturn,
+    ProductWithRelations,
     UpdateProductRequest,
 } from './product.model';
 import type { Product } from '@prisma/client';
 
 export const productRepository = {
-    findMany: async (): Promise<ProductReturn[] | null> => {
+    findMany: async (): Promise<ProductWithRelations[] | null> => {
         const products = await db.product.findMany({
             include: {
                 store: {
@@ -15,20 +15,18 @@ export const productRepository = {
                         owner: {
                             include: {
                                 addresses: true,
-                                store: true,
                             },
                         },
-                        products: true,
-                        product_categories: true,
                     },
                 },
                 category: true,
             },
         });
+
         return products;
     },
 
-    findUniqueId: async (id: string): Promise<ProductReturn | null> => {
+    findUniqueId: async (id: string): Promise<ProductWithRelations | null> => {
         const product = await db.product.findUnique({
             where: { id },
             include: {
@@ -37,16 +35,14 @@ export const productRepository = {
                         owner: {
                             include: {
                                 addresses: true,
-                                store: true,
                             },
                         },
-                        products: true,
-                        product_categories: true,
                     },
                 },
                 category: true,
             },
         });
+
         return product;
     },
 

@@ -1,23 +1,24 @@
 import { db } from '@/server/database/db';
 import type {
     CreateDistrictRequest,
+    DistrictWithRelations,
     UpdateDistrictRequest,
 } from './district.model';
 import { type District } from '@prisma/client';
 
 export const districtRepository = {
-    findMany: async (): Promise<District[] | null> => {
+    findMany: async (): Promise<DistrictWithRelations[] | null> => {
         const districts = await db.district.findMany({
-            include: { villages: true },
+            include: { regency: true, villages: true, addresses: true },
         });
 
         return districts;
     },
 
-    findUniqueId: async (id: number): Promise<District | null> => {
+    findUniqueId: async (id: number): Promise<DistrictWithRelations | null> => {
         const district = await db.district.findUnique({
             where: { id },
-            include: { villages: true },
+            include: { regency: true, villages: true, addresses: true },
         });
 
         return district;

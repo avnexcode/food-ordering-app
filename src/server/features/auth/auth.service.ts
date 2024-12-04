@@ -15,7 +15,7 @@ import type {
     UpdateUserRequest,
     UserWithRelations,
 } from '../user/user.model';
-import type { User } from '@prisma/client';
+import { type User } from '@prisma/client';
 
 export const authService = {
     register: async (request: RegisterRequest): Promise<UserResponse> => {
@@ -36,7 +36,12 @@ export const authService = {
             throw new BadRequestException(`Email already exists`);
         }
 
-        const user = await userRepository.insertOnce(validatedRequest);
+        const passwordHashed = await bcrypt.hash(request.password, 10);
+
+        const user = await userRepository.insertOnce({
+            ...validatedRequest,
+            password: passwordHashed,
+        });
 
         return toUserResponse(user);
     },
@@ -64,7 +69,7 @@ export const authService = {
             }
         }
 
-        user = (await authRepository.setToken(
+        user = (await authRepository.setAccessToken(
             validatedRequest.email,
         )) as UserWithRelations;
 
@@ -114,7 +119,7 @@ export const authService = {
             user = await userRepository.insertOnce(newUserData);
         }
 
-        user = await authRepository.setToken(validatedRequest.email!);
+        user = await authRepository.setAccessToken(validatedRequest.email!);
 
         return toUserResponse(user);
     },

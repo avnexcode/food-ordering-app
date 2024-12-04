@@ -3,23 +3,16 @@ import type {
     createProductSchema,
     updateProductSchema,
 } from './product.validation';
-import type { Product, ProductCategory } from '@prisma/client';
-import type { StoreResponse, StoreReturn } from '../store/store.model';
-import type { Decimal } from '@prisma/client/runtime/library';
+import type { Prisma } from '@prisma/client';
+import type { StoreWithOwnerRelation } from '../store/store.model';
 
 export type CreateProductRequest = z.infer<typeof createProductSchema>;
 export type UpdateProductRequest = z.infer<typeof updateProductSchema>;
 
-export interface ProductReturn extends Product {
-    store: StoreReturn;
-    category: ProductCategory | null;
-}
-
-export interface ProductResponse {
-    id?: string;
-    name: string;
-    price: Decimal;
-    stock: number;
-    store: StoreResponse;
-    category: ProductCategory | null;
-}
+export type ProductWithRelations = Prisma.ProductGetPayload<{
+    include: {
+        category: true;
+    };
+}> & {
+    store: StoreWithOwnerRelation;
+};

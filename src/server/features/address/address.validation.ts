@@ -3,28 +3,28 @@ import { z } from 'zod';
 export const createAddressSchema = z.object({
     label: z
         .string()
-        .max(50, { message: 'Label must not exceed 50 characters.' })
-        .nonempty({ message: 'Label is required.' }),
+        .min(1, { message: 'Label is required' })
+        .max(50, { message: 'Label must not exceed 50 characters.' }),
     street: z
         .string()
-        .max(100, { message: 'Street must not exceed 100 characters.' })
-        .nonempty({ message: 'Street is required.' }),
+        .min(1, { message: 'Street is required' })
+        .max(100, { message: 'Street must not exceed 100 characters.' }),
     village_id: z
         .number({ message: 'Village ID must be a valid number.' })
         .int({ message: 'Village ID must be an integer.' })
-        .nonnegative({ message: 'Village ID must be a positive number.' }),
+        .positive({ message: 'Village ID must be a positive number.' }),
     district_id: z
         .number({ message: 'District ID must be a valid number.' })
         .int({ message: 'District ID must be an integer.' })
-        .nonnegative({ message: 'District ID must be a positive number.' }),
+        .positive({ message: 'District ID must be a positive number.' }),
     city_id: z
         .number({ message: 'City ID must be a valid number.' })
         .int({ message: 'City ID must be an integer.' })
-        .nonnegative({ message: 'City ID must be a positive number.' }),
+        .positive({ message: 'City ID must be a positive number.' }),
     province_id: z
         .number({ message: 'Province ID must be a valid number.' })
         .int({ message: 'Province ID must be an integer.' })
-        .nonnegative({ message: 'Province ID must be a positive number.' }),
+        .positive({ message: 'Province ID must be a positive number.' }),
     country: z
         .string()
         .max(100, { message: 'Country must not exceed 100 characters.' })

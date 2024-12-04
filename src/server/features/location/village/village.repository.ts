@@ -2,18 +2,24 @@ import { type Village } from '@prisma/client';
 import type {
     CreateVillageRequest,
     UpdateVillageRequest,
+    VillageWithRelations,
 } from './village.model';
 import { db } from '@/server/database/db';
 
 export const villageRepository = {
-    findMany: async (): Promise<Village[] | null> => {
-        const villages = await db.village.findMany();
+    findMany: async (): Promise<VillageWithRelations[] | null> => {
+        const villages = await db.village.findMany({
+            include: { district: true, addresses: true },
+        });
 
         return villages;
     },
 
-    findUniqueId: async (id: number): Promise<Village | null> => {
-        const village = await db.village.findUnique({ where: { id } });
+    findUniqueId: async (id: number): Promise<VillageWithRelations | null> => {
+        const village = await db.village.findUnique({
+            where: { id },
+            include: { district: true, addresses: true },
+        });
 
         return village;
     },

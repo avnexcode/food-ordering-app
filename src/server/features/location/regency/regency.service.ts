@@ -1,28 +1,37 @@
 import { validateSchema } from '@/server/service';
 import type {
     CreateRegencyRequest,
+    RegencyWithRelations,
     UpdateRegencyRequest,
 } from './regency.model';
 import { createRegencySchema, updateRegencySchema } from './regency.validation';
 import { regencyRepository } from './regency.repository';
 import { NotFoundException } from '@/server/lib/error.exception';
 import { type Regency } from '@prisma/client';
+import {
+    toRegencyResponse,
+    toRegencyWithRelationsResponse,
+} from '@/server/utils/response/regency-api-response';
 
 export const regencyService = {
-    getAll: async (): Promise<Regency[]> => {
-        const regencies = await regencyRepository.findMany();
+    getAll: async (): Promise<RegencyWithRelations[]> => {
+        const response = await regencyRepository.findMany();
+
+        const regencies = response?.map(regency =>
+            toRegencyWithRelationsResponse(regency),
+        );
 
         return regencies!;
     },
 
-    getById: async (id: number): Promise<Regency> => {
+    getById: async (id: number): Promise<RegencyWithRelations> => {
         const regency = await regencyRepository.findUniqueId(id);
 
         if (!regency) {
             throw new NotFoundException('Regency not found');
         }
 
-        return regency;
+        return toRegencyWithRelationsResponse(regency);
     },
 
     create: async (request: CreateRegencyRequest): Promise<Regency> => {
@@ -33,7 +42,7 @@ export const regencyService = {
 
         const regency = await regencyRepository.insertOnce(validatedRequest);
 
-        return regency;
+        return toRegencyResponse(regency);
     },
 
     createMany: async (requests: CreateRegencyRequest[]): Promise<number> => {
@@ -61,7 +70,7 @@ export const regencyService = {
             validatedRequest,
         );
 
-        return regency;
+        return toRegencyResponse(regency);
     },
 
     delete: async (id: number): Promise<{ id: number }> => {

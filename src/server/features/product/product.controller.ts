@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { productService } from './product.service';
 import type {
     CreateProductRequest,
-    ProductResponse,
+    ProductWithRelatios,
     UpdateProductRequest,
 } from './product.model';
 import { NotFoundException } from '@/server/lib/error.exception';
@@ -16,27 +16,18 @@ import {
     createMessagePostSuccess,
     createMessagePutSuccess,
 } from '@/server/helper';
+import { type Product } from '@prisma/client';
 
 export const handlers = {
-    GET: async (
-        request: NextRequest,
-        context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<ProductResponse | ProductResponse[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<ProductWithRelatios[]>>> => {
         try {
-            const params = await context.params;
-            const id = params?.id;
-
-            const data = id
-                ? await productService.getById(id)
-                : await productService.getAll();
+            const data = await productService.getAll();
 
             return NextResponse.json(
                 {
                     status: true,
                     statusCode: 200,
-                    message: id
-                        ? createMessageGetUniqueSuccess('Product', `id : ${id}`)
-                        : createMessageGetSuccess('Products'),
+                    message: createMessageGetSuccess('Products'),
                     data,
                 },
                 { status: 200 },
@@ -45,10 +36,37 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
-    POST: async (
+
+    GET_ID: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<ProductWithRelatios>>> => {
+        try {
+            const params = await context.params;
+            const id = params?.id;
+
+            const data = await productService.getById(id);
+
+            return NextResponse.json(
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessageGetUniqueSuccess(
+                        'Product',
+                        `id : ${id}`,
+                    ),
+                    data,
+                },
+                { status: 200 },
+            );
+        } catch (error) {
+            return ErrorFilter.catch(error);
+        }
+    },
+
+    POST: async (
+        request: NextRequest,
+    ): Promise<NextResponse<WebModel<Product>>> => {
         try {
             const requestBody = (await request.json()) as CreateProductRequest;
 
@@ -70,10 +88,11 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     PUT: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<Product>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -108,10 +127,11 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     PATCH: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<Product>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -132,10 +152,11 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ) => {
+    ): Promise<NextResponse<WebModel<{ id: string }>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

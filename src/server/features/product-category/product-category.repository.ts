@@ -1,24 +1,28 @@
 import { db } from '@/server/database/db';
 import type {
     CreateProductCategoryRequest,
-    ProductCategoryReturn,
+    ProductCategoryWithRelationsResponse,
     UpdateProductCategoryRequest,
 } from './product-category.model';
 import type { ProductCategory } from '@prisma/client';
 
 export const productCategoryRepository = {
-    findMany: async (): Promise<ProductCategoryReturn[] | null> => {
+    findMany: async (): Promise<
+        ProductCategoryWithRelationsResponse[] | null
+    > => {
         const productCategories = await db.productCategory.findMany({
-            include: { products: true },
+            include: { store: true, products: true },
         });
 
         return productCategories;
     },
 
-    findUniqueId: async (id: string): Promise<ProductCategoryReturn | null> => {
+    findUniqueId: async (
+        id: string,
+    ): Promise<ProductCategoryWithRelationsResponse | null> => {
         const productCategory = await db.productCategory.findUnique({
             where: { id },
-            include: { products: true },
+            include: { store: true, products: true },
         });
 
         return productCategory;

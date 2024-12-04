@@ -13,12 +13,13 @@ import { provinceService } from './province.service';
 import { type Province } from '@prisma/client';
 import type {
     CreateProvinceRequest,
+    ProvinceWithRelations,
     UpdateProvinceRequest,
 } from './province.model';
 import { NotFoundException } from '@/server/lib/error.exception';
 
 export const handlers = {
-    GET: async (): Promise<NextResponse<WebModel<Province[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<ProvinceWithRelations[]>>> => {
         try {
             const data = await provinceService.getAll();
 
@@ -35,7 +36,7 @@ export const handlers = {
     GET_ID: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<Province>>> => {
+    ): Promise<NextResponse<WebModel<ProvinceWithRelations>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

@@ -11,11 +11,15 @@ import {
 } from '@/server/helper';
 import { type District } from '@prisma/client';
 import { districtService } from './district.service';
-import { CreateDistrictRequest, UpdateDistrictRequest } from './district.model';
+import type {
+    CreateDistrictRequest,
+    DistrictWithRelations,
+    UpdateDistrictRequest,
+} from './district.model';
 import { NotFoundException } from '@/server/lib/error.exception';
 
 export const handlers = {
-    GET: async (): Promise<NextResponse<WebModel<District[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<DistrictWithRelations[]>>> => {
         try {
             const data = await districtService.getAll();
 
@@ -32,7 +36,7 @@ export const handlers = {
     GET_ID: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<District>>> => {
+    ): Promise<NextResponse<WebModel<DistrictWithRelations>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

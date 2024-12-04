@@ -2,31 +2,34 @@ import { NotFoundException } from '@/server/lib/error.exception';
 import { storeRepository } from './store.repository';
 import type {
     CreateStoreRequest,
-    StoreResponse,
+    StoreWithRelations,
     UpdateStoreRequest,
 } from './store.model';
 import { validateSchema } from '@/server/service';
 import { createStoreSchema, updateStoreSchema } from './store.validation';
-import { toStoreResponse } from '@/server/utils/response/store-api-response';
+import {
+    toStoreResponse,
+    toStoreWithRelationsResponse,
+} from '@/server/utils/response/store-api-response';
 import type { Store } from '@prisma/client';
 
 export const storeService = {
-    getAll: async (): Promise<StoreResponse[]> => {
+    getAll: async (): Promise<StoreWithRelations[]> => {
         const data = await storeRepository.findMany();
 
-        const stores = data?.map(store => toStoreResponse(store));
+        const stores = data?.map(store => toStoreWithRelationsResponse(store));
 
         return stores!;
     },
 
-    getById: async (id: string): Promise<StoreResponse> => {
+    getById: async (id: string): Promise<StoreWithRelations> => {
         const store = await storeRepository.findUniqueId(id);
 
         if (!store) {
             throw new NotFoundException('Store not found`');
         }
 
-        return toStoreResponse(store);
+        return toStoreWithRelationsResponse(store);
     },
 
     create: async (request: CreateStoreRequest): Promise<Store> => {
@@ -37,7 +40,7 @@ export const storeService = {
 
         const store = await storeRepository.insertOnce(validatedRequest, '');
 
-        return store;
+        return toStoreResponse(store);
     },
 
     update: async (id: string, request: UpdateStoreRequest): Promise<Store> => {
@@ -50,7 +53,7 @@ export const storeService = {
 
         const store = await storeRepository.updateOnce(id, validatedRequest);
 
-        return store;
+        return toStoreResponse(store);
     },
 
     delete: async (id: string): Promise<{ id: string }> => {

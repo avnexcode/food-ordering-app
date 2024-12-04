@@ -1,23 +1,44 @@
 import { db } from '@/server/database/db';
-import {
-    type UpdateAddressRequest,
-    type CreateAddressRequest,
+import type {
+    UpdateAddressRequest,
+    CreateAddressRequest,
+    AddressWithRelations,
 } from '@/server/features/address/address.model';
 import type { Address } from '@prisma/client';
 
 export const addressRepository = {
-    findMany: async (): Promise<Address[] | null> => {
-        const addresses = await db.address.findMany();
+    findMany: async (): Promise<AddressWithRelations[] | null> => {
+        const addresses = await db.address.findMany({
+            include: {
+                user: true,
+                province: true,
+                regency: true,
+                district: true,
+                village: true,
+            },
+        });
+
         return addresses;
     },
 
-    findUniqueId: async (id: string): Promise<Address | null> => {
-        const address = await db.address.findUnique({ where: { id } });
+    findUniqueId: async (id: string): Promise<AddressWithRelations | null> => {
+        const address = await db.address.findUnique({
+            where: { id },
+            include: {
+                user: true,
+                province: true,
+                regency: true,
+                district: true,
+                village: true,
+            },
+        });
+
         return address;
     },
 
     countById: async (id: string): Promise<number> => {
         const addressCount = await db.address.count({ where: { id } });
+
         return addressCount;
     },
 

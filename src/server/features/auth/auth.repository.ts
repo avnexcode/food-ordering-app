@@ -4,9 +4,9 @@ import { type User } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import type { JWTPayload } from '@/types';
 import { jwtService } from '@/server/service/jwt.service';
-
+import { v4 as uuid } from 'uuid';
 export const authRepository = {
-    setToken: async (email: string): Promise<User> => {
+    setAccessToken: async (email: string): Promise<User> => {
         const userExists = await db.user.findUnique({ where: { email } });
 
         const payload = {
@@ -26,11 +26,33 @@ export const authRepository = {
         return user;
     },
 
-    removeToken: async (email: string): Promise<User> => {
+    removeAccessToken: async (email: string): Promise<User> => {
         const user = await db.user.update({
             where: { email },
             data: {
                 token: null,
+            },
+        });
+
+        return user;
+    },
+
+    setRefreshToken: async (email: string) => {
+        const user = await db.user.update({
+            where: { email },
+            data: {
+                refresh_token: uuid(),
+            },
+        });
+
+        return user;
+    },
+
+    removeRefreshToken: async (email: string) => {
+        const user = await db.user.update({
+            where: { email },
+            data: {
+                refresh_token: null,
             },
         });
 

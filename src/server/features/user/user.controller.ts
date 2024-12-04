@@ -8,7 +8,6 @@ import type {
     UpdateUserRequest,
     UserResponse,
 } from './user.model';
-import { headers } from 'next/headers';
 import {
     createMessageDeleteSuccess,
     createMessageGetSuccess,
@@ -20,9 +19,6 @@ import {
 export const handlers = {
     GET: async (): Promise<NextResponse<WebModel<SafeUserWithRelations[]>>> => {
         try {
-            const headersList = await headers();
-            const userId = headersList.get('x-user-id');
-
             const data = await userService.getAll();
 
             return NextResponse.json(

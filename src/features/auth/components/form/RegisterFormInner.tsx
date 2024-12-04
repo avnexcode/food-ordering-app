@@ -68,6 +68,7 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
                             <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input
+                                    type="password"
                                     placeholder="Enter your password"
                                     {...field}
                                 />
@@ -80,12 +81,13 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
             <div>
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="confirm_password"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Confirm Password</FormLabel>
                             <FormControl>
                                 <Input
+                                    type="password"
                                     placeholder="Confirm your password"
                                     {...field}
                                 />

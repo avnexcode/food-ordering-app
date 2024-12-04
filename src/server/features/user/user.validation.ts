@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { UserRole } from '@prisma/client';
 
 const allowedEmailProviders: string[] = [
     'gmail.com',
@@ -29,7 +30,7 @@ export const updateUserSchema = z.object({
         )
         .optional(),
     phone: z.string().min(1).max(20).optional(),
-    role: z.string().optional(),
+    role: z.nativeEnum(UserRole).optional(),
     provider: z.string().optional(),
     store_id: z.string().optional(),
     image: z.string().optional(),

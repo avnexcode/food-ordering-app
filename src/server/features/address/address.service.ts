@@ -1,5 +1,6 @@
 import { validateSchema } from '@/server/service';
 import type {
+    AddressWithRelations,
     CreateAddressRequest,
     UpdateAddressRequest,
 } from './address.model';
@@ -7,24 +8,39 @@ import { addressRepository } from './address.repository';
 import { createAddressSchema, updateAddressSchema } from './address.validation';
 import { NotFoundException } from '@/server/lib/error.exception';
 import type { Address } from '@prisma/client';
+import { userService } from '../user';
+import {
+    toAddressResponse,
+    toAddressWithRelationsResponse,
+} from '@/server/utils/response/address-api-response';
 
 export const addressService = {
-    getAll: async (): Promise<Address[]> => {
-        const addresses = await addressRepository.findMany();
+    getAll: async (): Promise<AddressWithRelations[]> => {
+        const response = await addressRepository.findMany();
+
+        const addresses = response?.map(address =>
+            toAddressWithRelationsResponse(address),
+        );
+
         return addresses!;
     },
 
-    getById: async (id: string): Promise<Address> => {
+    getById: async (id: string): Promise<AddressWithRelations> => {
         const address = await addressRepository.findUniqueId(id);
 
         if (!address) {
             throw new NotFoundException('Address not found');
         }
 
-        return address;
+        return toAddressWithRelationsResponse(address);
     },
 
-    create: async (request: CreateAddressRequest): Promise<Address> => {
+    create: async (
+        request: CreateAddressRequest,
+        user_id: string,
+    ): Promise<Address> => {
+        await userService.getById(user_id);
+
         const validatedRequest: CreateAddressRequest = validateSchema(
             createAddressSchema,
             request,
@@ -32,10 +48,10 @@ export const addressService = {
 
         const address = await addressRepository.insertOnce(
             validatedRequest,
-            '',
+            user_id,
         );
 
-        return address;
+        return toAddressResponse(address);
     },
 
     update: async (
@@ -54,7 +70,7 @@ export const addressService = {
             validatedRequest,
         );
 
-        return address;
+        return toAddressResponse(address);
     },
 
     delete: async (id: string): Promise<{ id: string }> => {

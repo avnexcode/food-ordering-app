@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { productCategoryService } from './product-category.service';
 import type {
     CreateProductCategoryRequest,
-    ProductCategoryResponse,
+    ProductCategoryWithRelationsResponse,
     UpdateProductCategoryRequest,
 } from './product-category.model';
 import { NotFoundException } from '@/server/lib/error.exception';
@@ -19,31 +19,17 @@ import {
 } from '@/server/helper';
 
 export const handlers = {
-    GET: async (
-        request: NextRequest,
-        context: { params: Promise<{ id: string }> },
-    ): Promise<
-        NextResponse<
-            WebModel<ProductCategoryResponse[] | ProductCategoryResponse>
-        >
+    GET: async (): Promise<
+        NextResponse<WebModel<ProductCategoryWithRelationsResponse[]>>
     > => {
         try {
-            const params = await context.params;
-            const id = params?.id;
-            const data = id
-                ? await productCategoryService.getById(id)
-                : await productCategoryService.getAll();
+            const data = await productCategoryService.getAll();
 
             return NextResponse.json(
                 {
                     status: true,
                     statusCode: 200,
-                    message: id
-                        ? createMessageGetUniqueSuccess(
-                              'Product Category',
-                              `id : ${id}`,
-                          )
-                        : createMessageGetSuccess('Product Categories'),
+                    message: createMessageGetSuccess('Product Categories'),
                     data,
                 },
                 { status: 200 },
@@ -52,6 +38,35 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
+    GET_ID: async (
+        request: NextRequest,
+        context: { params: Promise<{ id: string }> },
+    ): Promise<
+        NextResponse<WebModel<ProductCategoryWithRelationsResponse>>
+    > => {
+        try {
+            const params = await context.params;
+            const id = params?.id;
+            const data = await productCategoryService.getById(id);
+
+            return NextResponse.json(
+                {
+                    status: true,
+                    statusCode: 200,
+                    message: createMessageGetUniqueSuccess(
+                        'Product Category',
+                        `id : ${id}`,
+                    ),
+                    data,
+                },
+                { status: 200 },
+            );
+        } catch (error) {
+            return ErrorFilter.catch(error);
+        }
+    },
+
     POST: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
@@ -78,6 +93,7 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     PUT: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
@@ -107,6 +123,7 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     PATCH: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
@@ -133,6 +150,7 @@ export const handlers = {
             return ErrorFilter.catch(error);
         }
     },
+
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },

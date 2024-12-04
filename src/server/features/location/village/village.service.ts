@@ -2,26 +2,36 @@ import { type Village } from '@prisma/client';
 import type {
     CreateVillageRequest,
     UpdateVillageRequest,
+    VillageWithRelations,
 } from './village.model';
 import { villageRepository } from './village.repository';
 import { NotFoundException } from '@/server/lib/error.exception';
 import { validateSchema } from '@/server/service';
 import { createVillageSchema, updateVillageSchema } from './village.validation';
+import {
+    toVillageResponse,
+    toVillageWithRelations,
+} from '@/server/utils/response/village-api-response';
 
 export const villageService = {
-    getAll: async (): Promise<Village[]> => {
-        const villages = await villageRepository.findMany();
+    getAll: async (): Promise<VillageWithRelations[]> => {
+        const response = await villageRepository.findMany();
+
+        const villages = response?.map(village =>
+            toVillageWithRelations(village),
+        );
+
         return villages!;
     },
 
-    getById: async (id: number): Promise<Village> => {
+    getById: async (id: number): Promise<VillageWithRelations> => {
         const village = await villageRepository.findUniqueId(id);
 
         if (!village) {
             throw new NotFoundException('Village Not FOund');
         }
 
-        return village;
+        return toVillageWithRelations(village);
     },
 
     create: async (request: CreateVillageRequest): Promise<Village> => {
@@ -32,7 +42,7 @@ export const villageService = {
 
         const village = await villageRepository.insertOnce(validatedRequest);
 
-        return village;
+        return toVillageResponse(village);
     },
 
     createMany: async (requests: CreateVillageRequest[]): Promise<number> => {
@@ -60,7 +70,7 @@ export const villageService = {
             validatedRequest,
         );
 
-        return village;
+        return toVillageResponse(village);
     },
 
     delete: async (id: number): Promise<{ id: number }> => {

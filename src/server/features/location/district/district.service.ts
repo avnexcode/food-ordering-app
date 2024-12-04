@@ -1,6 +1,7 @@
 import { type District } from '@prisma/client';
 import type {
     CreateDistrictRequest,
+    DistrictWithRelations,
     UpdateDistrictRequest,
 } from './district.model';
 import { districtRepository } from './district.repository';
@@ -10,22 +11,30 @@ import {
     createDistrictSchema,
     updateDistrictSchema,
 } from './district.validation';
+import {
+    toDistrictResponse,
+    toDistrictWithRelationsResponse,
+} from '@/server/utils/response/district-api-response';
 
 export const districtService = {
-    getAll: async (): Promise<District[]> => {
-        const districts = await districtRepository.findMany();
+    getAll: async (): Promise<DistrictWithRelations[]> => {
+        const response = await districtRepository.findMany();
+
+        const districts = response?.map(district =>
+            toDistrictWithRelationsResponse(district),
+        );
 
         return districts!;
     },
 
-    getById: async (id: number): Promise<District> => {
+    getById: async (id: number): Promise<DistrictWithRelations> => {
         const district = await districtRepository.findUniqueId(id);
 
         if (!district) {
             throw new NotFoundException('District not found');
         }
 
-        return district;
+        return toDistrictWithRelationsResponse(district);
     },
 
     create: async (request: CreateDistrictRequest): Promise<District> => {
@@ -36,7 +45,7 @@ export const districtService = {
 
         const district = await districtRepository.insertOnce(validatedRequest);
 
-        return district;
+        return toDistrictResponse(district);
     },
 
     createMany: async (requests: CreateDistrictRequest[]) => {
@@ -64,7 +73,7 @@ export const districtService = {
             validatedRequest,
         );
 
-        return district;
+        return toDistrictResponse(district);
     },
 
     delete: async (id: number): Promise<{ id: number }> => {

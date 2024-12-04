@@ -14,11 +14,12 @@ import { villageService } from './village.service';
 import type {
     CreateVillageRequest,
     UpdateVillageRequest,
+    VillageWithRelations,
 } from './village.model';
 import { NotFoundException } from '@/server/lib/error.exception';
 
 export const handlers = {
-    GET: async (): Promise<NextResponse<WebModel<Village[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<VillageWithRelations[]>>> => {
         try {
             const data = await villageService.getAll();
 
@@ -35,7 +36,7 @@ export const handlers = {
     GET_ID: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<Village>>> => {
+    ): Promise<NextResponse<WebModel<VillageWithRelations>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

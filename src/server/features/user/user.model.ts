@@ -12,9 +12,17 @@ export type UserWithRelations = Prisma.UserGetPayload<{
     };
 }>;
 
-export type SafeUserWithRelations = Omit<
-    UserWithRelations,
-    'password' | 'store_id'
+export type UserWithAddressRelation = Prisma.UserGetPayload<{
+    include: {
+        addresses: true;
+    };
+}>;
+
+export type SafeUserWithRelations = Omit<UserWithRelations, 'password'>;
+
+export type SafeUserWithAddressRelation = Omit<
+    UserWithAddressRelation,
+    'password'
 >;
 
-export type UserResponse = Omit<User, 'password' | 'store_id'>;
+export type UserResponse = Omit<User, 'password'>;

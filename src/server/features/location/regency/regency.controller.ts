@@ -13,12 +13,13 @@ import { type Regency } from '@prisma/client';
 import { regencyService } from './regency.service';
 import type {
     CreateRegencyRequest,
+    RegencyWithRelations,
     UpdateRegencyRequest,
 } from './regency.model';
 import { NotFoundException } from '@/server/lib/error.exception';
 
 export const handlers = {
-    GET: async (): Promise<NextResponse<WebModel<Regency[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<RegencyWithRelations[]>>> => {
         try {
             const data = await regencyService.getAll();
 
@@ -35,7 +36,7 @@ export const handlers = {
     GET_ID: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<Regency>>> => {
+    ): Promise<NextResponse<WebModel<RegencyWithRelations>>> => {
         try {
             const params = await context.params;
             const id = params?.id;

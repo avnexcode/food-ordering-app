@@ -2,29 +2,34 @@ import { NotFoundException } from '@/server/lib/error.exception';
 import { productRepository } from './product.repository';
 import type {
     CreateProductRequest,
-    ProductResponse,
+    ProductWithRelations,
     UpdateProductRequest,
 } from './product.model';
 import type { Product } from '@prisma/client';
-import { toProductResponse } from '@/server/utils/response/product-api-response';
+import {
+    toProductResponse,
+    toProductWithRelationsResponse,
+} from '@/server/utils/response/product-api-response';
 
 export const productService = {
-    getAll: async (): Promise<ProductResponse[]> => {
-        const data = await productRepository.findMany();
+    getAll: async (): Promise<ProductWithRelations[]> => {
+        const response = await productRepository.findMany();
 
-        const products = data?.map(product => toProductResponse(product));
+        const products = response?.map(product =>
+            toProductWithRelationsResponse(product),
+        );
 
         return products!;
     },
 
-    getById: async (id: string): Promise<ProductResponse> => {
+    getById: async (id: string): Promise<ProductWithRelations> => {
         const product = await productRepository.findUniqueId(id);
 
         if (!product) {
             throw new NotFoundException('Product not found');
         }
 
-        return toProductResponse(product);
+        return toProductWithRelationsResponse(product);
     },
 
     create: async (
@@ -33,7 +38,7 @@ export const productService = {
     ): Promise<Product> => {
         const product = await productRepository.insertOnce(request, store_id);
 
-        return product;
+        return toProductResponse(product);
     },
 
     update: async (
@@ -44,7 +49,7 @@ export const productService = {
 
         const product = await productRepository.updateOnce(id, request);
 
-        return product;
+        return toProductResponse(product);
     },
 
     delete: async (id: string): Promise<{ id: string }> => {

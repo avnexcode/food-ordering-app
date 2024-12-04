@@ -3,7 +3,7 @@ import type {
     createProductCategorySchema,
     updateProductCategorySchema,
 } from './product-category.validation';
-import type { Product, ProductCategory } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 export type CreateProductCategoryRequest = z.infer<
     typeof createProductCategorySchema
@@ -13,12 +13,10 @@ export type UpdateProductCategoryRequest = z.infer<
     typeof updateProductCategorySchema
 >;
 
-export interface ProductCategoryReturn extends ProductCategory {
-    products: Product[];
-}
-
-export interface ProductCategoryResponse {
-    id?: string;
-    name: string;
-    products: Product[];
-}
+export type ProductCategoryWithRelationsResponse =
+    Prisma.ProductCategoryGetPayload<{
+        include: {
+            store: true;
+            products: true;
+        };
+    }>;

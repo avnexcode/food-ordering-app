@@ -2,21 +2,23 @@ import { db } from '@/server/database/db';
 import { type Regency } from '@prisma/client';
 import type {
     CreateRegencyRequest,
+    RegencyWithRelations,
     UpdateRegencyRequest,
 } from './regency.model';
 
 export const regencyRepository = {
-    findMany: async (): Promise<Regency[] | null> => {
+    findMany: async (): Promise<RegencyWithRelations[] | null> => {
         const regencies = await db.regency.findMany({
-            include: { districts: true },
+            include: { province: true, districts: true, addresses: true },
         });
+
         return regencies;
     },
 
-    findUniqueId: async (id: number): Promise<Regency | null> => {
+    findUniqueId: async (id: number): Promise<RegencyWithRelations | null> => {
         const regency = await db.regency.findUnique({
             where: { id },
-            include: { districts: true },
+            include: { province: true, districts: true, addresses: true },
         });
 
         return regency;

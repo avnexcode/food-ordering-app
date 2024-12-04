@@ -2,7 +2,7 @@ import { NotFoundException } from '@/server/lib/error.exception';
 import { productCategoryRepository } from './product-category.repository';
 import type {
     CreateProductCategoryRequest,
-    ProductCategoryResponse,
+    ProductCategoryWithRelationsResponse,
     UpdateProductCategoryRequest,
 } from './product-category.model';
 import { validateSchema } from '@/server/service';
@@ -11,20 +11,25 @@ import {
     updateProductCategorySchema,
 } from './product-category.validation';
 import type { ProductCategory } from '@prisma/client';
-import { toProductCategoryResponse } from '@/server/utils/response/product-category-api-response';
+import {
+    toProductCategoryResponse,
+    toProductCategoryWithRelationsResponse,
+} from '@/server/utils/response/product-category-api-response';
 
 export const productCategoryService = {
-    getAll: async (): Promise<ProductCategoryResponse[]> => {
-        const data = await productCategoryRepository.findMany();
+    getAll: async (): Promise<ProductCategoryWithRelationsResponse[]> => {
+        const response = await productCategoryRepository.findMany();
 
-        const productsCategories = data?.map(productCategory =>
-            toProductCategoryResponse(productCategory),
+        const productsCategories = response?.map(productCategory =>
+            toProductCategoryWithRelationsResponse(productCategory),
         );
 
         return productsCategories!;
     },
 
-    getById: async (id: string): Promise<ProductCategoryResponse> => {
+    getById: async (
+        id: string,
+    ): Promise<ProductCategoryWithRelationsResponse> => {
         const productCategory =
             await productCategoryRepository.findUniqueId(id);
 
@@ -32,7 +37,7 @@ export const productCategoryService = {
             throw new NotFoundException('Product Category not found');
         }
 
-        return toProductCategoryResponse(productCategory);
+        return toProductCategoryWithRelationsResponse(productCategory);
     },
 
     create: async (
@@ -49,7 +54,7 @@ export const productCategoryService = {
             store_id,
         );
 
-        return productCategory;
+        return toProductCategoryResponse(productCategory);
     },
 
     update: async (
@@ -67,7 +72,7 @@ export const productCategoryService = {
             validatedRequest,
         );
 
-        return productCategory;
+        return toProductCategoryResponse(productCategory);
     },
 
     delete: async (id: string): Promise<{ id: string }> => {

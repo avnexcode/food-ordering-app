@@ -2,21 +2,22 @@ import { db } from '@/server/database/db';
 import { type Province } from '@prisma/client';
 import type {
     CreateProvinceRequest,
+    ProvinceWithRelations,
     UpdateProvinceRequest,
 } from './province.model';
 
 export const provinceRepository = {
-    findMany: async (): Promise<Province[] | null> => {
+    findMany: async (): Promise<ProvinceWithRelations[] | null> => {
         const provinces = await db.province.findMany({
-            include: { regencies: true },
+            include: { regencies: true, addresses: true },
         });
 
         return provinces;
     },
-    findUniqueId: async (id: number): Promise<Province | null> => {
+    findUniqueId: async (id: number): Promise<ProvinceWithRelations | null> => {
         const province = await db.province.findUnique({
             where: { id },
-            include: { regencies: true },
+            include: { regencies: true, addresses: true },
         });
 
         return province;

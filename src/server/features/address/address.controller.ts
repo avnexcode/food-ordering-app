@@ -2,6 +2,7 @@ import { ErrorFilter } from '@/server/filter/error.filter';
 import { NextResponse, type NextRequest } from 'next/server';
 import { addressService } from './address.service';
 import type {
+    AddressWithRelations,
     CreateAddressRequest,
     UpdateAddressRequest,
 } from './address.model';
@@ -16,9 +17,10 @@ import {
     createMessagePostSuccess,
     createMessagePutSuccess,
 } from '@/server/helper';
+import { headers } from 'next/headers';
 
 export const handlers = {
-    GET: async (): Promise<NextResponse<WebModel<Address[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<AddressWithRelations[]>>> => {
         try {
             const data = await addressService.getAll();
 
@@ -35,7 +37,7 @@ export const handlers = {
     GET_ID: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<Address>>> => {
+    ): Promise<NextResponse<WebModel<AddressWithRelations>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -56,8 +58,16 @@ export const handlers = {
         request: NextRequest,
     ): Promise<NextResponse<WebModel<Address>>> => {
         try {
+            const headersList = await headers();
+            const userId = headersList.get('x-user-id');
+
+            if (!userId) {
+                throw new NotFoundException('User not found');
+            }
+
             const requestBody = (await request.json()) as CreateAddressRequest;
-            const data = await addressService.create(requestBody);
+
+            const data = await addressService.create(requestBody, userId);
 
             return NextResponse.json(
                 {
@@ -80,6 +90,7 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
+
             const requestBody = (await request.json()) as UpdateAddressRequest;
 
             if (
@@ -143,16 +154,16 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
-            await addressService.delete(id);
+            const data = await addressService.delete(id);
 
             return NextResponse.json(
                 {
                     status: true,
-                    statusCode: 204,
+                    statusCode: 200,
                     message: createMessageDeleteSuccess('Address'),
-                    data: { id },
+                    data,
                 },
-                { status: 204 },
+                { status: 200 },
             );
         } catch (error) {
             return ErrorFilter.catch(error);

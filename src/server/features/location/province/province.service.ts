@@ -1,6 +1,7 @@
 import { NotFoundException } from '@/server/lib/error.exception';
 import type {
     CreateProvinceRequest,
+    ProvinceWithRelations,
     UpdateProvinceRequest,
 } from './province.model';
 import { provinceRepository } from './province.repository';
@@ -10,27 +11,30 @@ import {
     updateProvinceSchema,
 } from './province.validation';
 import { type Province } from '@prisma/client';
-import { toProvinceResponse } from '@/server/utils/response/province-api-response';
+import {
+    toProvinceResponse,
+    toProvinceWithRelationsResponse,
+} from '@/server/utils/response/province-api-response';
 
 export const provinceService = {
-    getAll: async (): Promise<Province[]> => {
+    getAll: async (): Promise<ProvinceWithRelations[]> => {
         const response = await provinceRepository.findMany();
 
         const provinces = response?.map(province =>
-            toProvinceResponse(province),
+            toProvinceWithRelationsResponse(province),
         );
 
         return provinces!;
     },
 
-    getById: async (id: number): Promise<Province> => {
+    getById: async (id: number): Promise<ProvinceWithRelations> => {
         const province = await provinceRepository.findUniqueId(id);
 
         if (!province) {
             throw new NotFoundException('Province not found');
         }
 
-        return province;
+        return toProvinceWithRelationsResponse(province);
     },
 
     create: async (request: CreateProvinceRequest): Promise<Province> => {
@@ -41,7 +45,7 @@ export const provinceService = {
 
         const province = await provinceRepository.insertOnce(validatedRequest);
 
-        return province;
+        return toProvinceResponse(province);
     },
 
     createMany: async (requests: CreateProvinceRequest[]): Promise<number> => {
@@ -69,7 +73,7 @@ export const provinceService = {
             validatedRequest,
         );
 
-        return province;
+        return toProvinceResponse(province);
     },
 
     delete: async (id: number): Promise<{ id: number }> => {

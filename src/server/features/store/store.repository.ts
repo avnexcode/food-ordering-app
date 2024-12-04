@@ -1,29 +1,32 @@
 import { db } from '@/server/database/db';
 import type {
     CreateStoreRequest,
-    StoreReturn,
+    StoreWithRelations,
     UpdateStoreRequest,
 } from './store.model';
 import type { Store } from '@prisma/client';
 
 export const storeRepository = {
-    findMany: async (): Promise<StoreReturn[] | null> => {
+    findMany: async (): Promise<StoreWithRelations[] | null> => {
         const stores = await db.store.findMany({
             include: {
                 owner: {
                     include: {
-                        store: false,
                         addresses: true,
                     },
                 },
                 products: true,
                 product_categories: true,
+                orders: true,
+                transactions: true,
+                disbursements: true,
             },
         });
+
         return stores;
     },
 
-    findUniqueId: async (id: string): Promise<StoreReturn | null> => {
+    findUniqueId: async (id: string): Promise<StoreWithRelations | null> => {
         const store = await db.store.findUnique({
             where: { id },
             include: {
@@ -35,6 +38,9 @@ export const storeRepository = {
                 },
                 products: true,
                 product_categories: true,
+                orders: true,
+                transactions: true,
+                disbursements: true,
             },
         });
 
