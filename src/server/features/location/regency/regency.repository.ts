@@ -22,13 +22,22 @@ export const regencyRepository = {
         return regency;
     },
 
-    insert: async (request: CreateRegencyRequest): Promise<Regency> => {
+    insertOnce: async (request: CreateRegencyRequest): Promise<Regency> => {
         const regency = await db.regency.create({ data: { ...request } });
 
         return regency;
     },
 
-    update: async (
+    insertMany: async (requests: CreateRegencyRequest[]): Promise<number> => {
+        const regency = await db.regency.createMany({
+            data: requests,
+            skipDuplicates: true,
+        });
+
+        return regency.count;
+    },
+
+    updateOnce: async (
         id: number,
         request: UpdateRegencyRequest,
     ): Promise<Regency> => {
@@ -40,7 +49,7 @@ export const regencyRepository = {
         return regency;
     },
 
-    delete: async (id: number): Promise<Regency> => {
+    deleteOnce: async (id: number): Promise<Regency> => {
         const regency = await db.regency.delete({ where: { id } });
 
         return regency;

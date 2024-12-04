@@ -57,7 +57,10 @@ export const handlers = {
     ): Promise<NextResponse<WebModel<Village>>> => {
         try {
             const requestBody = (await request.json()) as CreateVillageRequest;
-            const data = await villageService.create(requestBody);
+            const data = await villageService.create({
+                ...requestBody,
+                id: Number(requestBody.id),
+            });
 
             return NextResponse.json(
                 {

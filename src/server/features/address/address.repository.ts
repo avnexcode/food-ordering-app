@@ -21,7 +21,7 @@ export const addressRepository = {
         return addressCount;
     },
 
-    insertOne: async (
+    insertOnce: async (
         request: CreateAddressRequest,
         user_id: string,
     ): Promise<Address> => {
@@ -35,7 +35,7 @@ export const addressRepository = {
         return address;
     },
 
-    updateOne: async (
+    updateOnce: async (
         id: string,
         request: UpdateAddressRequest,
     ): Promise<Address> => {
@@ -51,7 +51,7 @@ export const addressRepository = {
         return address;
     },
 
-    deleteOne: async (id: string): Promise<Address> => {
+    deleteOnce: async (id: string): Promise<Address> => {
         const address = await db.address.delete({ where: { id } });
 
         return address;

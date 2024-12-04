@@ -55,7 +55,7 @@ export const productRepository = {
         return productCount;
     },
 
-    insertOne: async (
+    insertOnce: async (
         request: CreateProductRequest,
         store_id: string,
     ): Promise<Product> => {
@@ -71,7 +71,7 @@ export const productRepository = {
         return product;
     },
 
-    updateOne: async (
+    updateOnce: async (
         id: string,
         request: UpdateProductRequest,
     ): Promise<Product> => {
@@ -90,7 +90,7 @@ export const productRepository = {
         return product;
     },
 
-    deleteOne: async (id: string): Promise<Product> => {
+    deleteOnce: async (id: string): Promise<Product> => {
         const product = await db.product.delete({ where: { id } });
         return product;
     },

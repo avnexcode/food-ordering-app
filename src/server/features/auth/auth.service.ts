@@ -36,7 +36,7 @@ export const authService = {
             throw new BadRequestException(`Email already exists`);
         }
 
-        const user = await userRepository.insertOne(validatedRequest);
+        const user = await userRepository.insertOnce(validatedRequest);
 
         return toUserResponse(user);
     },
@@ -93,7 +93,7 @@ export const authService = {
                 image: validatedRequest.image,
             };
 
-            user = await userRepository.updateOne(
+            user = await userRepository.updateOnce(
                 userExists.id,
                 updateUserData,
             );
@@ -111,7 +111,7 @@ export const authService = {
                 image,
             };
 
-            user = await userRepository.insertOne(newUserData);
+            user = await userRepository.insertOnce(newUserData);
         }
 
         user = await authRepository.setToken(validatedRequest.email!);

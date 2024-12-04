@@ -31,7 +31,7 @@ export const productService = {
         request: CreateProductRequest,
         store_id: string,
     ): Promise<Product> => {
-        const product = await productRepository.insertOne(request, store_id);
+        const product = await productRepository.insertOnce(request, store_id);
 
         return product;
     },
@@ -42,7 +42,7 @@ export const productService = {
     ): Promise<Product> => {
         await productService.getById(id);
 
-        const product = await productRepository.updateOne(id, request);
+        const product = await productRepository.updateOnce(id, request);
 
         return product;
     },
@@ -50,7 +50,7 @@ export const productService = {
     delete: async (id: string): Promise<{ id: string }> => {
         await productService.getById(id);
 
-        await productRepository.deleteOne(id);
+        await productRepository.deleteOnce(id);
 
         return { id };
     },

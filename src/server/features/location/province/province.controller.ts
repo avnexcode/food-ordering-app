@@ -62,7 +62,10 @@ export const handlers = {
         try {
             const requestBody = (await request.json()) as CreateProvinceRequest;
 
-            const data = await provinceService.create(requestBody);
+            const data = await provinceService.create({
+                ...requestBody,
+                id: Number(requestBody.id),
+            });
 
             return NextResponse.json(
                 {

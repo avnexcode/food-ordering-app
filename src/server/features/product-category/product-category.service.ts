@@ -44,7 +44,7 @@ export const productCategoryService = {
             request,
         );
 
-        const productCategory = await productCategoryRepository.insertOne(
+        const productCategory = await productCategoryRepository.insertOnce(
             validatedRequest,
             store_id,
         );
@@ -62,7 +62,7 @@ export const productCategoryService = {
         );
         await productCategoryService.getById(id);
 
-        const productCategory = await productCategoryRepository.updateOne(
+        const productCategory = await productCategoryRepository.updateOnce(
             id,
             validatedRequest,
         );
@@ -73,7 +73,7 @@ export const productCategoryService = {
     delete: async (id: string): Promise<{ id: string }> => {
         await productCategoryService.getById(id);
 
-        await productCategoryRepository.deleteOne(id);
+        await productCategoryRepository.deleteOnce(id);
 
         return { id };
     },

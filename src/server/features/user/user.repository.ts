@@ -46,7 +46,7 @@ export const userRepository = {
         return userCount;
     },
 
-    insertOne: async (request: RegisterRequest): Promise<User> => {
+    insertOnce: async (request: RegisterRequest): Promise<User> => {
         const id = uuid();
 
         const passwordHashed = request.password
@@ -75,7 +75,7 @@ export const userRepository = {
         return user;
     },
 
-    updateOne: async (
+    updateOnce: async (
         id: string,
         request: UpdateUserRequest,
     ): Promise<User> => {
@@ -101,7 +101,7 @@ export const userRepository = {
         return user;
     },
 
-    deleteOne: async (id: string): Promise<User> => {
+    deleteOnce: async (id: string): Promise<User> => {
         const user = await db.user.delete({
             where: { id },
         });

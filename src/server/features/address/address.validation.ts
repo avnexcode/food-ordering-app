@@ -10,16 +10,20 @@ export const createAddressSchema = z.object({
         .max(100, { message: 'Street must not exceed 100 characters.' })
         .nonempty({ message: 'Street is required.' }),
     village_id: z
-        .bigint({ message: 'Village ID must be a valid BigInt.' })
+        .number({ message: 'Village ID must be a valid number.' })
+        .int({ message: 'Village ID must be an integer.' })
         .nonnegative({ message: 'Village ID must be a positive number.' }),
     district_id: z
-        .bigint({ message: 'District ID must be a valid BigInt.' })
+        .number({ message: 'District ID must be a valid number.' })
+        .int({ message: 'District ID must be an integer.' })
         .nonnegative({ message: 'District ID must be a positive number.' }),
     city_id: z
-        .bigint({ message: 'City ID must be a valid BigInt.' })
+        .number({ message: 'City ID must be a valid number.' })
+        .int({ message: 'City ID must be an integer.' })
         .nonnegative({ message: 'City ID must be a positive number.' }),
     province_id: z
-        .bigint({ message: 'Province ID must be a valid BigInt.' })
+        .number({ message: 'Province ID must be a valid number.' })
+        .int({ message: 'Province ID must be an integer.' })
         .nonnegative({ message: 'Province ID must be a positive number.' }),
     country: z
         .string()
@@ -33,9 +37,7 @@ export const createAddressSchema = z.object({
         .string()
         .max(150, { message: 'Description must not exceed 150 characters.' })
         .optional(),
-    is_default: z
-        .boolean({ message: 'Is default must be a boolean.' })
-        .default(false),
+    is_default: z.boolean({ message: 'Is default must be a boolean.' }),
     user_id: z
         .string({ message: 'User ID must be a valid string.' })
         .optional(),

@@ -46,7 +46,7 @@ export const storeRepository = {
         return storeCount;
     },
 
-    insertOne: async (
+    insertOnce: async (
         request: CreateStoreRequest,
         owner_id: string,
     ): Promise<Store> => {
@@ -60,7 +60,7 @@ export const storeRepository = {
         return store;
     },
 
-    updateOne: async (
+    updateOnce: async (
         id: string,
         request: UpdateStoreRequest,
     ): Promise<Store> => {
@@ -77,7 +77,7 @@ export const storeRepository = {
         return store;
     },
 
-    deleteOne: async (id: string): Promise<Store> => {
+    deleteOnce: async (id: string): Promise<Store> => {
         const store = await db.store.delete({ where: { id } });
         return store;
     },

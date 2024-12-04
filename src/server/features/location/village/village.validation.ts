@@ -1,8 +1,13 @@
 import { z } from 'zod';
 export const createVillageSchema = z.object({
-    district_id: z.bigint().refine(val => val > 0, {
-        message: 'District ID must be a positive integer.',
-    }),
+    id: z
+        .number()
+        .int({ message: 'ID must be an integer.' })
+        .positive({ message: 'ID must be a positive integer.' }),
+    district_id: z
+        .number()
+        .int({ message: 'ID must be an integer.' })
+        .positive({ message: 'ID must be a positive integer.' }),
     name: z
         .string()
         .min(1, { message: 'Village name is required and cannot be empty.' }),

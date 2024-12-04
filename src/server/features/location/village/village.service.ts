@@ -30,9 +30,20 @@ export const villageService = {
             request,
         );
 
-        const village = await villageRepository.insert(validatedRequest);
+        const village = await villageRepository.insertOnce(validatedRequest);
 
         return village;
+    },
+
+    createMany: async (requests: CreateVillageRequest[]): Promise<number> => {
+        const validatedRequests: CreateVillageRequest[] = requests.map(
+            request => validateSchema(createVillageSchema, request),
+        );
+
+        const insertVillagesCount =
+            await villageRepository.insertMany(validatedRequests);
+
+        return insertVillagesCount;
     },
 
     update: async (
@@ -44,7 +55,10 @@ export const villageService = {
             request,
         );
 
-        const village = await villageRepository.update(id, validatedRequest);
+        const village = await villageRepository.updateOnce(
+            id,
+            validatedRequest,
+        );
 
         return village;
     },
@@ -52,7 +66,7 @@ export const villageService = {
     delete: async (id: number): Promise<{ id: number }> => {
         await villageService.getById(id);
 
-        await villageRepository.delete(id);
+        await villageRepository.deleteOnce(id);
 
         return { id };
     },

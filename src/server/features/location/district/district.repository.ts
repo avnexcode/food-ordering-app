@@ -13,6 +13,7 @@ export const districtRepository = {
 
         return districts;
     },
+
     findUniqueId: async (id: number): Promise<District | null> => {
         const district = await db.district.findUnique({
             where: { id },
@@ -21,12 +22,23 @@ export const districtRepository = {
 
         return district;
     },
-    insert: async (request: CreateDistrictRequest): Promise<District> => {
+
+    insertOnce: async (request: CreateDistrictRequest): Promise<District> => {
         const district = await db.district.create({ data: { ...request } });
 
         return district;
     },
-    update: async (
+
+    insertMany: async (requests: CreateDistrictRequest[]): Promise<number> => {
+        const district = await db.district.createMany({
+            data: requests,
+            skipDuplicates: true,
+        });
+
+        return district.count;
+    },
+
+    updateOnce: async (
         id: number,
         request: UpdateDistrictRequest,
     ): Promise<District> => {
@@ -37,7 +49,8 @@ export const districtRepository = {
 
         return district;
     },
-    delete: async (id: number): Promise<District> => {
+
+    deleteOnce: async (id: number): Promise<District> => {
         const district = await db.district.delete({ where: { id } });
 
         return district;

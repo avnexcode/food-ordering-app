@@ -35,7 +35,7 @@ export const storeService = {
             request,
         );
 
-        const store = await storeRepository.insertOne(validatedRequest, '');
+        const store = await storeRepository.insertOnce(validatedRequest, '');
 
         return store;
     },
@@ -48,7 +48,7 @@ export const storeService = {
             request,
         );
 
-        const store = await storeRepository.updateOne(id, validatedRequest);
+        const store = await storeRepository.updateOnce(id, validatedRequest);
 
         return store;
     },
@@ -56,7 +56,7 @@ export const storeService = {
     delete: async (id: string): Promise<{ id: string }> => {
         await storeService.getById(id);
 
-        await storeRepository.deleteOne(id);
+        await storeRepository.deleteOnce(id);
 
         return { id };
     },

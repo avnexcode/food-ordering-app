@@ -45,7 +45,7 @@ export const userService = {
             request,
         );
 
-        const user = await userRepository.updateOne(id, validatedRequest);
+        const user = await userRepository.updateOnce(id, validatedRequest);
 
         return toUserResponse(user);
     },
@@ -53,7 +53,7 @@ export const userService = {
     delete: async (id: string) => {
         await userService.getById(id);
 
-        await userRepository.deleteOne(id);
+        await userRepository.deleteOnce(id);
 
         return { id };
     },

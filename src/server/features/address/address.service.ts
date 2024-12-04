@@ -30,7 +30,10 @@ export const addressService = {
             request,
         );
 
-        const address = await addressRepository.insertOne(validatedRequest, '');
+        const address = await addressRepository.insertOnce(
+            validatedRequest,
+            '',
+        );
 
         return address;
     },
@@ -46,7 +49,10 @@ export const addressService = {
             request,
         );
 
-        const address = await addressRepository.updateOne(id, validatedRequest);
+        const address = await addressRepository.updateOnce(
+            id,
+            validatedRequest,
+        );
 
         return address;
     },
@@ -54,7 +60,7 @@ export const addressService = {
     delete: async (id: string): Promise<{ id: string }> => {
         await addressService.getById(id);
 
-        await addressRepository.deleteOne(id);
+        await addressRepository.deleteOnce(id);
 
         return { id };
     },

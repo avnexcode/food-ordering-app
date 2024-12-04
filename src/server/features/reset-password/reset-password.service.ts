@@ -36,7 +36,7 @@ export const resetPasswordService = {
             throw new BadRequestException('Invalid password');
         }
 
-        const user = await resetPasswordRepository.update(id, password);
+        const user = await resetPasswordRepository.updateOnce(id, password);
 
         return toUserResponse(user);
     },

@@ -58,7 +58,10 @@ export const handlers = {
         try {
             const requestBody = (await request.json()) as CreateRegencyRequest;
 
-            const data = await regencyService.create(requestBody);
+            const data = await regencyService.create({
+                ...requestBody,
+                id: Number(requestBody.id),
+            });
 
             return NextResponse.json(
                 {

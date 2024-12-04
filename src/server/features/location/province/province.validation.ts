@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
 export const createProvinceSchema = z.object({
+    id: z
+        .number()
+        .int({ message: 'ID must be an integer.' })
+        .positive({ message: 'ID must be a positive integer.' }),
     name: z
         .string()
         .min(1, { message: 'Province name is required and cannot be empty.' }),

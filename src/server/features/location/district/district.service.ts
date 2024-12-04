@@ -34,9 +34,20 @@ export const districtService = {
             request,
         );
 
-        const district = await districtRepository.insert(validatedRequest);
+        const district = await districtRepository.insertOnce(validatedRequest);
 
         return district;
+    },
+
+    createMany: async (requests: CreateDistrictRequest[]) => {
+        const validatedRequests: CreateDistrictRequest[] = requests.map(
+            request => validateSchema(createDistrictSchema, request),
+        );
+
+        const insertDistrictsCount =
+            await districtRepository.insertMany(validatedRequests);
+
+        return insertDistrictsCount;
     },
 
     update: async (
@@ -48,7 +59,10 @@ export const districtService = {
             request,
         );
 
-        const district = await districtRepository.update(id, validatedRequest);
+        const district = await districtRepository.updateOnce(
+            id,
+            validatedRequest,
+        );
 
         return district;
     },
@@ -56,7 +70,7 @@ export const districtService = {
     delete: async (id: number): Promise<{ id: number }> => {
         await districtService.getById(id);
 
-        await districtRepository.delete(id);
+        await districtRepository.deleteOnce(id);
 
         return { id };
     },

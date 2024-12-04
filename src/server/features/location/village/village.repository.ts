@@ -18,13 +18,22 @@ export const villageRepository = {
         return village;
     },
 
-    insert: async (request: CreateVillageRequest): Promise<Village> => {
+    insertOnce: async (request: CreateVillageRequest): Promise<Village> => {
         const village = await db.village.create({ data: { ...request } });
 
         return village;
     },
 
-    update: async (
+    insertMany: async (requests: CreateVillageRequest[]): Promise<number> => {
+        const village = await db.village.createMany({
+            data: requests,
+            skipDuplicates: true,
+        });
+
+        return village.count;
+    },
+
+    updateOnce: async (
         id: number,
         request: UpdateVillageRequest,
     ): Promise<Village> => {
@@ -36,7 +45,7 @@ export const villageRepository = {
         return village;
     },
 
-    delete: async (id: number): Promise<Village> => {
+    deleteOnce: async (id: number): Promise<Village> => {
         const village = await db.village.delete({ where: { id } });
 
         return village;

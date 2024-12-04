@@ -22,7 +22,7 @@ export const provinceRepository = {
         return province;
     },
 
-    insert: async (request: CreateProvinceRequest): Promise<Province> => {
+    insertOnce: async (request: CreateProvinceRequest): Promise<Province> => {
         const province = await db.province.create({
             data: { ...request },
         });
@@ -39,7 +39,7 @@ export const provinceRepository = {
         return provinces.count;
     },
 
-    update: async (
+    updateOnce: async (
         id: number,
         request: UpdateProvinceRequest,
     ): Promise<Province> => {
@@ -51,7 +51,7 @@ export const provinceRepository = {
         return province;
     },
 
-    delete: async (id: number): Promise<Province> => {
+    deleteOnce: async (id: number): Promise<Province> => {
         const province = await db.province.delete({ where: { id } });
 
         return province;

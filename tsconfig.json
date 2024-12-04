@@ -41,7 +41,8 @@
         ".next/types/**/*.ts",
         "src/server/features/order/.validation.ts",
         "src/server/features/order/.model.ts",
-        "src/server/features/order/.controller.ts"
+        "src/server/features/order/.controller.ts",
+        "prisma/**/*"
     ],
     "exclude": ["node_modules"]
 }

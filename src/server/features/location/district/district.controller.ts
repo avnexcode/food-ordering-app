@@ -57,7 +57,10 @@ export const handlers = {
     ): Promise<NextResponse<WebModel<District>>> => {
         try {
             const requestBody = (await request.json()) as CreateDistrictRequest;
-            const data = await districtService.create(requestBody);
+            const data = await districtService.create({
+                ...requestBody,
+                id: Number(requestBody.id),
+            });
 
             return NextResponse.json(
                 {

@@ -24,7 +24,7 @@ export const productCategoryRepository = {
         return productCategory;
     },
 
-    insertOne: async (
+    insertOnce: async (
         request: CreateProductCategoryRequest,
         store_id: string,
     ): Promise<ProductCategory> => {
@@ -40,7 +40,7 @@ export const productCategoryRepository = {
         return productCategory;
     },
 
-    updateOne: async (
+    updateOnce: async (
         id: string,
         request: UpdateProductCategoryRequest,
     ): Promise<ProductCategory> => {
@@ -56,7 +56,7 @@ export const productCategoryRepository = {
         return productCategory;
     },
 
-    deleteOne: async (id: string): Promise<ProductCategory> => {
+    deleteOnce: async (id: string): Promise<ProductCategory> => {
         const productCategory = await db.productCategory.delete({
             where: { id },
         });

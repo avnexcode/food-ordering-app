@@ -39,7 +39,7 @@ export const provinceService = {
             request,
         );
 
-        const province = await provinceRepository.insert(validatedRequest);
+        const province = await provinceRepository.insertOnce(validatedRequest);
 
         return province;
     },
@@ -49,10 +49,10 @@ export const provinceService = {
             request => validateSchema(createProvinceSchema, request),
         );
 
-        const insertedCount =
+        const insertedProvincesCount =
             await provinceRepository.insertMany(validatedRequests);
 
-        return insertedCount;
+        return insertedProvincesCount;
     },
 
     update: async (
@@ -64,7 +64,10 @@ export const provinceService = {
             request,
         );
 
-        const province = await provinceRepository.update(id, validatedRequest);
+        const province = await provinceRepository.updateOnce(
+            id,
+            validatedRequest,
+        );
 
         return province;
     },
@@ -72,7 +75,7 @@ export const provinceService = {
     delete: async (id: number): Promise<{ id: number }> => {
         await provinceService.getById(id);
 
-        await provinceRepository.delete(id);
+        await provinceRepository.deleteOnce(id);
 
         return { id };
     },

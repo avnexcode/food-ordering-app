@@ -31,9 +31,20 @@ export const regencyService = {
             request,
         );
 
-        const regency = await regencyRepository.insert(validatedRequest);
+        const regency = await regencyRepository.insertOnce(validatedRequest);
 
         return regency;
+    },
+
+    createMany: async (requests: CreateRegencyRequest[]): Promise<number> => {
+        const validatedRequests: CreateRegencyRequest[] = requests.map(
+            request => validateSchema(createRegencySchema, request),
+        );
+
+        const insertRegenciesCount =
+            await regencyRepository.insertMany(validatedRequests);
+
+        return insertRegenciesCount;
     },
 
     update: async (
@@ -45,7 +56,10 @@ export const regencyService = {
             request,
         );
 
-        const regency = await regencyRepository.update(id, validatedRequest);
+        const regency = await regencyRepository.updateOnce(
+            id,
+            validatedRequest,
+        );
 
         return regency;
     },
@@ -53,7 +67,7 @@ export const regencyService = {
     delete: async (id: number): Promise<{ id: number }> => {
         await regencyService.getById(id);
 
-        await regencyRepository.delete(id);
+        await regencyRepository.deleteOnce(id);
 
         return { id };
     },
