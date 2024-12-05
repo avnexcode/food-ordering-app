@@ -13,4 +13,5 @@ Terima kasih kepada semua kontributor yang telah berpartisipasi dalam proyek ini
 - [@shodeq](https://github.com/shodeq) 
 - [@jihannkn](https://github.com/Aldyfaisal80)
 - [@Aldyfaisal80](https://github.com/jihannkn)
+- [@Reon](https://github.com/reonxp)
 
