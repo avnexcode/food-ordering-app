@@ -17,6 +17,7 @@ import {
     createMessagePostSuccess,
     createMessagePutSuccess,
 } from '@/server/helper';
+import { headers } from 'next/headers';
 
 export const handlers = {
     GET: async (): Promise<NextResponse<WebModel<StoreWithRelations[]>>> => {
@@ -66,12 +67,14 @@ export const handlers = {
     },
     POST: async (
         request: NextRequest,
-        context: { params: Promise<{ id: string }> },
     ): Promise<NextResponse<WebModel<Store>>> => {
         try {
+            const headerList = await headers();
+            const userId = headerList.get('x-user-id');
+
             const requestBody = (await request.json()) as CreateStoreRequest;
 
-            const data = await storeService.create(requestBody);
+            const data = await storeService.create(requestBody, userId!);
 
             return NextResponse.json(
                 {

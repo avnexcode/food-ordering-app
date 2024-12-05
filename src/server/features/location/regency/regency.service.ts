@@ -24,7 +24,7 @@ export const regencyService = {
         return regencies!;
     },
 
-    getById: async (id: number): Promise<RegencyWithRelations> => {
+    getById: async (id: string): Promise<RegencyWithRelations> => {
         const regency = await regencyRepository.findUniqueId(id);
 
         if (!regency) {
@@ -57,7 +57,7 @@ export const regencyService = {
     },
 
     update: async (
-        id: number,
+        id: string,
         request: UpdateRegencyRequest,
     ): Promise<Regency> => {
         const validatedRequest: UpdateRegencyRequest = validateSchema(
@@ -73,7 +73,7 @@ export const regencyService = {
         return toRegencyResponse(regency);
     },
 
-    delete: async (id: number): Promise<{ id: number }> => {
+    delete: async (id: string): Promise<{ id: string }> => {
         await regencyService.getById(id);
 
         await regencyRepository.deleteOnce(id);

@@ -27,7 +27,7 @@ export const provinceService = {
         return provinces!;
     },
 
-    getById: async (id: number): Promise<ProvinceWithRelations> => {
+    getById: async (id: string): Promise<ProvinceWithRelations> => {
         const province = await provinceRepository.findUniqueId(id);
 
         if (!province) {
@@ -60,7 +60,7 @@ export const provinceService = {
     },
 
     update: async (
-        id: number,
+        id: string,
         request: UpdateProvinceRequest,
     ): Promise<Province> => {
         const validatedRequest: UpdateProvinceRequest = validateSchema(
@@ -76,7 +76,7 @@ export const provinceService = {
         return toProvinceResponse(province);
     },
 
-    delete: async (id: number): Promise<{ id: number }> => {
+    delete: async (id: string): Promise<{ id: string }> => {
         await provinceService.getById(id);
 
         await provinceRepository.deleteOnce(id);

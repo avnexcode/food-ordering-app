@@ -15,6 +15,7 @@ import {
     toProductCategoryResponse,
     toProductCategoryWithRelationsResponse,
 } from '@/server/utils/response/product-category-api-response';
+import { userService } from '../user';
 
 export const productCategoryService = {
     getAll: async (): Promise<ProductCategoryWithRelationsResponse[]> => {
@@ -42,8 +43,14 @@ export const productCategoryService = {
 
     create: async (
         request: CreateProductCategoryRequest,
-        store_id: string,
+        user_id: string,
     ): Promise<ProductCategory> => {
+        const user = await userService.getById(user_id);
+
+        if (!user.store) {
+            throw new NotFoundException('User have no store');
+        }
+
         const validatedRequest: CreateProductCategoryRequest = validateSchema(
             createProductCategorySchema,
             request,
@@ -51,7 +58,7 @@ export const productCategoryService = {
 
         const productCategory = await productCategoryRepository.insertOnce(
             validatedRequest,
-            store_id,
+            user.store?.id,
         );
 
         return toProductCategoryResponse(productCategory);

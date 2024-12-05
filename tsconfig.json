@@ -29,7 +29,8 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["./src/*"]
-        }
+        },
+        "allowImportingTsExtensions": true
     },
     "include": [
         ".eslintrc.cjs",

@@ -15,7 +15,7 @@ export const regencyRepository = {
         return regencies;
     },
 
-    findUniqueId: async (id: number): Promise<RegencyWithRelations | null> => {
+    findUniqueId: async (id: string): Promise<RegencyWithRelations | null> => {
         const regency = await db.regency.findUnique({
             where: { id },
             include: { province: true, districts: true, addresses: true },
@@ -40,7 +40,7 @@ export const regencyRepository = {
     },
 
     updateOnce: async (
-        id: number,
+        id: string,
         request: UpdateRegencyRequest,
     ): Promise<Regency> => {
         const regency = await db.regency.update({
@@ -51,7 +51,7 @@ export const regencyRepository = {
         return regency;
     },
 
-    deleteOnce: async (id: number): Promise<Regency> => {
+    deleteOnce: async (id: string): Promise<Regency> => {
         const regency = await db.regency.delete({ where: { id } });
 
         return regency;

@@ -15,7 +15,7 @@ export const districtRepository = {
         return districts;
     },
 
-    findUniqueId: async (id: number): Promise<DistrictWithRelations | null> => {
+    findUniqueId: async (id: string): Promise<DistrictWithRelations | null> => {
         const district = await db.district.findUnique({
             where: { id },
             include: { regency: true, villages: true, addresses: true },
@@ -40,7 +40,7 @@ export const districtRepository = {
     },
 
     updateOnce: async (
-        id: number,
+        id: string,
         request: UpdateDistrictRequest,
     ): Promise<District> => {
         const district = await db.district.update({
@@ -51,7 +51,7 @@ export const districtRepository = {
         return district;
     },
 
-    deleteOnce: async (id: number): Promise<District> => {
+    deleteOnce: async (id: string): Promise<District> => {
         const district = await db.district.delete({ where: { id } });
 
         return district;

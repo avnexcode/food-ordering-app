@@ -24,7 +24,7 @@ export const villageService = {
         return villages!;
     },
 
-    getById: async (id: number): Promise<VillageWithRelations> => {
+    getById: async (id: string): Promise<VillageWithRelations> => {
         const village = await villageRepository.findUniqueId(id);
 
         if (!village) {
@@ -57,7 +57,7 @@ export const villageService = {
     },
 
     update: async (
-        id: number,
+        id: string,
         request: UpdateVillageRequest,
     ): Promise<Village> => {
         const validatedRequest: UpdateVillageRequest = validateSchema(
@@ -73,7 +73,7 @@ export const villageService = {
         return toVillageResponse(village);
     },
 
-    delete: async (id: number): Promise<{ id: number }> => {
+    delete: async (id: string): Promise<{ id: string }> => {
         await villageService.getById(id);
 
         await villageRepository.deleteOnce(id);

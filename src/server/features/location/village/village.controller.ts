@@ -40,7 +40,7 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
-            const data = await villageService.getById(Number(id));
+            const data = await villageService.getById(id);
 
             return NextResponse.json({
                 status: true,
@@ -58,10 +58,7 @@ export const handlers = {
     ): Promise<NextResponse<WebModel<Village>>> => {
         try {
             const requestBody = (await request.json()) as CreateVillageRequest;
-            const data = await villageService.create({
-                ...requestBody,
-                id: Number(requestBody.id),
-            });
+            const data = await villageService.create(requestBody);
 
             return NextResponse.json(
                 {
@@ -98,7 +95,7 @@ export const handlers = {
                 throw new NotFoundException('Some fields are missing');
             }
 
-            const data = await villageService.update(Number(id), requestBody);
+            const data = await villageService.update(id, requestBody);
 
             return NextResponse.json(
                 {
@@ -123,7 +120,7 @@ export const handlers = {
             const id = params?.id;
             const requestBody = (await request.json()) as UpdateVillageRequest;
 
-            const data = await villageService.update(Number(id), requestBody);
+            const data = await villageService.update(id, requestBody);
 
             return NextResponse.json(
                 {
@@ -142,12 +139,12 @@ export const handlers = {
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<{ id: number }>>> => {
+    ): Promise<NextResponse<WebModel<{ id: string }>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
 
-            const data = await villageService.delete(Number(id));
+            const data = await villageService.delete(id);
 
             return NextResponse.json(
                 {

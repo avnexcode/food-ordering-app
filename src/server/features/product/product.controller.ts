@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { productService } from './product.service';
 import type {
     CreateProductRequest,
-    ProductWithRelatios,
+    ProductWithRelations,
     UpdateProductRequest,
 } from './product.model';
 import { NotFoundException } from '@/server/lib/error.exception';
@@ -17,9 +17,10 @@ import {
     createMessagePutSuccess,
 } from '@/server/helper';
 import { type Product } from '@prisma/client';
+import { headers } from 'next/headers';
 
 export const handlers = {
-    GET: async (): Promise<NextResponse<WebModel<ProductWithRelatios[]>>> => {
+    GET: async (): Promise<NextResponse<WebModel<ProductWithRelations[]>>> => {
         try {
             const data = await productService.getAll();
 
@@ -40,7 +41,7 @@ export const handlers = {
     GET_ID: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<ProductWithRelatios>>> => {
+    ): Promise<NextResponse<WebModel<ProductWithRelations>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
@@ -68,12 +69,12 @@ export const handlers = {
         request: NextRequest,
     ): Promise<NextResponse<WebModel<Product>>> => {
         try {
+            const headerList = await headers();
+            const userId = headerList.get('x-user-id');
+
             const requestBody = (await request.json()) as CreateProductRequest;
 
-            const data = await productService.create(
-                requestBody,
-                'cm41dvsts0001rf2wyh0ajkne',
-            );
+            const data = await productService.create(requestBody, userId!);
 
             return NextResponse.json(
                 {

@@ -15,7 +15,7 @@ export const villageRepository = {
         return villages;
     },
 
-    findUniqueId: async (id: number): Promise<VillageWithRelations | null> => {
+    findUniqueId: async (id: string): Promise<VillageWithRelations | null> => {
         const village = await db.village.findUnique({
             where: { id },
             include: { district: true, addresses: true },
@@ -40,7 +40,7 @@ export const villageRepository = {
     },
 
     updateOnce: async (
-        id: number,
+        id: string,
         request: UpdateVillageRequest,
     ): Promise<Village> => {
         const village = await db.village.update({
@@ -51,7 +51,7 @@ export const villageRepository = {
         return village;
     },
 
-    deleteOnce: async (id: number): Promise<Village> => {
+    deleteOnce: async (id: string): Promise<Village> => {
         const village = await db.village.delete({ where: { id } });
 
         return village;
