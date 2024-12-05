@@ -6,7 +6,7 @@ import {
 import { getFirstWord, renderElements } from '@/utils';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { NavbarMenuItem } from './NavbarMenuItem';
-import { LayoutDashboard, LogIn, LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, LogIn, LogOut, Settings, Store } from 'lucide-react';
 
 export const NavbarMenuList = () => {
     const { data: session, status: sessionStatus } = useSession();
@@ -45,11 +45,21 @@ export const NavbarMenuList = () => {
                         ),
                     })}
 
+                <NavbarMenuItem
+                    menu={{
+                        label: 'store',
+                        url: '/store',
+                        icon: <Store />,
+                    }}
+                />
+
                 {sessionStatus === 'unauthenticated' && (
-                    <DropdownMenuItem onClick={() => signIn()}>
-                        <LogIn />
-                        Login
-                    </DropdownMenuItem>
+                    <>
+                        <DropdownMenuItem onClick={() => signIn()}>
+                            <LogIn />
+                            Login
+                        </DropdownMenuItem>
+                    </>
                 )}
 
                 {sessionStatus === 'authenticated' && (

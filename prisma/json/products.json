@@ -1,0 +1,13 @@
+{
+    "name": "Wireless Headphones",
+    "slug": "wireless-headphones",
+    "price": 199.99,
+    "description": "High-quality wireless headphones with noise cancellation and long battery life.",
+    "images": [
+        "https://example.com/images/headphones1.jpg",
+        "https://example.com/images/headphones2.jpg"
+    ],
+    "stock": 50,
+    "weight": 0.5,
+    "category_id": "cm4aomfio0005i9mcgk947qrh"
+}

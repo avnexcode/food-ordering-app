@@ -1,0 +1,14 @@
+{
+    "label": "Home",
+    "street": "Letjen Witarmin",
+    "village_id": "3505060002",
+    "district_id": "3505060",
+    "city_id": "3505",
+    "province_id": "35",
+    "country": "Indonesia",
+    "postal_code": "66172",
+    "description": "My primary residence",
+    "is_default": true,
+    "latitude": 0,
+    "longitude": 0
+}
