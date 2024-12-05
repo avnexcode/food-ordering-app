@@ -1,13 +1,6 @@
 import { z } from 'zod';
 export const createDistrictSchema = z.object({
-    id: z
-        .number()
-        .int({ message: 'ID must be an integer.' })
-        .positive({ message: 'ID must be a positive integer.' }),
-    regency_id: z
-        .number()
-        .int({ message: 'ID must be an integer.' })
-        .positive({ message: 'ID must be a positive integer.' }),
+    regency_id: z.string().min(1, { message: '' }),
     name: z
         .string()
         .min(1, { message: 'District name is required and cannot be empty.' }),

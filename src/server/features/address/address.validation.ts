@@ -9,22 +9,10 @@ export const createAddressSchema = z.object({
         .string()
         .min(1, { message: 'Street is required' })
         .max(100, { message: 'Street must not exceed 100 characters.' }),
-    village_id: z
-        .number({ message: 'Village ID must be a valid number.' })
-        .int({ message: 'Village ID must be an integer.' })
-        .positive({ message: 'Village ID must be a positive number.' }),
-    district_id: z
-        .number({ message: 'District ID must be a valid number.' })
-        .int({ message: 'District ID must be an integer.' })
-        .positive({ message: 'District ID must be a positive number.' }),
-    city_id: z
-        .number({ message: 'City ID must be a valid number.' })
-        .int({ message: 'City ID must be an integer.' })
-        .positive({ message: 'City ID must be a positive number.' }),
-    province_id: z
-        .number({ message: 'Province ID must be a valid number.' })
-        .int({ message: 'Province ID must be an integer.' })
-        .positive({ message: 'Province ID must be a positive number.' }),
+    village_id: z.string(),
+    district_id: z.string(),
+    city_id: z.string(),
+    province_id: z.string(),
     country: z
         .string()
         .max(100, { message: 'Country must not exceed 100 characters.' })

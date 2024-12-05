@@ -14,7 +14,7 @@ export const provinceRepository = {
 
         return provinces;
     },
-    findUniqueId: async (id: number): Promise<ProvinceWithRelations | null> => {
+    findUniqueId: async (id: string): Promise<ProvinceWithRelations | null> => {
         const province = await db.province.findUnique({
             where: { id },
             include: { regencies: true, addresses: true },
@@ -41,7 +41,7 @@ export const provinceRepository = {
     },
 
     updateOnce: async (
-        id: number,
+        id: string,
         request: UpdateProvinceRequest,
     ): Promise<Province> => {
         const province = await db.province.update({
@@ -52,7 +52,7 @@ export const provinceRepository = {
         return province;
     },
 
-    deleteOnce: async (id: number): Promise<Province> => {
+    deleteOnce: async (id: string): Promise<Province> => {
         const province = await db.province.delete({ where: { id } });
 
         return province;

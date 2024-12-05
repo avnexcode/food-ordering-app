@@ -22,8 +22,7 @@ export const createProductSchema = z.object({
     stock: z
         .number()
         .int({ message: 'Stock must be an integer.' })
-        .min(0, { message: 'Stock cannot be negative.' })
-        .default(0),
+        .min(0, { message: 'Stock cannot be negative.' }),
     weight: z
         .number({ message: 'Weight must be a valid number.' })
         .positive({ message: 'Weight must be a positive value.' })
@@ -32,9 +31,8 @@ export const createProductSchema = z.object({
         .string()
         .min(1, { message: 'Category ID must be a valid string.' })
         .optional(),
-    store_id: z.string().min(1, { message: 'Store ID is required.' }),
 });
 
 export const updateProductSchema = createProductSchema.partial().extend({
-    id: z.string().uuid({ message: 'ID must be a valid UUID.' }),
+    store_id: z.string().min(1, { message: 'Store ID is required.' }),
 });

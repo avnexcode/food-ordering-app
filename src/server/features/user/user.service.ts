@@ -22,6 +22,9 @@ export const userService = {
     },
 
     getById: async (id: string): Promise<SafeUserWithRelations> => {
+        if (!id) {
+            throw new NotFoundException('Id user not found');
+        }
         const user = await userRepository.findUniqueId(id);
 
         if (!user) {

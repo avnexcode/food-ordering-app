@@ -10,6 +10,9 @@ import {
     toProductResponse,
     toProductWithRelationsResponse,
 } from '@/server/utils/response/product-api-response';
+import { validateSchema } from '@/server/service';
+import { createProductSchema } from './product.validation';
+import { userService } from '../user';
 
 export const productService = {
     getAll: async (): Promise<ProductWithRelations[]> => {
@@ -34,9 +37,23 @@ export const productService = {
 
     create: async (
         request: CreateProductRequest,
-        store_id: string,
+        user_id: string,
     ): Promise<Product> => {
-        const product = await productRepository.insertOnce(request, store_id);
+        const user = await userService.getById(user_id);
+
+        if (!user.store) {
+            throw new NotFoundException('User have no store');
+        }
+
+        const validatedRequest: CreateProductRequest = validateSchema(
+            createProductSchema,
+            request,
+        );
+
+        const product = await productRepository.insertOnce(
+            validatedRequest,
+            user.store?.id,
+        );
 
         return toProductResponse(product);
     },

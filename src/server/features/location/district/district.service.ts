@@ -27,7 +27,7 @@ export const districtService = {
         return districts!;
     },
 
-    getById: async (id: number): Promise<DistrictWithRelations> => {
+    getById: async (id: string): Promise<DistrictWithRelations> => {
         const district = await districtRepository.findUniqueId(id);
 
         if (!district) {
@@ -48,7 +48,7 @@ export const districtService = {
         return toDistrictResponse(district);
     },
 
-    createMany: async (requests: CreateDistrictRequest[]) => {
+    createMany: async (requests: CreateDistrictRequest[]): Promise<number> => {
         const validatedRequests: CreateDistrictRequest[] = requests.map(
             request => validateSchema(createDistrictSchema, request),
         );
@@ -60,7 +60,7 @@ export const districtService = {
     },
 
     update: async (
-        id: number,
+        id: string,
         request: UpdateDistrictRequest,
     ): Promise<District> => {
         const validatedRequest: UpdateDistrictRequest = validateSchema(
@@ -76,7 +76,7 @@ export const districtService = {
         return toDistrictResponse(district);
     },
 
-    delete: async (id: number): Promise<{ id: number }> => {
+    delete: async (id: string): Promise<{ id: string }> => {
         await districtService.getById(id);
 
         await districtRepository.deleteOnce(id);

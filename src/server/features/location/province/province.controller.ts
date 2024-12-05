@@ -41,7 +41,7 @@ export const handlers = {
             const params = await context.params;
             const id = params?.id;
 
-            const data = await provinceService.getById(Number(id));
+            const data = await provinceService.getById(id);
 
             return NextResponse.json({
                 status: true,
@@ -63,10 +63,7 @@ export const handlers = {
         try {
             const requestBody = (await request.json()) as CreateProvinceRequest;
 
-            const data = await provinceService.create({
-                ...requestBody,
-                id: Number(requestBody.id),
-            });
+            const data = await provinceService.create(requestBody);
 
             return NextResponse.json(
                 {
@@ -103,7 +100,7 @@ export const handlers = {
                 throw new NotFoundException('Missing some fields');
             }
 
-            const data = await provinceService.update(Number(id), requestBody);
+            const data = await provinceService.update(id, requestBody);
 
             return NextResponse.json(
                 {
@@ -129,7 +126,7 @@ export const handlers = {
 
             const requestBody = (await request.json()) as UpdateProvinceRequest;
 
-            const data = await provinceService.update(Number(id), requestBody);
+            const data = await provinceService.update(id, requestBody);
 
             return NextResponse.json(
                 {
@@ -148,12 +145,12 @@ export const handlers = {
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<{ id: number }>>> => {
+    ): Promise<NextResponse<WebModel<{ id: string }>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
 
-            const data = await provinceService.delete(Number(id));
+            const data = await provinceService.delete(id);
 
             return NextResponse.json(
                 {

@@ -39,7 +39,7 @@ export const addressService = {
         request: CreateAddressRequest,
         user_id: string,
     ): Promise<Address> => {
-        await userService.getById(user_id);
+        const user = await userService.getById(user_id);
 
         const validatedRequest: CreateAddressRequest = validateSchema(
             createAddressSchema,
@@ -48,7 +48,7 @@ export const addressService = {
 
         const address = await addressRepository.insertOnce(
             validatedRequest,
-            user_id,
+            user.id,
         );
 
         return toAddressResponse(address);

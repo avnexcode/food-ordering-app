@@ -74,10 +74,10 @@ model Address {
     id          String   @id @default(cuid())
     label       String   @db.VarChar(50)
     street      String   @db.VarChar(100)
-    village_id  Int
-    district_id Int
-    city_id     Int
-    province_id Int
+    village_id  String
+    district_id String
+    city_id     String
+    province_id String
     country     String?  @db.VarChar(100)
     postal_code String?  @db.VarChar(10)
     description String?  @db.VarChar(150)
@@ -252,7 +252,7 @@ model Transaction {
 }
 
 model Province {
-    id        Int       @id @default(autoincrement())
+    id        String    @id @default(cuid())
     name      String
     alt_name  String    @default("")
     latitude  Float     @default(0)
@@ -264,8 +264,8 @@ model Province {
 }
 
 model Regency {
-    id          Int        @id @default(autoincrement())
-    province_id Int
+    id          String     @id @default(cuid())
+    province_id String
     name        String
     alt_name    String     @default("")
     latitude    Float      @default(0)
@@ -278,8 +278,8 @@ model Regency {
 }
 
 model District {
-    id         Int       @id @default(autoincrement())
-    regency_id Int
+    id         String    @id @default(cuid())
+    regency_id String
     name       String
     alt_name   String    @default("")
     latitude   Float     @default(0)
@@ -292,8 +292,8 @@ model District {
 }
 
 model Village {
-    id          Int       @id @default(autoincrement())
-    district_id Int
+    id          String    @id @default(cuid())
+    district_id String
     name        String
     alt_name    String    @default("")
     latitude    Float     @default(0)

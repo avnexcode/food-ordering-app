@@ -1,13 +1,6 @@
 import { z } from 'zod';
 export const createRegencySchema = z.object({
-    id: z
-        .number()
-        .int({ message: 'ID must be an integer.' })
-        .positive({ message: 'ID must be a positive integer.' }),
-    province_id: z
-        .number()
-        .int({ message: 'ID must be an integer.' })
-        .positive({ message: 'ID must be a positive integer.' }),
+    province_id: z.string(),
     name: z
         .string()
         .min(1, { message: 'Regency name is required and cannot be empty.' }),

@@ -17,6 +17,9 @@ import {
     createMessagePostSuccess,
     createMessagePutSuccess,
 } from '@/server/helper';
+import { headers } from 'next/headers';
+import { userService } from '../user';
+import { useId } from 'react';
 
 export const handlers = {
     GET: async (): Promise<
@@ -69,15 +72,17 @@ export const handlers = {
 
     POST: async (
         request: NextRequest,
-        context: { params: Promise<{ id: string }> },
     ): Promise<NextResponse<WebModel<ProductCategory>>> => {
         try {
+            const headerList = await headers();
+            const userId = headerList.get('x-user-id');
+
             const requestBody =
                 (await request.json()) as CreateProductCategoryRequest;
 
             const data = await productCategoryService.create(
                 requestBody,
-                'cm41dvsts0001rf2wyh0ajkne',
+                userId!,
             );
 
             return NextResponse.json(
@@ -105,7 +110,13 @@ export const handlers = {
             const requestBody =
                 (await request.json()) as UpdateProductCategoryRequest;
 
-            if (!requestBody.name) {
+            if (
+                !(
+                    requestBody.name &&
+                    requestBody.description &&
+                    requestBody.store_id
+                )
+            ) {
                 throw new NotFoundException('Some fields are missing');
             }
             const data = await productCategoryService.update(id, requestBody);

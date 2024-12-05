@@ -40,7 +40,7 @@ export const handlers = {
         try {
             const params = await context.params;
             const id = params?.id;
-            const data = await regencyService.getById(Number(id));
+            const data = await regencyService.getById(id);
 
             return NextResponse.json({
                 status: true,
@@ -59,10 +59,7 @@ export const handlers = {
         try {
             const requestBody = (await request.json()) as CreateRegencyRequest;
 
-            const data = await regencyService.create({
-                ...requestBody,
-                id: Number(requestBody.id),
-            });
+            const data = await regencyService.create(requestBody);
 
             return NextResponse.json(
                 {
@@ -100,7 +97,7 @@ export const handlers = {
                 throw new NotFoundException('Some fields are missing');
             }
 
-            const data = await regencyService.update(Number(id), requestBody);
+            const data = await regencyService.update(id, requestBody);
 
             return NextResponse.json(
                 {
@@ -126,7 +123,7 @@ export const handlers = {
 
             const requestBody = (await request.json()) as UpdateRegencyRequest;
 
-            const data = await regencyService.update(Number(id), requestBody);
+            const data = await regencyService.update(id, requestBody);
 
             return NextResponse.json(
                 {
@@ -145,12 +142,12 @@ export const handlers = {
     DELETE: async (
         request: NextRequest,
         context: { params: Promise<{ id: string }> },
-    ): Promise<NextResponse<WebModel<{ id: number }>>> => {
+    ): Promise<NextResponse<WebModel<{ id: string }>>> => {
         try {
             const params = await context.params;
             const id = params?.id;
 
-            const data = await regencyService.delete(Number(id));
+            const data = await regencyService.delete(id);
 
             return NextResponse.json(
                 {

@@ -18,6 +18,7 @@ import {
     createMessagePutSuccess,
 } from '@/server/helper';
 import { headers } from 'next/headers';
+import { userService } from '../user';
 
 export const handlers = {
     GET: async (): Promise<NextResponse<WebModel<AddressWithRelations[]>>> => {
@@ -61,13 +62,9 @@ export const handlers = {
             const headersList = await headers();
             const userId = headersList.get('x-user-id');
 
-            if (!userId) {
-                throw new NotFoundException('User not found');
-            }
-
             const requestBody = (await request.json()) as CreateAddressRequest;
 
-            const data = await addressService.create(requestBody, userId);
+            const data = await addressService.create(requestBody, userId!);
 
             return NextResponse.json(
                 {

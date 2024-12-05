@@ -8,7 +8,7 @@ import type { RoleMiddlewareConfig } from './types/middleware';
 const middleware = async (request: NextRequest) =>
     NextResponse.next({ request });
 
-const protectedPaths = ['/dashboard', '/settings'];
+const protectedPaths = ['/dashboard', '/settings', '/cart', '/checkout'];
 
 const roleConfig: RoleMiddlewareConfig[] = [
     { path: '/dashboard', roles: [UserRole.ADMIN], redirect: '/' },
@@ -19,7 +19,13 @@ const roleConfig: RoleMiddlewareConfig[] = [
     },
 ];
 
-const protectedApiPaths = ['/api/kontoru'];
+const protectedApiPaths = [
+    '/api/v1/addresses',
+    '/api/v1/stores',
+    '/api/v1/product-categories',
+    '/api/v1/products',
+    '/api/v1/pmay',
+];
 
 const middlewareHandler = withAuthToken(
     withRole(withAuth(middleware, protectedPaths), roleConfig),
