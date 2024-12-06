@@ -7,8 +7,11 @@ import type {
 import type { Address } from '@prisma/client';
 
 export const addressRepository = {
-    findMany: async (): Promise<AddressWithRelations[] | null> => {
+    findMany: async (
+        user_id: string,
+    ): Promise<AddressWithRelations[] | null> => {
         const addresses = await db.address.findMany({
+            where: { user: { id: user_id } },
             include: {
                 user: true,
                 province: true,

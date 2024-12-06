@@ -1,14 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import { signIn } from 'next-auth/react';
 import { type LoginFormSchema } from '../types';
-import { type AxiosError } from 'axios';
+import type { ApiProps } from '@/types/client/api';
 
-type UseLoginProps = {
-    onSuccess?: () => void;
-    onError?: (error: AxiosError) => void;
-};
-
-export const useLogin = ({ onSuccess, onError }: UseLoginProps) => {
+export const useLogin = ({ onSuccess, onError }: ApiProps) => {
     return useMutation({
         mutationKey: ['login'],
         mutationFn: async (

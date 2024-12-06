@@ -26,6 +26,18 @@ export const RegisterForm = () => {
     const router = useRouter();
     const { toast } = useToast();
 
+    const form = useForm<RegisterFormSchema>({
+        defaultValues: {
+            name: '',
+            email: '',
+            password: '',
+            confirm_password: '',
+        },
+        resolver: zodResolver(registerFormSchema),
+    });
+
+    const onSubmit = (values: RegisterFormSchema) => register(values);
+
     const { mutate: register, isPending: signUpPending } = useRegister({
         onSuccess: () => {
             toast({
@@ -37,22 +49,13 @@ export const RegisterForm = () => {
         onError: error => {
             toast({
                 title: 'Register Error',
-                description: error.message || 'Invalid credentials',
+                description:
+                    error.response?.data?.error ??
+                    error.message ??
+                    'Invalid Credentials',
                 variant: 'destructive',
             });
         },
-    });
-
-    const onSubmit = (values: RegisterFormSchema) => register(values);
-
-    const form = useForm<RegisterFormSchema>({
-        defaultValues: {
-            name: '',
-            email: '',
-            password: '',
-            confirm_password: '',
-        },
-        resolver: zodResolver(registerFormSchema),
     });
 
     return (

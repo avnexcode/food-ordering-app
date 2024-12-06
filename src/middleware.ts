@@ -20,6 +20,7 @@ const roleConfig: RoleMiddlewareConfig[] = [
 ];
 
 const protectedApiPaths = [
+    '/api/v1/users',
     '/api/v1/addresses',
     '/api/v1/stores',
     '/api/v1/product-categories',

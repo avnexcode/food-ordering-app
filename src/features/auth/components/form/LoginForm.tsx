@@ -23,6 +23,17 @@ export const LoginForm = () => {
     const router = useRouter();
     const { toast } = useToast();
 
+    const form = useForm<LoginFormSchema>({
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+        resolver: zodResolver(loginFormSchema),
+    });
+
+    const onSubmit = (values: LoginFormSchema) =>
+        login({ ...values, callbackUrl: '' });
+
     const { mutate: login, isPending: signInPending } = useLogin({
         onSuccess: () => {
             toast({
@@ -34,21 +45,13 @@ export const LoginForm = () => {
         onError: error => {
             toast({
                 title: 'Login Error',
-                description: error.message || 'Invalid credentials',
+                description:
+                    error.response?.data.message ??
+                    error.message ??
+                    'Invalid credentials',
                 variant: 'destructive',
             });
         },
-    });
-
-    const onSubmit = (values: LoginFormSchema) =>
-        login({ ...values, callbackUrl: '' });
-
-    const form = useForm<LoginFormSchema>({
-        defaultValues: {
-            email: '',
-            password: '',
-        },
-        resolver: zodResolver(loginFormSchema),
     });
 
     return (

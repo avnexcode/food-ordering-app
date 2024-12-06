@@ -1,3 +1,4 @@
+import { AxiosProvider } from './providers/AxiosProvider';
 import { TanstackProvider } from './providers/TanstackProvider';
 import { SessionProvider } from 'next-auth/react';
 
@@ -9,7 +10,9 @@ export const AppProviders: React.FC<AppProvidersProps> = props => {
     const { children } = props;
     return (
         <SessionProvider>
-            <TanstackProvider>{children}</TanstackProvider>
+            <AxiosProvider>
+                <TanstackProvider>{children}</TanstackProvider>
+            </AxiosProvider>
         </SessionProvider>
     );
 };
