@@ -13,38 +13,14 @@ import { UpdatePasswordFormInner } from './UpdatePasswordFormInner';
 import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useUpdatePassword } from '../../api';
-import { useSession } from 'next-auth/react';
-import { useUserById } from '../../../user/api/useUserById';
 import { useToast } from '@/hooks/use-toast';
+import { useProfile } from '../../api/useProfile';
+import { AxiosError } from 'axios';
 
 export const UpdatePasswordForm = () => {
     const { toast } = useToast();
 
-    const { data: session } = useSession();
-
-    const { data: user } = useUserById({
-        id: session?.user.id,
-        token: session?.user.token,
-    });
-
-    const { mutate: updatePassword, isPending: isUpdatePasswordPending } =
-        useUpdatePassword({
-            id: user?.id,
-            token: user?.token,
-            onSuccess: () => {
-                toast({
-                    title: 'Success',
-                    description: 'Success update passowrd',
-                });
-            },
-            onError: error => {
-                toast({
-                    title: 'Success',
-                    description: 'Invalid Password',
-                    variant: 'destructive',
-                });
-            },
-        });
+    const { data: user } = useProfile();
 
     const form = useForm<UpdatePasswordSchema>({
         defaultValues: {
@@ -55,7 +31,29 @@ export const UpdatePasswordForm = () => {
         resolver: zodResolver(updatePasswordSchema),
     });
 
-    const onSubmit = (values: UpdatePasswordSchema) => updatePassword(values);
+    const onSubmit = (values: UpdatePasswordSchema) =>
+        updatePassword({ id: user?.id, values });
+
+    const { mutate: updatePassword, isPending: isUpdatePasswordPending } =
+        useUpdatePassword({
+            onSuccess: () => {
+                toast({
+                    title: 'Success',
+                    description: 'Success update passowrd',
+                });
+                form.reset();
+            },
+            onError: error => {
+                toast({
+                    title: 'Success',
+                    description:
+                        error.response?.data.error ??
+                        error.message ??
+                        'Invalid credentials',
+                    variant: 'destructive',
+                });
+            },
+        });
 
     return (
         <Card>

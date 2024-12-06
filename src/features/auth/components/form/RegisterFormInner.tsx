@@ -17,6 +17,7 @@ type RegisterFormInnerProps = {
 
 export const RegisterFormInner = (props: RegisterFormInnerProps) => {
     const { form_id, form, onSubmit } = props;
+
     return (
         <form
             id={form_id}

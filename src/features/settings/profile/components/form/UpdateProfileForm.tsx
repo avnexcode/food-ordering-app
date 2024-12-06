@@ -10,27 +10,19 @@ import { UpdateProfileFormInner } from './UpdateProfileFormInner';
 import { useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { updateProfileSchema, type UpdateProfileSchema } from '../../types';
-import { useUserById } from '../../../user/api/useUserById';
-import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useUpdateProfile } from '../../api';
 import { useToast } from '@/hooks/use-toast';
 import { UpdateProfileImageForm } from './UpdateProfileImageForm';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useProfile } from '../../api/useProfile';
 
 export const UpdateProfileForm = () => {
     const { toast } = useToast();
-    const { data: session } = useSession();
-
-    const { data: user } = useUserById({
-        id: session?.user?.id,
-        token: session?.user?.token,
-    });
+    const { data: user } = useProfile();
 
     const { mutate: updateProfile, isPending: isUpdateProfilePending } =
         useUpdateProfile({
-            id: user?.id,
-            token: user?.token,
             onSuccess: () => {
                 toast({
                     title: 'Success',
@@ -48,13 +40,16 @@ export const UpdateProfileForm = () => {
         resolver: zodResolver(updateProfileSchema),
     });
 
-    const onSubmit = (values: UpdateProfileSchema) => updateProfile(values);
+    const onSubmit = (values: UpdateProfileSchema) =>
+        updateProfile({ id: user?.id, values });
 
     useEffect(() => {
         if (user) {
-            form.setValue('username', user.username);
-            form.setValue('name', user.name);
-            form.setValue('email', user.email);
+            form.reset({
+                username: user.username,
+                name: user.name,
+                email: user.email,
+            });
         }
     }, [form, user]);
 
@@ -62,7 +57,7 @@ export const UpdateProfileForm = () => {
         <Card>
             <CardHeader>
                 <CardTitle className="text-2xl capitalize">
-                    {session?.user.name}
+                    {user?.name}
                 </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-4">

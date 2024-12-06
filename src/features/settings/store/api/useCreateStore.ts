@@ -1,30 +1,17 @@
-import { axiosInstance } from '@/lib/axios';
+import { axiosAuth } from '@/lib/axios';
+import type { ApiProps, ApiResponse } from '@/types/client/api';
 import { useMutation } from '@tanstack/react-query';
+import type { CreateStoreFormSchema } from '../types';
 
-type UseCreateStoreProps = {
-    token?: string;
-    onSuccess?: () => void;
-    onError?: (error: Error) => void;
-};
-
-export const useCreateStore = ({
-    token,
-    onSuccess,
-    onError,
-}: UseCreateStoreProps) => {
+export const useCreateStore = ({ onSuccess, onError }: ApiProps) => {
     return useMutation({
-        mutationKey: ['stores', token],
-        mutationFn: async (values: { name: string }) => {
-            const response = await axiosInstance.post<{ name: string }>(
-                '/stores',
-                values,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                },
-            );
-            return response.data;
+        mutationKey: ['stores'],
+        mutationFn: async (values: CreateStoreFormSchema) => {
+            const response = await axiosAuth.post<
+                ApiResponse<CreateStoreFormSchema>
+            >('/stores', values);
+
+            return response.data.data;
         },
         onSuccess,
         onError,

@@ -18,12 +18,14 @@ import {
     createMessagePutSuccess,
 } from '@/server/helper';
 import { headers } from 'next/headers';
-import { userService } from '../user';
 
 export const handlers = {
     GET: async (): Promise<NextResponse<WebModel<AddressWithRelations[]>>> => {
         try {
-            const data = await addressService.getAll();
+            const headerList = await headers();
+            const userId = headerList.get('x-user-id');
+
+            const data = await addressService.getAll(userId!);
 
             return NextResponse.json({
                 status: true,

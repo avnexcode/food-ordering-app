@@ -7,8 +7,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { type UseFormReturn } from 'react-hook-form';
-import { useUserById } from '../../../../user/api/useUserById';
-import { useSession } from 'next-auth/react';
 
 type CreateStoreFormInnerProps = {
     form_id: string;
@@ -18,15 +16,6 @@ type CreateStoreFormInnerProps = {
 
 export const CreateStoreFormInner = (props: CreateStoreFormInnerProps) => {
     const { form_id, form, onSubmit } = props;
-    const { data: session, status } = useSession();
-
-    if (status === 'loading') {
-        return <div>Loading...</div>;
-    }
-
-    if (!session) {
-        return <div>No session found. Please log in.</div>;
-    }
 
     return (
         <form id={form_id} onSubmit={form.handleSubmit(onSubmit)}>

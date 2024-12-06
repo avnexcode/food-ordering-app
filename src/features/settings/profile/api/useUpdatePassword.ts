@@ -1,37 +1,28 @@
-import { axiosInstance } from '@/lib/axios';
+import { axiosAuth } from '@/lib/axios';
+import type { ApiProps } from '@/types/client/api';
 import { useMutation } from '@tanstack/react-query';
+import type { UpdatePasswordSchema } from '../types';
 
-interface UpdatePasswordData {
-    password: string;
-    new_password: string;
-}
-
-type UseUpdatePasswordProps = {
-    id?: string;
-    token?: string;
-    onSuccess?: () => void;
-    onError?: (error: Error) => void;
-};
-
-export const useUpdatePassword = ({
-    id,
-    token,
-    onSuccess,
-    onError,
-}: UseUpdatePasswordProps) => {
+export const useUpdatePassword = ({ onSuccess, onError }: ApiProps) => {
     return useMutation({
         // This clearly indicates:
         // 1. The resource type (users)
         // 2. The specific user (id)
         // 3. The specific field being updated (password)
-        mutationKey: ['users', id, 'password'],
+        mutationKey: ['users'],
 
-        mutationFn: async (data: UpdatePasswordData) => {
-            const response = await axiosInstance.patch(`/users/${id}`, data, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+        mutationFn: async ({
+            id,
+            values,
+        }: {
+            id?: string;
+            values: UpdatePasswordSchema;
+        }) => {
+            if (!id) throw new Error('TIdak ada id');
+            const response = await axiosAuth.patch(
+                `/users/reset-password/${id}`,
+                values,
+            );
             return response;
         },
         onSuccess,
