@@ -50,8 +50,8 @@ export const CreateStoreForm = () => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
+                <CardTitle>Create Store</CardTitle>
+                <CardDescription>Enter your store details to get started.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
