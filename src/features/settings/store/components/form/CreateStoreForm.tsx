@@ -13,30 +13,22 @@ import { z } from 'zod';
 import { CreateStoreFormInner } from './CreateStoreFormInner';
 import { Button } from '@/components/ui/button';
 import { useCreateStore } from '../../api/useCreateStore';
-import { useSession } from 'next-auth/react';
-import { useUserById } from '../../../user/api/useUserById';
-import { useUpdateUser } from '@/features/user/api/useUpdateUser';
 import { UserRole } from '@prisma/client';
 import { useToast } from '@/hooks/use-toast';
+import { useProfile } from '@/features/settings/profile/api/useProfile';
+import { useUpdateUser } from '@/features/settings/user/api/useUpdateUser';
 
 export const CreateStoreForm = () => {
-    const { data: session } = useSession();
     const { toast } = useToast();
 
-    const { data: user } = useUserById({
-        id: session?.user.id,
-        token: session?.user.token,
-    });
+    const { data: user } = useProfile();
 
-    const { mutate: updateUser } = useUpdateUser({
-        id: user?.id,
-        token: user?.token,
-    });
+    const { mutate: updateUser } = useUpdateUser({});
 
     const { mutate: createStore, isPending: isCreateStorePending } =
         useCreateStore({
             onSuccess: () => {
-                updateUser({ role: UserRole.SELLER });
+                updateUser({ id: user?.id, values: { role: UserRole.SELLER } });
                 toast({
                     title: 'Success',
                     description: 'Success create store',
@@ -58,8 +50,8 @@ export const CreateStoreForm = () => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Card Title</CardTitle>
-                <CardDescription>Card Description</CardDescription>
+                <CardTitle>Create Store</CardTitle>
+                <CardDescription>Enter your store details to get started.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>

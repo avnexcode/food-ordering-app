@@ -6,7 +6,10 @@ import type {
 } from './address.model';
 import { addressRepository } from './address.repository';
 import { createAddressSchema, updateAddressSchema } from './address.validation';
-import { NotFoundException } from '@/server/lib/error.exception';
+import {
+    NotFoundException,
+    UnauthorizedException,
+} from '@/server/lib/error.exception';
 import type { Address } from '@prisma/client';
 import { userService } from '../user';
 import {
@@ -15,8 +18,12 @@ import {
 } from '@/server/utils/response/address-api-response';
 
 export const addressService = {
-    getAll: async (): Promise<AddressWithRelations[]> => {
-        const response = await addressRepository.findMany();
+    getAll: async (user_id: string): Promise<AddressWithRelations[]> => {
+        if (!user_id) {
+            throw new UnauthorizedException();
+        }
+
+        const response = await addressRepository.findMany(user_id);
 
         const addresses = response?.map(address =>
             toAddressWithRelationsResponse(address),

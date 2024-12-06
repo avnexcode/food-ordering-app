@@ -2,7 +2,7 @@ import { env } from '@/env';
 import { db } from '@/server/database/db';
 import { type User } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import type { JWTPayload } from '@/types';
+import type { JWTPayload } from '@/types/server/jwt';
 import { jwtService } from '@/server/service/jwt.service';
 import { v4 as uuid } from 'uuid';
 export const authRepository = {
