@@ -1,5 +1,5 @@
 import { SettingLayout } from '@/components/layout/SettingLayout';
-import { CreateStoreForm } from '@/features/settings/store/components/form/CreateStoreForm';
+import { CreateStoreForm } from '@/features/store/components/form/CreateStoreForm';
 import Head from 'next/head';
 
 export const SettingCreateStorePage = () => {
