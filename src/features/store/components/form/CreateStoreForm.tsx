@@ -14,9 +14,9 @@ import { Button } from '@/components/ui/button';
 import { useCreateStore } from '../../api/useCreateStore';
 import { UserRole } from '@prisma/client';
 import { useToast } from '@/hooks/use-toast';
-import { useProfile } from '@/features/settings/profile/api/useProfile';
-import { useUpdateUser } from '@/features/settings/user/api/useUpdateUser';
 import { createStoreFormSchema, type CreateStoreFormSchema } from '../../types';
+import { useUpdateUser } from '@/features/user/api/useUpdateUser';
+import { useProfile } from '@/features/profile/api/useProfile';
 
 export const CreateStoreForm = () => {
     const { toast } = useToast();
