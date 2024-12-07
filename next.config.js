@@ -16,6 +16,9 @@ const config = {
         defaultLocale: 'en',
     },
     transpilePackages: ['geist'],
+    images: {
+        domains: ['res.cloudinary.com'],
+    }
 };
 
 export default config;
