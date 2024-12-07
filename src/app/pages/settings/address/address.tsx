@@ -1,5 +1,6 @@
 import { SettingLayout } from '@/components/layout/SettingLayout';
 import Head from 'next/head';
+import { SettingCreateAddressPage } from './create-address';
 
 export const SettingAddressPage = () => {
     return (
@@ -7,7 +8,7 @@ export const SettingAddressPage = () => {
             <Head>
                 <title>Setting - Address</title>
             </Head>
-            <div className="w-full">Hello Setting Address</div>
+            <SettingCreateAddressPage />
         </>
     );
 };

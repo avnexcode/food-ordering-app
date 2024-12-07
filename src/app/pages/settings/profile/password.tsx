@@ -1,10 +1,11 @@
 import { SettingLayout } from '@/components/layout/SettingLayout';
-import { UpdatePasswordForm } from '@/features/settings/profile/components/form/UpdatePasswordForm';
+import { UpdatePasswordForm } from '@/features/profile/components/form/UpdatePasswordForm';
+// import { UpdatePasswordForm } from '@/features/settings/profile/components/form/UpdatePasswordForm';
 import Head from 'next/head';
 
 export const SettingPasswordPage = () => {
     return (
-        <>
+        <>``
             <Head>
                 <title>Setting - Password</title>
             </Head>

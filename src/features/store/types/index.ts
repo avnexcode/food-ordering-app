@@ -1,15 +1,10 @@
 import { z } from 'zod';
 
 export const createStoreFormSchema = z.object({
-    id: z
-        .string()
-        .cuid()
-        .refine(id => id !== '', { message: 'ID must not be empty' }),
     name: z.string().max(100, 'Name must be 100 characters or less'),
     description: z
         .string()
-        .max(65535, 'Description must be 65535 characters or less')
-        .optional(),
+        .max(65535, 'Description must be 65535 characters or less'),
     image: z
         .string()
         .max(255, 'Image URL must be 255 characters or less')
