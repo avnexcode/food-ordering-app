@@ -9,7 +9,6 @@ import {
 import { Form } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { CreateStoreFormInner } from './CreateStoreFormInner';
 import { Button } from '@/components/ui/button';
 import { useCreateStore } from '../../api/useCreateStore';
@@ -17,6 +16,7 @@ import { UserRole } from '@prisma/client';
 import { useToast } from '@/hooks/use-toast';
 import { useProfile } from '@/features/settings/profile/api/useProfile';
 import { useUpdateUser } from '@/features/settings/user/api/useUpdateUser';
+import { createStoreFormSchema, type CreateStoreFormSchema } from '../../types';
 
 export const CreateStoreForm = () => {
     const { toast } = useToast();
@@ -36,14 +36,15 @@ export const CreateStoreForm = () => {
             },
         });
 
-    const form = useForm<{ name: string }>({
+    const form = useForm<CreateStoreFormSchema>({
         defaultValues: {
             name: '',
+            description: '',
         },
-        resolver: zodResolver(z.object({ name: z.string() })),
+        resolver: zodResolver(createStoreFormSchema),
     });
 
-    const onSubmit = (values: { name: string }) => {
+    const onSubmit = (values: CreateStoreFormSchema) => {
         createStore(values);
     };
 
@@ -51,7 +52,9 @@ export const CreateStoreForm = () => {
         <Card>
             <CardHeader>
                 <CardTitle>Create Store</CardTitle>
-                <CardDescription>Enter your store details to get started.</CardDescription>
+                <CardDescription>
+                    Enter your store details to get started.
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
