@@ -15,7 +15,6 @@ import { Button } from '@/components/ui/button';
 import { useUpdatePassword } from '../../api';
 import { useToast } from '@/hooks/use-toast';
 import { useProfile } from '../../api/useProfile';
-import { AxiosError } from 'axios';
 
 export const UpdatePasswordForm = () => {
     const { toast } = useToast();
