@@ -1,23 +1,17 @@
 import { axiosInstance } from '@/lib/axios';
 import { useMutation } from '@tanstack/react-query';
 import { type RegisterFormSchema } from '../types';
-import { type AxiosError } from 'axios';
+import type { ApiProps, ApiResponse } from '@/types/client/api';
 
-type UseRegisterProps = {
-    onSuccess?: () => void;
-    onError?: (error: AxiosError) => void;
-};
-
-export const useRegister = ({ onSuccess, onError }: UseRegisterProps) => {
+export const useRegister = ({ onSuccess, onError }: ApiProps) => {
     return useMutation({
         mutationKey: ['register'],
         mutationFn: async (values: RegisterFormSchema) => {
-            const response = await axiosInstance.post<RegisterFormSchema>(
-                '/auth/register',
-                values,
-            );
+            const response = await axiosInstance.post<
+                ApiResponse<RegisterFormSchema>
+            >('/auth/register', values);
 
-            return response.data;
+            return response.data.data;
         },
         onSuccess,
         onError,

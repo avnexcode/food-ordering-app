@@ -1,19 +1,19 @@
+import { axiosAuth } from '@/lib/axios';
+import type { ApiResponse } from '@/types/client/api';
+import type { User } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
-import { type AxiosError } from 'axios';
 
-type UseUserByIdProps = {
-    id?: string;
-    token?: string;
-    onSuccess?: () => void;
-    onError?: (error: AxiosError) => void;
-};
-
-export const useUserById = ({ id, token }: UseUserByIdProps) => {
+export const useUserById = (id?: string) => {
     return useQuery({
-        queryKey: ['users'],
-        queryFn: async () => {
-            const response = null;
-            return response;
+        queryKey: ['users', id],
+        queryFn: async (): Promise<User> => {
+            if (!id) throw new Error('ID and token are required');
+
+            const response = await axiosAuth.get<ApiResponse<User>>(
+                `/users/${id}`,
+            );
+
+            return response.data.data;
         },
     });
 };

@@ -1,1 +1,1 @@
-export { SettingStorePage as default } from '@/app/pages/settings/store';
+export { SettingStorePage as default } from '@/app/pages/settings/store/store';

@@ -1,30 +1,24 @@
-import { axiosInstance } from '@/lib/axios';
-import { type UserRole } from '@prisma/client';
+import { axiosAuth } from '@/lib/axios';
+import type { ApiProps, ApiResponse } from '@/types/client/api';
+import { type UserRole, type User } from '@prisma/client';
 import { useMutation } from '@tanstack/react-query';
-import { type AxiosError } from 'axios';
 
-type UseUpdateUserProps = {
-    id?: string;
-    token?: string;
-    onSuccess?: () => void;
-    onError?: (error: AxiosError) => void;
-};
-
-export const useUpdateUser = ({
-    id,
-    token,
-    onSuccess,
-    onError,
-}: UseUpdateUserProps) => {
+export const useUpdateUser = ({ onSuccess, onError }: ApiProps) => {
     return useMutation({
         mutationKey: ['users'],
-        mutationFn: async (values: { role: UserRole }) => {
-            const response = await axiosInstance.patch(`/users/${id}`, values, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            return response;
+        mutationFn: async ({
+            id,
+            values,
+        }: {
+            id?: string;
+            values: { role: UserRole };
+        }) => {
+            if (!id) throw new Error('Tidak ada id');
+            const response = await axiosAuth.patch<ApiResponse<User>>(
+                `/users/${id}`,
+                values,
+            );
+            return response.data.data;
         },
         onSuccess,
         onError,

@@ -1,4 +1,4 @@
-import type { JWTPayload } from '@/types';
+import type { JWTPayload } from '@/types/server/jwt';
 import * as jose from 'jose';
 import { UnauthorizedException } from '../lib/error.exception';
 import { env } from '@/env';
