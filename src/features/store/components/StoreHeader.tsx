@@ -2,29 +2,25 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export const StoreHeader = () => {
     return (
-        <>
-            <header className="relative">
-                <div
-                    className={`flex px-12 py-5 mb-2 justify-center gap-20 border-b-2 border-black`}
-                >
-                    <Avatar className="w-32 h-32">
+        <div className="flex justify-center items-center w-full border-2 border-gray-100 p-[10px]">
+            <div className=" w-full flex gap-[10px] ">
+                <div className="logo w-[30%] flex items-center justify-center">
+                    <Avatar className="w-[150px] h-[150px]">
                         <AvatarImage
-                            src="https://placehold.co/400x400"
+                            src="https://placehold.co/150x150"
                             alt={''}
                         />
-                        <AvatarFallback>U</AvatarFallback>
+                        <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col gap-5 items-center justify-center">
-                        <span className="text-5xl font-bold uppercase">
-                            Toko bukan toko tapi yoga open BO
-                        </span>
-                        <span className="italic">
-                            disini yoga melayani dengan penuh semangat dan penuh
-                            gairah
-                        </span>
+                </div>
+                <div className="w-[70%] flex items-center justify-center">
+                    <div>
+                        <div className="text-xl font-bold ">
+                            <h1>Toko bukan toko tapi yoga open BO</h1>
+                        </div>
                     </div>
                 </div>
-            </header>
-        </>
+            </div>
+        </div>
     );
 };

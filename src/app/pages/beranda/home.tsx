@@ -3,6 +3,8 @@ import Head from 'next/head';
 import { MainHero } from '@/components/fragment/home/MainHero';
 import { DiscountBanner } from '@/components/fragment/home/DiscountBanner';
 import { NavHero } from '@/components/fragment/home/NavHero';
+import { NavProductList } from '@/components/fragment/home/NavProductList';
+import { MainProductList } from '@/components/fragment/home/MainProductList';
 
 export const HomePage = () => {
     return (
@@ -18,6 +20,10 @@ export const HomePage = () => {
                 <nav className="mt-10">
                     <NavHero />
                 </nav>
+                <section className="flex flex-col gap-2 mt-10">
+                    <NavProductList />
+                    <MainProductList />
+                </section>
             </main>
         </>
     );
