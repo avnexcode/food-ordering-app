@@ -11,7 +11,7 @@ import {
     toStoreResponse,
     toStoreWithRelationsResponse,
 } from '@/server/utils/response/store-api-response';
-import type { Store } from '@prisma/client';
+import { UserRole, type Store } from '@prisma/client';
 import { userService } from '../user';
 
 export const storeService = {
@@ -37,7 +37,7 @@ export const storeService = {
         request: CreateStoreRequest,
         user_id: string,
     ): Promise<Store> => {
-        const user = await userService.getById(user_id);
+        await userService.getById(user_id);
 
         const validatedRequest: CreateStoreRequest = validateSchema(
             createStoreSchema,
@@ -46,8 +46,10 @@ export const storeService = {
 
         const store = await storeRepository.insertOnce(
             validatedRequest,
-            user.id,
+            user_id,
         );
+
+        await userService.update(user_id, { role: UserRole.SELLER });
 
         return toStoreResponse(store);
     },

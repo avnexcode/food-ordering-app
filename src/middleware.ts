@@ -17,6 +17,11 @@ const roleConfig: RoleMiddlewareConfig[] = [
         roles: [UserRole.SELLER],
         redirect: '/settings/create-store',
     },
+    {
+        path: '/settings/create-store',
+        roles: [UserRole.USER],
+        redirect: '/settings/store',
+    },
 ];
 
 const protectedApiPaths = [

@@ -5,7 +5,7 @@ import Head from 'next/head';
 
 export const SettingPasswordPage = () => {
     return (
-        <>``
+        <>
             <Head>
                 <title>Setting - Password</title>
             </Head>
