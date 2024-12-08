@@ -11,6 +11,7 @@ import { NavbarDropdownMenuItem } from './NavbarDropdownMenuItem';
 
 export const NavbarDropdownMenuList = () => {
     const { data: session, status: sessionStatus } = useSession();
+    console.log()
 
     const dropDownMenu = {
         USER_MENU: [
@@ -23,10 +24,15 @@ export const NavbarDropdownMenuList = () => {
 
     return (
         <>
-            <DropdownMenuLabel className="w-full capitalize">
-                {session?.user.name
-                    ? `Hello, ${getFirstWord(session?.user.name)}`
-                    : `Welcome 👉👌💦`}
+            <DropdownMenuLabel className="w-full ">
+                <div className='flex flex-col'>
+                    <span className='capitalize'>
+                        {session?.user.name}
+                    </span>
+                    <span className='text-sm text-gray-400 font-poppins'>
+                        {session?.user.email}
+                    </span>
+                </div>
             </DropdownMenuLabel>
 
             <DropdownMenuSeparator />
