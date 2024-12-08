@@ -1,9 +1,16 @@
+import { MainLayout } from '@/components/layout/MainLayout';
+import { CartProductList } from '@/features/cart/components/CartProductList';
+import Head from 'next/head';
+
 export const CartPage = () => {
-    return (
-        <>
-            <h1>Cart Page</h1>
-        </>
-    );
+  return (
+    <>
+      <Head>
+        <title>Foodzy - Cart</title>
+      </Head>
+      <CartProductList />
+    </>
+  );
 };
 
-CartPage.getLayout = (page: React.ReactElement) => <>{page}</>;
+CartPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
