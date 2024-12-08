@@ -13,7 +13,7 @@ export const UpdateStoreDialog = () => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline">Edit Store</Button>
+                <Button variant="outline">Edit Profile</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
