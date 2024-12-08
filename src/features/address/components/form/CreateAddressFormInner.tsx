@@ -95,7 +95,6 @@ export const CreateAddressFormInner = (props: CreateAddressFormInnerProps) => {
                         </SelectContent>
                     </Select>
                 </div>
-
                 <div>
                     <p>district_id</p>
                 </div>
