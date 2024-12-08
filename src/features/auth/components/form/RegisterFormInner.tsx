@@ -8,6 +8,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { BadgeCheck } from 'lucide-react';
 
 type RegisterFormInnerProps = {
     form_id: string;
@@ -17,6 +18,30 @@ type RegisterFormInnerProps = {
 
 export const RegisterFormInner = (props: RegisterFormInnerProps) => {
     const { form_id, form, onSubmit } = props;
+
+    const validation = {
+        lowercase: /(?=.*[a-z])/.test(form.watch('password')),
+        uppercase: /(?=.*[A-Z])/.test(form.watch('password')),
+        number: /(?=.*\d)/.test(form.watch('password')),
+        symbol: /(?=.*[@$!%*?&])/.test(form.watch('password')),
+    };
+
+    const ValidatedText = ({
+        isValid,
+        children,
+    }: {
+        isValid: boolean;
+        children: React.ReactNode;
+    }) => (
+        <span className="flex items-center gap-2">
+            {isValid ? (
+                <BadgeCheck className="w-4 h-4 text-green-500" />
+            ) : (
+                <BadgeCheck className="w-4 h-4 text-gray-500" />
+            )}
+            {children}
+        </span>
+    );
 
     return (
         <form
@@ -75,6 +100,60 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
                                 />
                             </FormControl>
                             <FormMessage />
+                            <div className="flex justify-around py-5">
+                                <p className="flex flex-col gap-4">
+                                    <ValidatedText
+                                        isValid={validation.uppercase}
+                                    >
+                                        <span
+                                            className={
+                                                validation.uppercase
+                                                    ? 'text-green-500'
+                                                    : ''
+                                            }
+                                        >
+                                            Uppercase
+                                        </span>
+                                    </ValidatedText>
+                                    <ValidatedText
+                                        isValid={validation.lowercase}
+                                    >
+                                        <span
+                                            className={
+                                                validation.lowercase
+                                                    ? 'text-green-500'
+                                                    : ''
+                                            }
+                                        >
+                                            Lowercase
+                                        </span>
+                                    </ValidatedText>
+                                </p>
+                                <p className="flex flex-col gap-4">
+                                    <ValidatedText isValid={validation.number}>
+                                        <span
+                                            className={
+                                                validation.number
+                                                    ? 'text-green-500'
+                                                    : ''
+                                            }
+                                        >
+                                            Number
+                                        </span>
+                                    </ValidatedText>
+                                    <ValidatedText isValid={validation.symbol}>
+                                        <span
+                                            className={
+                                                validation.symbol
+                                                    ? 'text-green-500'
+                                                    : ''
+                                            }
+                                        >
+                                            Symbol
+                                        </span>
+                                    </ValidatedText>
+                                </p>
+                            </div>
                         </FormItem>
                     )}
                 />
