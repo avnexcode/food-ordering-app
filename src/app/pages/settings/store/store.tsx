@@ -1,3 +1,4 @@
+import { SettingStoreHeader } from '@/components/fragment/settings/SettingStoreHeader';
 import { SettingLayout } from '@/components/layout/SettingLayout';
 import Head from 'next/head';
 
@@ -7,7 +8,7 @@ export const SettingStorePage = () => {
             <Head>
                 <title>Setting - Store</title>
             </Head>
-            <div className="w-full">Hello Setting Store</div>
+            <SettingStoreHeader />
         </>
     );
 };

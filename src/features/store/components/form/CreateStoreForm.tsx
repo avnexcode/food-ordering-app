@@ -12,23 +12,15 @@ import { useForm } from 'react-hook-form';
 import { CreateStoreFormInner } from './CreateStoreFormInner';
 import { Button } from '@/components/ui/button';
 import { useCreateStore } from '../../api/useCreateStore';
-import { UserRole } from '@prisma/client';
 import { useToast } from '@/hooks/use-toast';
 import { createStoreFormSchema, type CreateStoreFormSchema } from '../../types';
-import { useProfile } from '@/features/profile/api/useProfile';
-import { useUpdateUser } from '@/features/user/api/useUpdateUser';
 
 export const CreateStoreForm = () => {
     const { toast } = useToast();
 
-    const { data: user } = useProfile();
-
-    const { mutate: updateUser } = useUpdateUser({});
-
     const { mutate: createStore, isPending: isCreateStorePending } =
         useCreateStore({
             onSuccess: () => {
-                updateUser({ id: user?.id, values: { role: UserRole.SELLER } });
                 toast({
                     title: 'Success',
                     description: 'Success create store',
@@ -40,6 +32,10 @@ export const CreateStoreForm = () => {
         defaultValues: {
             name: '',
             description: '',
+            bank_name: '',
+            image: '',
+            bank_account: '',
+            bank_holder: '',
         },
         resolver: zodResolver(createStoreFormSchema),
     });
@@ -49,10 +45,12 @@ export const CreateStoreForm = () => {
     };
 
     return (
-        <Card className='border-none'>
-            <CardHeader  className="gap-y-5">
+        <Card className="border-none">
+            <CardHeader className="gap-y-5">
                 <CardTitle>Create Store</CardTitle>
-                <CardDescription>Enter your store details to get started.</CardDescription>
+                <CardDescription>
+                    Enter your store details to get started.
+                </CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>

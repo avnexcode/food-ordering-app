@@ -13,7 +13,7 @@ export const createStoreSchema = z.object({
         .optional(),
     image: z
         .string()
-        .url({ message: 'Image must be a valid URL.' })
+        // .url({ message: 'Image must be a valid URL.' })
         .max(255, { message: 'Image URL must not exceed 255 characters.' })
         .optional(),
     bank_name: z
