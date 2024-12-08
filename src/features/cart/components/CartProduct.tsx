@@ -12,7 +12,10 @@ export const CartProduct = () => {
     return (
         <Card className="w-[700px]">
             <CardHeader>
-                <CardTitle className='flex text-xl items-center gap-4'> <Checkbox /> Toko Lendir Mas Yoga</CardTitle>
+                <CardTitle className="flex text-xl items-center gap-4">
+                    {' '}
+                    <Checkbox /> Toko D**do Mas Yoga
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="flex gap-4 w-full">

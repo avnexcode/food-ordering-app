@@ -14,10 +14,10 @@ export const CreateAddressDialog = () => {
     const [isOpen, setIsOpen] = useState<boolean>();
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild className="w-1/4">
-                <Button variant="outline">Create Address</Button>
+            <DialogTrigger asChild className="px-8">
+                <Button variant="outline">Add Address</Button>
             </DialogTrigger>
-            <DialogContent className="">
+            <DialogContent className="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Create Address</DialogTitle>
                     <DialogDescription>

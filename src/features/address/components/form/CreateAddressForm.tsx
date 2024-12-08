@@ -10,7 +10,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 type CreateAddressFormProps = {
-    setIsOpen: () => void;
+    setIsOpen: (isOpen: boolean) => void;
 };
 
 export const CreateAddressForm = (props: CreateAddressFormProps) => {
@@ -36,8 +36,10 @@ export const CreateAddressForm = (props: CreateAddressFormProps) => {
                 </Form>
             </CardContent>
             <CardFooter className="w-full flex justify-end p-5 gap-4">
-                <Button onClick={() => setIsOpen(false)}>Cancel</Button>
-                <Button>Submit</Button>
+                <Button size={'sm'} onClick={() => setIsOpen(false)}>
+                    Cancel
+                </Button>
+                <Button size={'sm'}>Add</Button>
             </CardFooter>
         </Card>
     );

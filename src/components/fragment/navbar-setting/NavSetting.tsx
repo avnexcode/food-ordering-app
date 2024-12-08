@@ -1,39 +1,47 @@
-import { NavSettingLink } from './NavSettingLink';
 import { KeySquare, MapPin, Store, UserRound } from 'lucide-react';
+import { NavSettingList } from './NavSettingList';
+
+const accountSettingMenu = [
+    {
+        label: 'profile',
+        href: '/account/profile',
+        icon: <UserRound className="w-4 h-4" />,
+    },
+
+    {
+        label: 'address',
+        href: '/account/address',
+        icon: <MapPin className="w-4 h-4" />,
+    },
+    {
+        label: 'password',
+        href: '/account/password',
+        icon: <KeySquare className="w-4 h-4" />,
+    },
+];
+const storeSettingMenu = [
+    {
+        label: 'store',
+        href: '/account/store',
+        icon: <Store className="w-4 h-4" />,
+    },
+    {
+        label: 'product',
+        href: '/account/store/product',
+        icon: <Store className="w-4 h-4" />,
+    },
+    {
+        label: 'category',
+        href: '/account/store/product-category',
+        icon: <Store className="w-4 h-4" />,
+    },
+];
 
 export function NavSetting() {
     return (
-        <div className='flex flex-col w-full min-w-[150px]'>
-            <div className="flex flex-col gap-2 mt-4">
-                <div className='flex items-center'>
-                    <UserRound className='w-4 h-4' />
-                    <NavSettingLink
-                        href="/settings/profile"
-                        label="profile"
-                    />
-                </div>
-                <div className='flex items-center'>
-                    <Store className='w-4 h-4' />
-                    <NavSettingLink
-                        href="/settings/store"
-                        label="store"
-                    />
-                </div>
-                <div className='flex items-center'>
-                    <MapPin className='w-4 h-4' />
-                    <NavSettingLink
-                        href="/settings/address"
-                        label="address"
-                    />
-                </div>
-                <div className='flex items-center'>
-                    <KeySquare className='w-4 h-4' />
-                    <NavSettingLink
-                        href="/settings/password"
-                        label="password"
-                    />
-                </div>
-            </div>
-        </div>
+        <>
+            <NavSettingList label="account" menu={accountSettingMenu} />
+            <NavSettingList label="store" menu={storeSettingMenu} />
+        </>
     );
 }

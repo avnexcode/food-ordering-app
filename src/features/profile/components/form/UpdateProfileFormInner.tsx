@@ -8,6 +8,7 @@ import {
 import { Input } from '@/components/ui/input';
 import type { UseFormReturn } from 'react-hook-form';
 import type { UpdateProfileSchema } from '../../types';
+import { useSession } from 'next-auth/react';
 
 type UpdateProfileFormInnerProps = {
     form_id: string;
@@ -17,14 +18,15 @@ type UpdateProfileFormInnerProps = {
 
 export const UpdateProfileFormInner = (props: UpdateProfileFormInnerProps) => {
     const { form_id, form, onSubmit } = props;
+    const { data: session } = useSession();
     return (
         <form
             id={form_id}
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full flex flex-col gap-y-5"
         >
-            <div className='flex gap-4'>
-                <div className='w-1/3'>
+            <div className="flex gap-4">
+                <div className="w-1/3">
                     <FormField
                         control={form.control}
                         name="username"
@@ -39,7 +41,7 @@ export const UpdateProfileFormInner = (props: UpdateProfileFormInnerProps) => {
                         )}
                     />
                 </div>
-                <div className='w-full'>
+                <div className="w-full">
                     <FormField
                         control={form.control}
                         name="name"
@@ -50,7 +52,10 @@ export const UpdateProfileFormInner = (props: UpdateProfileFormInnerProps) => {
                                     <Input
                                         placeholder="Name"
                                         {...field}
-                                        disabled
+                                        disabled={
+                                            session?.user.provider !==
+                                            'credentials'
+                                        }
                                     />
                                 </FormControl>
                                 <FormMessage />

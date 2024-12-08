@@ -20,10 +20,10 @@ export const HomePage = () => {
                 <nav className="mt-10">
                     <NavHero />
                 </nav>
-                <section className="flex flex-col gap-2 mt-10">
+                {/* <section className="flex flex-col gap-2 mt-10">
                     <NavProductList />
                     <MainProductList />
-                </section>
+                </section> */}
             </main>
         </>
     );

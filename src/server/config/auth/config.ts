@@ -3,9 +3,9 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import { providers } from './providers';
 import { callbacks } from './callbacks';
 import { pages } from './pages';
-
 import { env } from '@/env';
 import { db } from '@/server/database/db';
+import getServerSession from 'next-auth';
 
 export const authConfig = {
     session: {
@@ -18,3 +18,5 @@ export const authConfig = {
     callbacks,
     pages,
 } satisfies NextAuthConfig;
+
+export const getSessionAuth = () => getServerSession(authConfig);

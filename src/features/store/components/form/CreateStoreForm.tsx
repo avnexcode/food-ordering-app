@@ -45,7 +45,7 @@ export const CreateStoreForm = () => {
     };
 
     return (
-        <Card className="border-none">
+        <Card className="border-none shadow-none">
             <CardHeader className="gap-y-5">
                 <CardTitle>Create Store</CardTitle>
                 <CardDescription>

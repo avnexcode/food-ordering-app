@@ -1,17 +1,16 @@
 import { MainLayout } from '@/components/layout/MainLayout';
 import { StoreHeader } from '@/features/store/components/StoreHeader';
 import { StoreProduct } from '@/features/store/components/StoreProduct';
-import { Store } from 'lucide-react';
 
 export const StorePage = () => {
     return (
-        <div className='w-full flex justify-center'>
+        <div className="w-full flex justify-center">
             <main className="w-[80%] flex flex-col gap-[50px]">
                 <header>
                     <StoreHeader />
                 </header>
                 <section>
-                    <StoreProduct/>
+                    <StoreProduct />
                 </section>
             </main>
         </div>
