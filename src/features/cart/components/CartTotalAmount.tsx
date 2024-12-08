@@ -7,8 +7,10 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
+import { useRouter } from 'next/navigation';
 
 export const CartTotalAmount = () => {
+    const router = useRouter();
     return (
         <Card className="w-[400px] h-[250px]">
             <CardHeader>
@@ -22,8 +24,13 @@ export const CartTotalAmount = () => {
                 </div>
             </CardContent>
             <CardFooter>
-                <Button className="w-full">Checkout</Button>
+                <Button
+                    className="w-full"
+                    onClick={() => router.push('/checkout')}
+                >
+                    Checkout
+                </Button>
             </CardFooter>
         </Card>
     );
-}
+};

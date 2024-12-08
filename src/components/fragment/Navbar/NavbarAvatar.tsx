@@ -1,20 +1,20 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getFirstLetter } from '@/utils';
-import { useSession } from 'next-auth/react';
+import { type User } from 'next-auth';
 
-export const NavbarAvatar = () => {
-    const { data: session } = useSession();
+type NavbarAvatarProps = {
+    user: User;
+};
 
-    const userInitial = session?.user?.name
-        ? getFirstLetter(session.user.name.toLocaleUpperCase())
-        : 'U';
-
+export const NavbarAvatar = (props: NavbarAvatarProps) => {
+    const username = props.user.name!;
+    const userInitial = getFirstLetter(username.toLocaleUpperCase());
     return (
         <Avatar>
             <AvatarImage
                 className="capitalize"
-                src={session?.user.image ?? ''}
-                alt={session?.user?.name ?? 'User avatar'}
+                src={props.user.image ?? ''}
+                alt={props.user.name ?? ''}
                 referrerPolicy="no-referrer"
             />
             <AvatarFallback>{userInitial}</AvatarFallback>

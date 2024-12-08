@@ -54,7 +54,7 @@ export const UpdateProfileForm = () => {
     }, [form, user]);
 
     return (
-        <Card className='border-none'>
+        <Card className="border-none shadow-none">
             <CardHeader>
                 <CardTitle className="text-2xl capitalize">
                     {user?.name}

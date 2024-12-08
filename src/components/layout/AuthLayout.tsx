@@ -1,5 +1,5 @@
-import { NavbarIcon } from "@/components/fragment/navbar/NavbarIcon";
-import { AuthLayoutHero } from "@/components/fragment/AuthLayoutHero";
+import { NavbarIcon } from '@/components/fragment/navbar/NavbarIcon';
+import { AuthHero } from '@/components/fragment/AuthHero';
 
 type AuthLayoutProps = {
     children: React.ReactNode;
@@ -9,19 +9,17 @@ type AuthLayoutProps = {
 export const AuthLayout: React.FC<AuthLayoutProps> = props => {
     const { children, className } = props;
     return (
-        <div className='flex min-h-screen w-full justify-between items-center relative'>
+        <div
+            className={`flex min-h-screen max-h-screen w-full relative ${className}`}
+        >
             <div className="absolute top-5 left-5 z-50">
                 <NavbarIcon />
             </div>
-            <div className='flex h-screen justify-center items-center w-[52%]'>
-                <AuthLayoutHero />
+            <div className="w-3/4">
+                <AuthHero />
             </div>
-            <div className='flex justify-center items-center w-[48%]'>
-                <div
-                    className={`flex items-center w-2/3 justify-center ${className}`}
-                >
-                    {children}
-                </div>
+            <div className={`flex justify-center items-center w-full`}>
+                <div className="min-w-[600px] w-1/2">{children}</div>
             </div>
         </div>
     );

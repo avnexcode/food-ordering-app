@@ -8,19 +8,19 @@ import type { RoleMiddlewareConfig } from './types/middleware';
 const middleware = async (request: NextRequest) =>
     NextResponse.next({ request });
 
-const protectedPaths = ['/dashboard', '/settings', '/cart', '/checkout'];
+const protectedPaths = ['/dashboard', '/account', '/cart', '/checkout'];
 
 const roleConfig: RoleMiddlewareConfig[] = [
     { path: '/dashboard', roles: [UserRole.ADMIN], redirect: '/' },
     {
-        path: '/settings/store',
+        path: '/account/store',
         roles: [UserRole.SELLER],
-        redirect: '/settings/create-store',
+        redirect: '/account/create-store',
     },
     {
-        path: '/settings/create-store',
+        path: '/account/create-store',
         roles: [UserRole.USER],
-        redirect: '/settings/store',
+        redirect: '/account/store',
     },
 ];
 

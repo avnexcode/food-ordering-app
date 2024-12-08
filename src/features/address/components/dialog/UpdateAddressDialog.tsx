@@ -17,7 +17,7 @@ export const UpdateAddressDialog = () => {
             <DialogTrigger asChild className="w-1/4">
                 <Button variant="outline">Update Address</Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Update Address</DialogTitle>
                     <DialogDescription>
@@ -26,7 +26,7 @@ export const UpdateAddressDialog = () => {
                     </DialogDescription>
                 </DialogHeader>
                 <div>
-                    <UpdateAddressForm setIsOpen={setIsOpen}/>
+                    <UpdateAddressForm setIsOpen={setIsOpen} />
                 </div>
             </DialogContent>
         </Dialog>

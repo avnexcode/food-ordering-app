@@ -55,7 +55,7 @@ export const UpdatePasswordForm = () => {
         });
 
     return (
-        <Card className='border-none'>
+        <Card className="border-none shadow-none">
             <CardHeader className="gap-y-5">
                 <CardTitle>Change Password</CardTitle>
                 <CardDescription>Card Description</CardDescription>

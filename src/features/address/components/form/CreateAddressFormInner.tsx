@@ -7,17 +7,10 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { OptionForm } from './OptionForm';
 
 type CreateAddressFormInnerProps = {
     form_id: string;
@@ -30,10 +23,10 @@ export const CreateAddressFormInner = (props: CreateAddressFormInnerProps) => {
         <form
             id={form_id}
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4 w-full"
+            className="flex flex-col gap-8 w-full"
         >
             <div className="flex gap-2 ">
-                <div className="w-1/2">
+                <div className="w-2/5">
                     <FormField
                         control={form.control}
                         name="label"
@@ -52,7 +45,7 @@ export const CreateAddressFormInner = (props: CreateAddressFormInnerProps) => {
                     />
                 </div>
 
-                <div className="w-1/2">
+                <div className="w-full">
                     <FormField
                         control={form.control}
                         name="street"
@@ -72,43 +65,56 @@ export const CreateAddressFormInner = (props: CreateAddressFormInnerProps) => {
                 </div>
             </div>
 
-            <div className="flex justify-between gap-2">
-                <div>
-                    <Select>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Select a province" />
-                            <span className="text-red-500">*</span>
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                <SelectLabel>Fruits </SelectLabel>
-                                <SelectItem value="apple">Apple</SelectItem>
-                                <SelectItem value="banana">Banana</SelectItem>
-                                <SelectItem value="blueberry">
-                                    Blueberry
-                                </SelectItem>
-                                <SelectItem value="grapes">Grapes</SelectItem>
-                                <SelectItem value="pineapple">
-                                    Pineapple
-                                </SelectItem>
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                </div>
-                <div>
-                    <p>district_id</p>
-                </div>
-                <div>
-                    <p>village_id</p>
-                </div>
-
-                <div>
-                    <p>city_id</p>
+            <div className="flex flex-col gap-2">
+                <FormLabel>
+                    Location unknown <span className="text-red-500">*</span>
+                </FormLabel>
+                <div className="flex justify-between gap-2">
+                    <div>
+                        <OptionForm
+                            form={form}
+                            select={{ name: 'province_id', label: 'province' }}
+                            options={[
+                                { name: 'Jawa Nigga', label: 'jawa-nigga' },
+                            ]}
+                            className="w-full px-5"
+                        />
+                    </div>
+                    <div>
+                        <OptionForm
+                            form={form}
+                            select={{ name: 'city_id', label: 'regency' }}
+                            options={[
+                                { name: 'Jawa Nigga', label: 'jawa-nigga' },
+                            ]}
+                            className="w-full px-5"
+                        />
+                    </div>
+                    <div>
+                        <OptionForm
+                            form={form}
+                            select={{ name: 'district_id', label: 'district' }}
+                            options={[
+                                { name: 'Jawa Nigga', label: 'jawa-nigga' },
+                            ]}
+                            className="w-full px-5"
+                        />
+                    </div>
+                    <div>
+                        <OptionForm
+                            form={form}
+                            select={{ name: 'village_id', label: 'village' }}
+                            options={[
+                                { name: 'Jawa Nigga', label: 'jawa-nigga' },
+                            ]}
+                            className="w-full px-5"
+                        />
+                    </div>
                 </div>
             </div>
 
-            <div className='flex gap-2'>
-                <div className='w-3/4'>
+            <div className="flex gap-2">
+                <div className="w-3/4">
                     <FormField
                         control={form.control}
                         name="country"
@@ -123,7 +129,7 @@ export const CreateAddressFormInner = (props: CreateAddressFormInnerProps) => {
                         )}
                     />
                 </div>
-                <div className='1/4'>
+                <div className="1/4">
                     <FormField
                         control={form.control}
                         name="postal_code"
