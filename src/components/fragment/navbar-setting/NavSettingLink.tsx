@@ -12,7 +12,7 @@ export const NavSettingLink = (props: NavSettingLink) => {
     return (
         <Link
             href={props.href}
-            className={`text-lext py-2 pl-5 capitalize hover:underline ${isActive && 'italic text-gray-600'}`}
+            className={`text-lext py-2 pl-3 capitalize hover:underline ${isActive && 'italic text-gray-600'}`}
         >
             {props.label}
         </Link>
