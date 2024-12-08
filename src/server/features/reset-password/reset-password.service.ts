@@ -7,6 +7,7 @@ import { resetPasswordSchema } from './reset-password.validation';
 import type { ResetPasswordRequest } from './reset-password.model';
 import type { UserResponse } from '../user/user.model';
 import { resetPasswordRepository } from './reset-password.repository';
+
 export const resetPasswordService = {
     updatePassword: async (
         id: string,
@@ -22,12 +23,13 @@ export const resetPasswordService = {
                 new_password: newPassword,
             },
         );
+        console.log({ password, newPassword, id });
 
         const existingUser = await userRepository.findUniqueId(id);
 
         const validatedPassword = existingUser
             ? await bcrypt.compare(
-                  validatedRequest.password!,
+                  validatedRequest.password,
                   existingUser.password!,
               )
             : false;
@@ -36,7 +38,14 @@ export const resetPasswordService = {
             throw new BadRequestException('Invalid password');
         }
 
-        const user = await resetPasswordRepository.updateOnce(id, password);
+        const passwordHashed = await bcrypt.hash(
+            validatedRequest.new_password,
+            10,
+        );
+        const user = await resetPasswordRepository.updateOnce(
+            id,
+            passwordHashed,
+        );
 
         return toUserResponse(user);
     },

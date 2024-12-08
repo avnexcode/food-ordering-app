@@ -4,8 +4,7 @@ export const resetPasswordSchema = z.object({
     password: z
         .string()
         .min(1, { message: 'Password is required.' })
-        .min(8, { message: 'Password must be at least 8 characters long.' })
-        .optional(),
+        .min(8, { message: 'Password must be at least 8 characters long.' }),
     new_password: z
         .string()
         .min(1, { message: 'Password is required.' })
@@ -17,6 +16,5 @@ export const resetPasswordSchema = z.object({
                 message:
                     'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
             },
-        )
-        .optional(),
+        ),
 });
