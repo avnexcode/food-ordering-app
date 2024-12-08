@@ -1,5 +1,5 @@
 import { SettingLayout } from '@/components/layout/SettingLayout';
-import { CreateAddressForm } from '@/features/address/components/form/CreateAddressForm';
+import { AddressList } from '@/features/address/components/AddressList';
 import Head from 'next/head';
 
 export const SettingCreateAddressPage = () => {
@@ -8,7 +8,9 @@ export const SettingCreateAddressPage = () => {
             <Head>
                 <title>Setting - Address</title>
             </Head>
-            <CreateAddressForm/>
+            <main className="flex flex-col gap-3">
+                <AddressList />
+            </main>
         </>
     );
 };
