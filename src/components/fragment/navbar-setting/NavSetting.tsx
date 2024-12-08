@@ -1,34 +1,39 @@
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from '@/components/ui/accordion';
 import { NavSettingLink } from './NavSettingLink';
+import { KeySquare, MapPin, Store, UserRound } from 'lucide-react';
 
 export function NavSetting() {
     return (
-        <Accordion type="single" collapsible className="w-full min-w-[150px]">
-            <AccordionItem value="settings">
-                <AccordionTrigger>Settings</AccordionTrigger>
-                <AccordionContent>
-                    <div className="flex flex-col gap-2">
-                        <NavSettingLink
-                            href="/settings/profile"
-                            label="profile"
-                        />
-                        <NavSettingLink href="/settings/store" label="store" />
-                        <NavSettingLink
-                            href="/settings/address"
-                            label="address"
-                        />
-                        <NavSettingLink
-                            href="/settings/password"
-                            label="password"
-                        />
-                    </div>
-                </AccordionContent>
-            </AccordionItem>
-        </Accordion>
+        <div className='flex flex-col w-full min-w-[150px]'>
+            <div className="flex flex-col gap-2 mt-4">
+                <div className='flex items-center'>
+                    <UserRound className='w-4 h-4' />
+                    <NavSettingLink
+                        href="/settings/profile"
+                        label="profile"
+                    />
+                </div>
+                <div className='flex items-center'>
+                    <Store className='w-4 h-4' />
+                    <NavSettingLink
+                        href="/settings/store"
+                        label="store"
+                    />
+                </div>
+                <div className='flex items-center'>
+                    <MapPin className='w-4 h-4' />
+                    <NavSettingLink
+                        href="/settings/address"
+                        label="address"
+                    />
+                </div>
+                <div className='flex items-center'>
+                    <KeySquare className='w-4 h-4' />
+                    <NavSettingLink
+                        href="/settings/password"
+                        label="password"
+                    />
+                </div>
+            </div>
+        </div>
     );
 }

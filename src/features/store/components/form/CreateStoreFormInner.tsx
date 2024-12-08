@@ -71,7 +71,10 @@ export const CreateStoreFormInner = (props: CreateStoreFormInnerProps) => {
                     name="description"
                     render={({ field }) => (
                         <FormItem className="mt-2">
-                            <FormLabel>Description</FormLabel>
+                            <FormLabel>
+                                Description{' '}
+                                <span className="text-red-500">*</span>
+                            </FormLabel>
                             <FormControl>
                                 <Textarea
                                     placeholder="Description"
