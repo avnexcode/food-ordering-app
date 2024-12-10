@@ -25,8 +25,8 @@ export const UpdateProfileFormInner = (props: UpdateProfileFormInnerProps) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full flex flex-col gap-y-5"
         >
-            <div className="flex gap-4">
-                <div className="w-1/3">
+            <div className="flex flex-col lg:flex-row gap-4">
+                <div className="lg:w-1/3 w-full">
                     <FormField
                         control={form.control}
                         name="username"
@@ -76,6 +76,30 @@ export const UpdateProfileFormInner = (props: UpdateProfileFormInnerProps) => {
                                     type="email"
                                     placeholder="Email"
                                     {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+            <div>
+                <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Phone Number</FormLabel>
+                            <FormControl>
+                                <Input
+                                    type="text"
+                                    placeholder="Phone"
+                                    onChange={e => {
+                                        const numericValue =
+                                            e.target.value.replace(/\D/g, '');
+                                        field.onChange(numericValue);
+                                    }}
+                                    value={field.value}
                                 />
                             </FormControl>
                             <FormMessage />

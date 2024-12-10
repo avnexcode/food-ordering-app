@@ -5,11 +5,21 @@ type SidebarLink = {
     label: string;
     href: string;
     icon: React.ReactElement;
+    activeRoutes?: string[];
 };
 
 export const SidebarLink = (props: SidebarLink) => {
     const pathName = usePathname();
-    const isActive = pathName === props.href;
+    const checkIsActive = () => {
+        if (props.activeRoutes) {
+            return props.activeRoutes.some(route =>
+                pathName?.startsWith(route),
+            );
+        }
+        return pathName === props.href;
+    };
+
+    const isActive = checkIsActive();
 
     const activeStyle = 'text-black bg-gray-100';
     const deactiveStyle = 'text-gray-500 hover:text-gray-900 hover:bg-gray-100';

@@ -6,6 +6,11 @@ const dashboardStoreMenu = [
         label: 'dashboard',
         href: '/dashboard/store/product',
         icon: <Table2 className="w-4 h-4" />,
+        activeRoutes: [
+            '/dashboard/store/product',
+            '/dashboard/store/product-category',
+            '/dashboard/store/order',
+        ],
     },
     {
         label: 'settings',

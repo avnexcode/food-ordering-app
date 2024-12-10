@@ -36,6 +36,7 @@ export const UpdateProfileForm = () => {
             username: '',
             name: '',
             email: '',
+            phone: '',
         },
         resolver: zodResolver(updateProfileSchema),
     });
@@ -49,6 +50,7 @@ export const UpdateProfileForm = () => {
                 username: user.username,
                 name: user.name,
                 email: user.email,
+                phone: user.phone ?? '',
             });
         }
     }, [form, user]);

@@ -5,6 +5,7 @@ type SidebarListProps = {
         label: string;
         href: string;
         icon: React.ReactElement;
+        activeRoutes?: string[];
     }[];
 };
 
@@ -18,6 +19,7 @@ export const SidebarList = (props: SidebarListProps) => {
                         href={menu.href}
                         label={menu.label}
                         icon={menu.icon}
+                        activeRoutes={menu.activeRoutes}
                     />
                 );
             })}

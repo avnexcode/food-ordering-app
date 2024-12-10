@@ -1,4 +1,5 @@
 import { Navbar } from '../fragment/navbar/Navbar';
+import { Container } from './Container';
 
 type MainLayoutProps = {
     children: React.ReactNode;
