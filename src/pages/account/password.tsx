@@ -1,1 +1,1 @@
-export { SettingPasswordPage as default } from '@/app/pages/settings/profile/password';
+export { SettingPasswordPage as default } from '@/components/pages/account/profile/password';

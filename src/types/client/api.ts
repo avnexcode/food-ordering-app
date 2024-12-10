@@ -14,6 +14,6 @@ export type ApiResponse<T> = {
 };
 
 export type ApiProps = {
-    onSuccess?: () => void;
-    onError?: (error: AxiosError<ErrorApiResponse>) => void;
+    onSuccess?: () => Promise<void>;
+    onError?: (error: AxiosError<ErrorApiResponse>) => Promise<void>;
 };

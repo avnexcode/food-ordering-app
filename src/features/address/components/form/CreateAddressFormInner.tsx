@@ -10,7 +10,11 @@ import {
 
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { OptionForm } from './OptionForm';
+
+import { CreateAddressProvinceOption } from '../option/CreateAddressProvinceOption';
+import { CreateAddressRegencyOption } from '../option/CreateAddressRegencyOption';
+import { CreateAddressDistrictOption } from '../option/CreateAddressDistrictOption';
+import { CreateAddressVillageOption } from '../option/CreateAddressVillageOption';
 
 type CreateAddressFormInnerProps = {
     form_id: string;
@@ -71,44 +75,16 @@ export const CreateAddressFormInner = (props: CreateAddressFormInnerProps) => {
                 </FormLabel>
                 <div className="flex justify-between gap-2">
                     <div>
-                        <OptionForm
-                            form={form}
-                            select={{ name: 'province_id', label: 'province' }}
-                            options={[
-                                { name: 'Jawa Nigga', label: 'jawa-nigga' },
-                            ]}
-                            className="w-full px-5"
-                        />
+                        <CreateAddressProvinceOption form={form} />
                     </div>
                     <div>
-                        <OptionForm
-                            form={form}
-                            select={{ name: 'city_id', label: 'regency' }}
-                            options={[
-                                { name: 'Jawa Nigga', label: 'jawa-nigga' },
-                            ]}
-                            className="w-full px-5"
-                        />
+                        <CreateAddressRegencyOption form={form} />
                     </div>
                     <div>
-                        <OptionForm
-                            form={form}
-                            select={{ name: 'district_id', label: 'district' }}
-                            options={[
-                                { name: 'Jawa Nigga', label: 'jawa-nigga' },
-                            ]}
-                            className="w-full px-5"
-                        />
+                        <CreateAddressDistrictOption form={form} />
                     </div>
                     <div>
-                        <OptionForm
-                            form={form}
-                            select={{ name: 'village_id', label: 'village' }}
-                            options={[
-                                { name: 'Jawa Nigga', label: 'jawa-nigga' },
-                            ]}
-                            className="w-full px-5"
-                        />
+                        <CreateAddressVillageOption form={form} />
                     </div>
                 </div>
             </div>

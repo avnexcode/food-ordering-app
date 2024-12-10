@@ -23,7 +23,7 @@ export const UpdateProfileForm = () => {
 
     const { mutate: updateProfile, isPending: isUpdateProfilePending } =
         useUpdateProfile({
-            onSuccess: () => {
+            onSuccess: async () => {
                 toast({
                     title: 'Success',
                     description: 'Success update profile',

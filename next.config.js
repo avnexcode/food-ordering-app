@@ -18,7 +18,7 @@ const config = {
     transpilePackages: ['geist'],
     images: {
         domains: ['res.cloudinary.com'],
-    }
+    },
 };
 
 export default config;

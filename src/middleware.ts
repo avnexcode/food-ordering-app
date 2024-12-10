@@ -5,15 +5,21 @@ import { withAuthToken } from './middleware/withAuthToken';
 import { UserRole } from '@prisma/client';
 import type { RoleMiddlewareConfig } from './types/middleware';
 
-const middleware = async (request: NextRequest) =>
-    NextResponse.next({ request });
+const middleware = async (request: NextRequest) => {
+    if (request.nextUrl.pathname === '/dashboard/store') {
+        return NextResponse.redirect(
+            new URL('/dashboard/store/product', request.url),
+        );
+    }
+    return NextResponse.next({ request });
+};
 
 const protectedPaths = ['/dashboard', '/account', '/cart', '/checkout'];
 
 const roleConfig: RoleMiddlewareConfig[] = [
-    { path: '/dashboard', roles: [UserRole.ADMIN], redirect: '/' },
+    { path: '/dashboard/admin', roles: [UserRole.ADMIN], redirect: '/' },
     {
-        path: '/account/store',
+        path: '/dashboard/store',
         roles: [UserRole.SELLER],
         redirect: '/account/create-store',
     },

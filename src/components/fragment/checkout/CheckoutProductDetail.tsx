@@ -6,7 +6,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { CheckoutProductDetailContent } from './CheckoutProductDetailContent';
 import { StoreHeader } from '@/features/store/components/StoreHeader';
 

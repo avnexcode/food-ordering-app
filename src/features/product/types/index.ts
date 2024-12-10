@@ -1,15 +1,7 @@
 import { z } from 'zod';
 
-const createProductFormSchema = z.object({
+export const createProductFormSchema = z.object({
     name: z.string().max(100, 'Name must be 100 characters or less'),
-    slug: z
-        .string()
-        .refine(slug => slug !== '', { message: 'Slug must not be empty' })
-        .refine(async () => {
-            // query slug
-            // validasi slug unique
-            return null;
-        }),
     price: z
         .number()
         .positive('Price must be a positive number')
@@ -20,7 +12,10 @@ const createProductFormSchema = z.object({
     description: z
         .string()
         .max(65535, 'Description must be 65535 characters or less'),
-    images: z.array(z.string()).max(10, 'Maximum of 10 images are allowed'),
+    images: z
+        .array(z.string())
+        .max(10, 'Maximum of 10 images are allowed')
+        .optional(),
     stock: z
         .number()
         .int('Stock must be an integer')

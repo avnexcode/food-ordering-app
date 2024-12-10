@@ -16,7 +16,11 @@ type NavbarDropdownMenuListProps = {
 export const NavbarDropdownMenuList = (props: NavbarDropdownMenuListProps) => {
     const dropDownMenu = {
         ADMIN_MENU: [
-            { label: 'dashboard', url: 'dashboard', icon: <LayoutDashboard /> },
+            {
+                label: 'dashboard admin',
+                url: 'dashboard/admin',
+                icon: <LayoutDashboard />,
+            },
         ],
     };
 
@@ -51,7 +55,7 @@ export const NavbarDropdownMenuList = (props: NavbarDropdownMenuListProps) => {
                 <NavbarDropdownMenuItem
                     menu={{
                         label: 'dashboard store',
-                        url: '/account/store',
+                        url: '/dashboard/store',
                         icon: <Store />,
                     }}
                 />

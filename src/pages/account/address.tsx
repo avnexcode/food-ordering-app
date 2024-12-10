@@ -1,1 +1,1 @@
-export { SettingAddressPage as default } from '@/app/pages/settings/address/address';
+export { SettingAddressPage as default } from '@/components/pages/account/address/address';

@@ -15,9 +15,9 @@ export const UpdateAddressDialog = () => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild className="w-1/4">
-                <Button variant="outline">Update Address</Button>
+                <Button variant="outline">Update</Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-2xl w-full">
                 <DialogHeader>
                     <DialogTitle>Update Address</DialogTitle>
                     <DialogDescription>

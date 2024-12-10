@@ -8,7 +8,9 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { BadgeCheck } from 'lucide-react';
+import { ValidatedPasswordList } from '../../validation/ValidatedPasswordList';
+import { useState } from 'react';
+import { PasswordViewButton } from '../button/PasswordView';
 
 type RegisterFormInnerProps = {
     form_id: string;
@@ -18,36 +20,34 @@ type RegisterFormInnerProps = {
 
 export const RegisterFormInner = (props: RegisterFormInnerProps) => {
     const { form_id, form, onSubmit } = props;
+    const [passwordView, setPasswordView] = useState<boolean>(false);
 
-    const validation = {
+    const passwordValidation = {
         lowercase: /(?=.*[a-z])/.test(form.watch('password')),
         uppercase: /(?=.*[A-Z])/.test(form.watch('password')),
         number: /(?=.*\d)/.test(form.watch('password')),
         symbol: /(?=.*[@$!%*?&])/.test(form.watch('password')),
+        minLength: form.watch('password').length >= 8,
     };
 
-    const ValidatedText = ({
-        isValid,
-        children,
-    }: {
-        isValid: boolean;
-        children: React.ReactNode;
-    }) => (
-        <span className="flex items-center gap-2">
-            {isValid ? (
-                <BadgeCheck className="w-4 h-4 text-green-500" />
-            ) : (
-                <BadgeCheck className="w-4 h-4 text-gray-500" />
-            )}
-            {children}
-        </span>
-    );
+    const validationRules = [
+        { label: 'Uppercase letter', isValid: passwordValidation.uppercase },
+        { label: 'Lowercase letter', isValid: passwordValidation.lowercase },
+        {
+            label: 'Number and symbol',
+            isValid: passwordValidation.number && passwordValidation.symbol,
+        },
+        {
+            label: 'At least 8 characters',
+            isValid: passwordValidation.minLength,
+        },
+    ];
 
     return (
         <form
             id={form_id}
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col w-full gap-y-3"
+            className="grid grid-cols-1 gap-y-3 w-full"
         >
             <div>
                 <FormField
@@ -55,7 +55,10 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
                     name="name"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Full Name</FormLabel>
+                            <FormLabel>
+                                Full Name{' '}
+                                <span className="text-red-500">*</span>
+                            </FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="Enter your fullname"
@@ -73,7 +76,10 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
                     name="email"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Email Address</FormLabel>
+                            <FormLabel>
+                                Email Address{' '}
+                                <span className="text-red-500">*</span>
+                            </FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="Enter your email"
@@ -90,69 +96,28 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Password</FormLabel>
+                        <FormItem className="relative">
+                            <FormLabel>
+                                Password <span className="text-red-500">*</span>
+                            </FormLabel>
                             <FormControl>
                                 <Input
-                                    type="password"
+                                    type={passwordView ? 'text' : 'password'}
                                     placeholder="Enter your password"
                                     {...field}
                                 />
                             </FormControl>
+                            <PasswordViewButton
+                                passwordView={passwordView}
+                                setPasswordView={setPasswordView}
+                            />
                             <FormMessage />
-                            <div className="flex justify-around py-5">
-                                <p className="flex flex-col gap-4">
-                                    <ValidatedText
-                                        isValid={validation.uppercase}
-                                    >
-                                        <span
-                                            className={
-                                                validation.uppercase
-                                                    ? 'text-green-500'
-                                                    : ''
-                                            }
-                                        >
-                                            Uppercase
-                                        </span>
-                                    </ValidatedText>
-                                    <ValidatedText
-                                        isValid={validation.lowercase}
-                                    >
-                                        <span
-                                            className={
-                                                validation.lowercase
-                                                    ? 'text-green-500'
-                                                    : ''
-                                            }
-                                        >
-                                            Lowercase
-                                        </span>
-                                    </ValidatedText>
-                                </p>
-                                <p className="flex flex-col gap-4">
-                                    <ValidatedText isValid={validation.number}>
-                                        <span
-                                            className={
-                                                validation.number
-                                                    ? 'text-green-500'
-                                                    : ''
-                                            }
-                                        >
-                                            Number
-                                        </span>
-                                    </ValidatedText>
-                                    <ValidatedText isValid={validation.symbol}>
-                                        <span
-                                            className={
-                                                validation.symbol
-                                                    ? 'text-green-500'
-                                                    : ''
-                                            }
-                                        >
-                                            Symbol
-                                        </span>
-                                    </ValidatedText>
-                                </p>
+                            <div className="grid items-center justify-center py-4">
+                                <ValidatedPasswordList
+                                    validationRules={validationRules}
+                                    columns={2}
+                                    className="grid grid-cols-2 gap-28"
+                                />
                             </div>
                         </FormItem>
                     )}
@@ -163,11 +128,14 @@ export const RegisterFormInner = (props: RegisterFormInnerProps) => {
                     control={form.control}
                     name="confirm_password"
                     render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Confirm Password</FormLabel>
+                        <FormItem className="relative">
+                            <FormLabel>
+                                Confirm Password{' '}
+                                <span className="text-red-500">*</span>
+                            </FormLabel>
                             <FormControl>
                                 <Input
-                                    type="password"
+                                    type={passwordView ? 'text' : 'password'}
                                     placeholder="Confirm your password"
                                     {...field}
                                 />

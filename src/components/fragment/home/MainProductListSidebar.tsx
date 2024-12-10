@@ -1,5 +1,10 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/ui/accordion';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export const MainProductListSidebar = () => {
     return (
@@ -53,9 +58,10 @@ export const MainProductListSidebar = () => {
             <AccordionItem value="item-3">
                 <AccordionTrigger>Is it animated?</AccordionTrigger>
                 <AccordionContent>
-                    Yes. It&apos;s animated by default, but you can disable it if you prefer.
+                    Yes. It&apos;s animated by default, but you can disable it
+                    if you prefer.
                 </AccordionContent>
             </AccordionItem>
         </Accordion>
     );
-}
+};

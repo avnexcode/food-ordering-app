@@ -8,7 +8,7 @@ import { LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 export const Navbar = () => {
     return (
-        <nav className="flex items-center justify-between px-20 py-2">
+        <nav className="flex items-center justify-between px-20 py-2 sticky top-0 bg-white z-50 border-b border-zinc-200">
             <div className="flex gap-4">
                 <NavbarIcon />
                 <NavbarMenu />
@@ -25,9 +25,7 @@ const NavbarAuth = () => {
     const { data: session } = useSession();
     const router = useRouter();
 
-    if (session) {
-        return <NavbarDropdownMenu user={session.user} />;
-    }
+    if (session) return <NavbarDropdownMenu user={session.user} />;
 
     return (
         <Button

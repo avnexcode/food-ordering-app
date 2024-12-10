@@ -1,10 +1,6 @@
 import * as z from 'zod';
 
 export const createAddressFormSchema = z.object({
-    id: z
-        .string()
-        .cuid()
-        .refine(id => id !== '', { message: 'ID must not be empty' }),
     label: z.string().max(50, 'Label must be 50 characters or less'),
     street: z.string().max(100, 'Street must be 100 characters or less'),
     village_id: z
