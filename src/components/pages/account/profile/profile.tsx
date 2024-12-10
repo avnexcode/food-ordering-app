@@ -2,7 +2,7 @@ import { AccountLayout } from '@/components/layout/AccountLayout';
 import { UpdateProfileForm } from '@/features/profile/components/form/UpdateProfileForm';
 import Head from 'next/head';
 
-export const SettingProfilePage = () => {
+export const AccountProfilePage = () => {
     return (
         <>
             <Head>
@@ -13,6 +13,6 @@ export const SettingProfilePage = () => {
     );
 };
 
-SettingProfilePage.getLayout = (page: React.ReactElement) => (
+AccountProfilePage.getLayout = (page: React.ReactElement) => (
     <AccountLayout>{page}</AccountLayout>
 );

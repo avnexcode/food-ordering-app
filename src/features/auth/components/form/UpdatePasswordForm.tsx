@@ -21,7 +21,6 @@ import { useUpdatePassword } from '../../api';
 
 export const UpdatePasswordForm = () => {
     const { toast } = useToast();
-
     const { data: user } = useProfile();
 
     const form = useForm<UpdatePasswordSchema>({
@@ -38,14 +37,14 @@ export const UpdatePasswordForm = () => {
 
     const { mutate: updatePassword, isPending: isUpdatePasswordPending } =
         useUpdatePassword({
-            onSuccess: () => {
+            onSuccess: async () => {
                 toast({
                     title: 'Success',
                     description: 'Success update passowrd',
                 });
                 form.reset();
             },
-            onError: error => {
+            onError: async error => {
                 toast({
                     title: 'Success',
                     description:

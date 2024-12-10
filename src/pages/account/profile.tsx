@@ -1,1 +1,1 @@
-export { SettingProfilePage as default } from '@/components/pages/account/profile/profile';
+export { AccountProfilePage as default } from '@/components/pages/account/profile/profile';

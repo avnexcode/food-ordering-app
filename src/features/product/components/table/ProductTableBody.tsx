@@ -1,7 +1,7 @@
 import { TableBody } from '@/components/ui/table';
 import { ProductTableItem } from './ProductTableItem';
 
-export const ProductTableList = () => {
+export const ProductTableBody = () => {
     return (
         <TableBody>
             <ProductTableItem />

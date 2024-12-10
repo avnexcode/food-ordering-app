@@ -3,7 +3,7 @@ import { UpdatePasswordForm } from '@/features/auth/components/form/UpdatePasswo
 // import { UpdatePasswordForm } from '@/features/settings/profile/components/form/UpdatePasswordForm';
 import Head from 'next/head';
 
-export const SettingPasswordPage = () => {
+export const AccountPasswordPage = () => {
     return (
         <>
             <Head>
@@ -14,6 +14,6 @@ export const SettingPasswordPage = () => {
     );
 };
 
-SettingPasswordPage.getLayout = (page: React.ReactElement) => (
+AccountPasswordPage.getLayout = (page: React.ReactElement) => (
     <AccountLayout>{page}</AccountLayout>
 );
