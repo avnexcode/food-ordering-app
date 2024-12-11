@@ -37,7 +37,7 @@ export const CreateProductCategoryOption = (
                     >
                         <FormControl>
                             <SelectTrigger className={`${className}`}>
-                                <SelectValue placeholder={'Village'} />
+                                <SelectValue placeholder={'Category'} />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>

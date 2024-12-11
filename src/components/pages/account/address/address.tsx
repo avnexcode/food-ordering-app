@@ -1,18 +1,18 @@
 import Head from 'next/head';
-import { SettingCreateAddressPage } from './create-address';
+import { AccountCreateAddressPage } from './create-address';
 import { AccountLayout } from '@/components/layout/AccountLayout';
 
-export const SettingAddressPage = () => {
+export const AccountAddressPage = () => {
     return (
         <>
             <Head>
                 <title>Setting - Address</title>
             </Head>
-            <SettingCreateAddressPage />
+            <AccountCreateAddressPage />
         </>
     );
 };
 
-SettingAddressPage.getLayout = (page: React.ReactElement) => (
+AccountAddressPage.getLayout = (page: React.ReactElement) => (
     <AccountLayout>{page}</AccountLayout>
 );

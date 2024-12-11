@@ -1,4 +1,4 @@
-import { KeySquare, MapPin, UserRound } from 'lucide-react';
+import { KeySquare, ListOrdered, MapPin, UserRound } from 'lucide-react';
 import { SidebarList } from './SidebarList';
 
 const accountSettingMenu = [
@@ -12,6 +12,11 @@ const accountSettingMenu = [
         label: 'address',
         href: '/account/address',
         icon: <MapPin className="w-4 h-4" />,
+    },
+    {
+        label: 'order',
+        href: '/account/order',
+        icon: <ListOrdered className="w-4 h-4" />,
     },
     {
         label: 'password',

@@ -2,7 +2,7 @@ import { AccountLayout } from '@/components/layout/AccountLayout';
 import { AddressList } from '@/features/address/components/AddressList';
 import Head from 'next/head';
 
-export const SettingCreateAddressPage = () => {
+export const AccountCreateAddressPage = () => {
     return (
         <>
             <Head>
@@ -15,6 +15,6 @@ export const SettingCreateAddressPage = () => {
     );
 };
 
-SettingCreateAddressPage.getLayout = (page: React.ReactElement) => (
+AccountCreateAddressPage.getLayout = (page: React.ReactElement) => (
     <AccountLayout>{page}</AccountLayout>
 );

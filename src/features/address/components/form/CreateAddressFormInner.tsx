@@ -73,7 +73,7 @@ export const CreateAddressFormInner = (props: CreateAddressFormInnerProps) => {
                 <FormLabel>
                     Location unknown <span className="text-red-500">*</span>
                 </FormLabel>
-                <div className="flex justify-between gap-2">
+                <div className="flex flex-col gap-2">
                     <div>
                         <CreateAddressProvinceOption form={form} />
                     </div>

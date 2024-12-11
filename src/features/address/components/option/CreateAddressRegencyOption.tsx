@@ -11,7 +11,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { useProvinces } from '@/features/locations/province/api/useProvinces';
 import { type UseFormReturn } from 'react-hook-form';
 import { type CreateAddressFormSchema } from '../../types';
 import { useRegencies } from '@/features/locations/regency/api';

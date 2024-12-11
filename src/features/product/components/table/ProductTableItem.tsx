@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from '@/components/ui/table';
-import { Ellipsis } from 'lucide-react';
+import { ProductTableMenu } from './ProductTableMenu';
 
 export const ProductTableItem = () => {
     return (
@@ -10,7 +10,7 @@ export const ProductTableItem = () => {
             <TableCell>$250.00</TableCell>
             <TableCell>Hari ini</TableCell>
             <TableCell>
-                <Ellipsis size={20} strokeWidth={2} />
+                <ProductTableMenu />
             </TableCell>
         </TableRow>
     );

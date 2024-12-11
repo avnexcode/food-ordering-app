@@ -13,7 +13,7 @@ export const NavbarLink = ({ label, href }: NavbarLinkProps) => {
 
     return (
         <div
-            className={`py-2 ${isActive ? 'border-b-2 border-green-500 text-green-500' : 'text-gray-700 hover:text-green-500'}`}
+            className={`py-2 ${isActive ? 'border-b-2 border-green-700 text-green-600' : 'text-gray-700 hover:text-green-600'}`}
         >
             <Link
                 href={href}
