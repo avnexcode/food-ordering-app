@@ -17,7 +17,7 @@ import {
     type UseFormReturn,
 } from 'react-hook-form';
 
-type BaseOptionField<T extends FieldValues> = {
+type BaseSelectField<T extends FieldValues> = {
     name: Path<T>;
     label?: string;
     placeholder?: string;
@@ -25,8 +25,12 @@ type BaseOptionField<T extends FieldValues> = {
 };
 
 type OptionFormProps<T extends FieldValues> = {
-    select: BaseOptionField<T>;
-    options: { label: string; name: string }[];
+    select: BaseSelectField<T>;
+    options: T &
+        {
+            id: string;
+            name: string;
+        }[];
     form: UseFormReturn<T>;
     className?: string;
 };
@@ -53,9 +57,11 @@ export const OptionForm = <T extends FieldValues>(
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            <SelectItem value="jawa-nigga">
-                                Jawa Nigga
-                            </SelectItem>
+                            {props.options.map((option, index) => (
+                                <SelectItem key={index} value={option.id}>
+                                    {option.name}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                     <FormMessage />

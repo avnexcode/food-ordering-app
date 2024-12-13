@@ -17,7 +17,7 @@ export const CreateAddressDialog = () => {
             <DialogTrigger asChild className="px-8">
                 <Button variant="outline">Add Address</Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-2xl max-h-[85vh] overflow-auto">
                 <DialogHeader>
                     <DialogTitle>Create Address</DialogTitle>
                     <DialogDescription>

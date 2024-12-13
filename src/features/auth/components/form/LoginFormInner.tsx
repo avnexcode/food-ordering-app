@@ -8,6 +8,8 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { PasswordViewButton } from '../button/PasswordView';
+import { useState } from 'react';
 
 type LoginFormInnerProps = {
     form_id: string;
@@ -17,12 +19,13 @@ type LoginFormInnerProps = {
 
 export const LoginFormInner = (props: LoginFormInnerProps) => {
     const { form_id, form, onSubmit } = props;
+    const [passwordView, setPasswordView] = useState<boolean>(false);
 
     return (
         <form
             id={form_id}
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-y-3 w-full"
+            className="grid grid-cols-1 gap-y-3 w-full"
         >
             <div>
                 <FormField
@@ -48,15 +51,19 @@ export const LoginFormInner = (props: LoginFormInnerProps) => {
                     control={form.control}
                     name="password"
                     render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="relative">
                             <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input
-                                    type="password"
+                                    type={passwordView ? 'text' : 'password'}
                                     placeholder="Enter your password"
                                     {...field}
                                 />
                             </FormControl>
+                            <PasswordViewButton
+                                passwordView={passwordView}
+                                setPasswordView={setPasswordView}
+                            />
                             <FormMessage />
                         </FormItem>
                     )}

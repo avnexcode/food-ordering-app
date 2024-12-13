@@ -7,7 +7,7 @@ export const AuthHero = () => {
             <Image
                 className="w-full h-full object-cover opacity-85"
                 src={
-                    'https://res.cloudinary.com/dkmlayydv/image/upload/v1733625628/q5gsgr2v2krtuqihrdna.jpg'
+                    'https://res.cloudinary.com/dkmlayydv/image/upload/t_login/v1733672298/appetizing-burger-front-yellow-background_copy_1.webp'
                 }
                 alt="Auth Background"
                 width={1500}

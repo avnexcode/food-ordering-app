@@ -1,5 +1,5 @@
-import { CardProduct } from "@/features/product/components/CardProduct";
-import { MainProductListSidebar } from "./MainProductListSidebar";
+import { CardProduct } from '@/features/product/components/CardProduct';
+import { MainProductListSidebar } from './MainProductListSidebar';
 
 export const MainProductList = () => {
     return (
@@ -12,6 +12,7 @@ export const MainProductList = () => {
             </div>
             <div className="flex flex-col w-full">
                 <div className="flex flex-wrap justify-around gap-4">
+                    {/* <CardProduct />
                     <CardProduct />
                     <CardProduct />
                     <CardProduct />
@@ -20,8 +21,7 @@ export const MainProductList = () => {
                     <CardProduct />
                     <CardProduct />
                     <CardProduct />
-                    <CardProduct />
-                    <CardProduct />
+                    <CardProduct /> */}
                 </div>
             </div>
         </div>

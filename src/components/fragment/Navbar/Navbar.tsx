@@ -6,17 +6,20 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { LogIn } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { Container } from '@/components/layout/Container';
 export const Navbar = () => {
     return (
-        <nav className="flex items-center justify-between px-20 py-2">
-            <div className="flex gap-4">
-                <NavbarIcon />
-                <NavbarMenu />
-            </div>
-            <div className="flex gap-4">
-                <CartButton />
-                <NavbarAuth />
-            </div>
+        <nav className="py-2 sticky top-0 bg-white z-50 border-b border-zinc-200">
+            <Container className="flex items-center justify-between">
+                <div className="flex gap-4">
+                    <NavbarIcon />
+                    <NavbarMenu />
+                </div>
+                <div className="flex gap-4">
+                    <CartButton />
+                    <NavbarAuth />
+                </div>
+            </Container>
         </nav>
     );
 };
@@ -25,9 +28,7 @@ const NavbarAuth = () => {
     const { data: session } = useSession();
     const router = useRouter();
 
-    if (session) {
-        return <NavbarDropdownMenu user={session.user} />;
-    }
+    if (session) return <NavbarDropdownMenu user={session.user} />;
 
     return (
         <Button

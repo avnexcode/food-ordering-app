@@ -10,7 +10,7 @@ import getServerSession from 'next-auth';
 export const authConfig = {
     session: {
         strategy: 'jwt',
-        maxAge: 60 * 60 * 1,
+        maxAge: 60 * 60 * 24,
     },
     secret: env.AUTH_SECRET,
     // adapter: PrismaAdapter(db),

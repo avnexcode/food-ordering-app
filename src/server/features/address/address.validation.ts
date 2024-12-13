@@ -25,7 +25,6 @@ export const createAddressSchema = z.object({
         .string()
         .max(150, { message: 'Description must not exceed 150 characters.' })
         .optional(),
-    is_default: z.boolean({ message: 'Is default must be a boolean.' }),
     user_id: z
         .string({ message: 'User ID must be a valid string.' })
         .optional(),

@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 export const CardProduct = () => {
     return (
         <Card className="w-[280px]">
-            <CardHeader className='p-0'>
+            <CardHeader className="p-0">
                 <Image
                     className="object-cover"
                     src=""
@@ -15,18 +15,20 @@ export const CardProduct = () => {
                     height={400}
                 />
             </CardHeader>
-            <CardContent className='flex justify-between p-4'>
+            <CardContent className="flex justify-between p-4">
                 <div className="flex flex-col justify-between items-start">
                     <p className="text-xs text-gray-500 uppercase">Category</p>
-                    <CardTitle className="font-semibold text-gray-800 mb-2 text-xl">Product Title</CardTitle>
+                    <CardTitle className="font-semibold text-gray-800 mb-2 text-xl">
+                        Product Title
+                    </CardTitle>
                     <p className="text-base text-green-500">Rp. 15.000</p>
                 </div>
-                <div className='flex items-end'>
+                <div className="flex items-end">
                     <Button>
                         <ShoppingCart />
                     </Button>
                 </div>
             </CardContent>
-        </Card >
-    )
-}
+        </Card>
+    );
+};

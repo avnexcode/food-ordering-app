@@ -19,11 +19,12 @@ import { useProfile } from '../../api/useProfile';
 
 export const UpdateProfileForm = () => {
     const { toast } = useToast();
-    const { data: user } = useProfile();
+    const { data: user, refetch: refetchProfile } = useProfile();
 
     const { mutate: updateProfile, isPending: isUpdateProfilePending } =
         useUpdateProfile({
-            onSuccess: () => {
+            onSuccess: async () => {
+                await refetchProfile();
                 toast({
                     title: 'Success',
                     description: 'Success update profile',
@@ -36,6 +37,7 @@ export const UpdateProfileForm = () => {
             username: '',
             name: '',
             email: '',
+            phone: '',
         },
         resolver: zodResolver(updateProfileSchema),
     });
@@ -49,6 +51,7 @@ export const UpdateProfileForm = () => {
                 username: user.username,
                 name: user.name,
                 email: user.email,
+                phone: user.phone ?? '',
             });
         }
     }, [form, user]);
@@ -56,11 +59,11 @@ export const UpdateProfileForm = () => {
     return (
         <Card className="border-none shadow-none">
             <CardHeader>
-                <CardTitle className="text-2xl capitalize">
+                <CardTitle className="text-2xl capitalize text-green-700">
                     {user?.name}
                 </CardTitle>
             </CardHeader>
-            <CardContent className="flex flex-col items-center gap-4">
+            <CardContent className="flex flex-col gap-4">
                 <UpdateProfileImageForm />
                 <Form {...form}>
                     <UpdateProfileFormInner

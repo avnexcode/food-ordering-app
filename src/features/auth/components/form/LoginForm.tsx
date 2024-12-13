@@ -55,7 +55,7 @@ export const LoginForm = () => {
     });
 
     return (
-        <Card className="w-full">
+        <Card className="w-full border-none">
             <CardHeader>
                 <CardTitle className="text-3xl">Sign In</CardTitle>
                 <CardDescription>
