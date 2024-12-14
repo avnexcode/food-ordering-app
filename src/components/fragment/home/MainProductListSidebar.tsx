@@ -10,7 +10,7 @@ export const MainProductListSidebar = () => {
     return (
         <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="item-1">
-                <AccordionTrigger>Category</AccordionTrigger>
+                <AccordionTrigger><h6>Category</h6></AccordionTrigger>
                 <AccordionContent>
                     <div className="flex items-start flex-col gap-2">
                         <button>Foods</button>
@@ -22,7 +22,7 @@ export const MainProductListSidebar = () => {
                 </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
-                <AccordionTrigger>Filter by</AccordionTrigger>
+                <AccordionTrigger><h6>Filter by</h6></AccordionTrigger>
                 <AccordionContent>
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center space-x-2">
@@ -56,7 +56,7 @@ export const MainProductListSidebar = () => {
                 </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
-                <AccordionTrigger>Is it animated?</AccordionTrigger>
+                <AccordionTrigger><h6>Is it animated?</h6></AccordionTrigger>
                 <AccordionContent>
                     Yes. It&apos;s animated by default, but you can disable it
                     if you prefer.

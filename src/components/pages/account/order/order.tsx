@@ -8,10 +8,10 @@ export const AccountOrderPage = () => {
             <Head>
                 <title>Account - Order</title>
             </Head>
-            <header className="py-5">
-                <h1 className="text-xl font-semibold text-green-700">
+            <header className="p-5">
+                <h3 className="text-green-700">
                     Order List
-                </h1>
+                </h3>
             </header>
             <OrderCard />
         </>

@@ -16,7 +16,7 @@ export const StoreHeader = () => {
                 <div className="w-[70%] flex items-center justify-center">
                     <div>
                         <div className="text-xl font-semibold">
-                            <h1>Toko bukan toko tapi yoga open BO</h1>
+                            <span>Toko bukan toko tapi yoga open BO</span>
                         </div>
                     </div>
                 </div>
