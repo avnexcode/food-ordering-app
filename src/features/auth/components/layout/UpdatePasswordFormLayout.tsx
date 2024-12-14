@@ -20,7 +20,9 @@ export const UpdatePasswordFormLayout = (
     return (
         <Card className="border-none shadow-none">
             <CardHeader className="gap-y-5">
-                <CardTitle>Change Password</CardTitle>
+                <CardTitle>
+                    <h3 className="text-green-700">Change Password</h3>
+                </CardTitle>
                 <CardDescription>Card Description</CardDescription>
             </CardHeader>
             <CardContent>{children}</CardContent>

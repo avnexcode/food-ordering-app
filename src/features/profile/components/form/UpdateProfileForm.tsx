@@ -66,8 +66,8 @@ export const UpdateProfileForm = () => {
     return (
         <Card className="border-none shadow-none">
             <CardHeader>
-                <CardTitle className="text-2xl capitalize text-green-700">
-                    {user?.name}
+                <CardTitle className="capitalize text-green-700">
+                    <h3>{user?.name}</h3>
                 </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">

@@ -2,8 +2,8 @@
 export const CheckoutProductDetailContent = () => {
     return (
         <>
-            <div className="text-2xl font-bold">
-                <h3>Rp. 15.000</h3>
+            <div>
+                <h4 className="font-bold">Rp. 15.000</h4>
             </div>
             <div>
                 <h1 className="text-lg font-semibold">Description</h1>

@@ -15,7 +15,7 @@ export const CheckoutProductDetail = () => {
     return (
         <Card className="w-full">
             <CardHeader>
-                <CardTitle>Yoga Berminyak</CardTitle>
+                <CardTitle><h3>Yoga Berminyak</h3></CardTitle>
                 <CardDescription>Terjual 24</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-[50px]">
