@@ -1,3 +1,4 @@
+import { type Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 export const createStoreFormSchema = z.object({
@@ -28,3 +29,14 @@ export const updateStoreFormSchema = createStoreFormSchema.partial().extend({
 
 export type CreateStoreFormSchema = z.infer<typeof createStoreFormSchema>;
 export type UpdateStoreFormSchema = z.infer<typeof updateStoreFormSchema>;
+
+export type StoreWithRelations = Prisma.StoreGetPayload<{
+    include: {
+        owner:true;
+        products: true;
+        product_categories: true;
+        orders: true;
+        transactions: true;
+        disbursements: true;
+    };
+}>;
