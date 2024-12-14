@@ -6,7 +6,7 @@ export const Cart = () => {
         <div className="flex flex-col items-center justify-center w-full mt-5">
             <main className="flex flex-col">
                 <div className="mb-5 ">
-                    <h1 className="text-xl font-bold">Shopping Cart</h1>
+                    <h4 className="font-bold">Shopping Cart</h4>
                     <span>Review your cart before proceeding to checkout.</span>
                 </div>
                 <div className="flex gap-8">

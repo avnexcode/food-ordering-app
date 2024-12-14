@@ -9,18 +9,18 @@ export const CheckoutAmountDetailContent = () => {
                 <div className="w-full flex gap-2 items-center">
                     <div className="flex items-center gap-5">
                         <Button>-</Button>
-                        <span className="text-2xl font-bold">1</span>
+                        <h6 className="text-2xl font-bold">1</h6>
                         <Button>+</Button>
                     </div>
                     <div className="flex gap-2 font-semibold">
-                        <h1>Stok : </h1>
-                        <span className="text-orange-500">Sisa 10</span>
+                        <h6>Stok : </h6>
+                        <h6 className="text-orange-500">Sisa 10</h6>
                     </div>
                 </div>
             </div>
             <div className="w-full flex justify-between items-center text-2xl">
-                <h1>Subtotal </h1>
-                <span className="font-bold">Rp. 15.000</span>
+                <h6>Subtotal </h6>
+                <h6 className="font-bold">Rp. 15.000</h6>
             </div>
         </div>
     );
