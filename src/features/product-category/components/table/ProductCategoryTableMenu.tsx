@@ -4,7 +4,9 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { DeleteProductCategoryButton } from '@/features/product-category/components/button/DeleteProductCategoryButton';
 import { Ellipsis, Pencil, Trash2, View } from 'lucide-react';
+import { as } from './../../../../../.next/static/chunks/51898_axios_7a7c63._';
 
 export const ProductCategoryTableMenu = () => {
     return (
@@ -21,9 +23,8 @@ export const ProductCategoryTableMenu = () => {
                     <Pencil />
                     Edit
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <Trash2 />
-                    Delete
+                <DropdownMenuItem asChild>
+                    <DeleteProductCategoryButton id="asd" />
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

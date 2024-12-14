@@ -1,5 +1,6 @@
 import { SettingStoreHeader } from '@/components/fragment/account/SettingStoreHeader';
 import { DashboardStoreLayout } from '@/components/layout/DashboardStoreLayout';
+import { UpdateStoreForm } from '@/features/store/components/form/UpdateStoreForm';
 import Head from 'next/head';
 
 export const DashboardStorePage = () => {
@@ -9,6 +10,7 @@ export const DashboardStorePage = () => {
                 <title>Dashboard - Store</title>
             </Head>
             <SettingStoreHeader />
+            <UpdateStoreForm />
         </>
     );
 };
