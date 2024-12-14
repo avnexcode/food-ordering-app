@@ -15,19 +15,27 @@ import { useUpdateProfile } from '../../api';
 import { useToast } from '@/hooks/use-toast';
 import { UpdateProfileImageForm } from './UpdateProfileImageForm';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useProfile } from '../../api/useProfile';
+import { useAuth } from '@/features/auth/api/useAuth';
 
 export const UpdateProfileForm = () => {
     const { toast } = useToast();
-    const { data: user, refetch: refetchProfile } = useProfile();
+    const { data: user, refetch: refetchProfile } = useAuth();
 
     const { mutate: updateProfile, isPending: isUpdateProfilePending } =
         useUpdateProfile({
+            id: user?.id,
             onSuccess: async () => {
                 await refetchProfile();
                 toast({
                     title: 'Success',
                     description: 'Success update profile',
+                });
+            },
+            onError: async error => {
+                toast({
+                    title: 'Success',
+                    variant: 'destructive',
+                    description: error.response?.data.error ?? error.message,
                 });
             },
         });
@@ -42,8 +50,7 @@ export const UpdateProfileForm = () => {
         resolver: zodResolver(updateProfileSchema),
     });
 
-    const onSubmit = (values: UpdateProfileSchema) =>
-        updateProfile({ id: user?.id, values });
+    const onSubmit = (values: UpdateProfileSchema) => updateProfile(values);
 
     useEffect(() => {
         if (user) {

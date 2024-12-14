@@ -1,10 +1,10 @@
 import { useAxiosAuth } from '@/hooks/use-axios-auth';
-import type { ApiResponse } from '@/types/client/api';
-import { type User } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
+import type { ApiResponse } from '@/types/api';
+import { type User } from '@prisma/client';
 
-export const useProfile = () => {
+export const useAuth = () => {
     const { data: session, status } = useSession();
     const axiosAuth = useAxiosAuth();
 

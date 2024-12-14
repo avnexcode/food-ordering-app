@@ -15,10 +15,17 @@ export const createProductSchema = z.object({
         .max(99999999.99, {
             message: 'Price must not exceed 99,999,999.99.',
         }),
-    description: z.string().min(1, { message: 'Description is required.' }),
+    description: z
+        .string()
+        .min(1, { message: 'Description is required.' })
+        .max(65535, {
+            message: 'Description must be 65535 characters or less',
+        }),
     images: z
         .array(z.string().url({ message: 'Each image must be a valid URL.' }))
-        .min(1, { message: 'At least one image is required.' }),
+        .min(1, { message: 'At least one image is required.' })
+        .max(10, 'Maximum of 10 images are allowed')
+        .optional(),
     stock: z
         .number()
         .int({ message: 'Stock must be an integer.' })
@@ -33,6 +40,4 @@ export const createProductSchema = z.object({
         .optional(),
 });
 
-export const updateProductSchema = createProductSchema.partial().extend({
-    store_id: z.string().min(1, { message: 'Store ID is required.' }),
-});
+export const updateProductSchema = createProductSchema.partial();

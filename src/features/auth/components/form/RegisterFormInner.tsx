@@ -8,7 +8,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { ValidatedPasswordList } from '../../validation/ValidatedPasswordList';
+import { ValidatedPasswordList } from '../validation/ValidatedPasswordList';
 import { useState } from 'react';
 import { PasswordViewButton } from '../button/PasswordView';
 

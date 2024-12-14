@@ -1,5 +1,5 @@
 import { Input } from '@/components/ui/input';
-import { CreateProductDialog } from '../dialog/CreateProdductDialog';
+import { CreateProductDialog } from '../dialog/CreateProductDialog';
 
 export const ProductTableHeader = () => {
     return (

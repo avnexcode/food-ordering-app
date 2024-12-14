@@ -1,4 +1,4 @@
-import { CardProduct } from '@/features/product/components/CardProduct';
+import { CardProduct } from '@/features/product/components/card/CardProduct';
 import { MainProductListSidebar } from './MainProductListSidebar';
 
 export const MainProductList = () => {

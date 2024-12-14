@@ -12,7 +12,7 @@ export const jwtService = {
         const token = await new jose.SignJWT(payload)
             .setProtectedHeader({ alg: 'HS256' })
             .setIssuedAt()
-            .setExpirationTime('2h')
+            .setExpirationTime('24h')
             .sign(secret);
 
         return token;

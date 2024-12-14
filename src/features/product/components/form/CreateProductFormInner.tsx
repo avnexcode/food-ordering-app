@@ -47,11 +47,32 @@ export const CreateProductFormInner = (props: CreateProductFormInnerProps) => {
                 <FormField
                     control={form.control}
                     name="price"
-                    render={({ field }) => (
+                    render={({ field: { onChange, value, ...field } }) => (
                         <FormItem>
                             <FormLabel>Price</FormLabel>
                             <FormControl>
-                                <Input placeholder="0" {...field} />
+                                <div className="relative flex items-center">
+                                    <span className="absolute left-3 text-gray-500">
+                                        Rp.
+                                    </span>
+                                    <Input
+                                        type="text"
+                                        placeholder="0"
+                                        className="pl-12"
+                                        {...field}
+                                        value={value.toLocaleString('id-ID')}
+                                        onChange={e => {
+                                            const rawValue =
+                                                e.target.value.replace(
+                                                    /[^\d]/g,
+                                                    '',
+                                                );
+                                            const numberValue =
+                                                Number(rawValue);
+                                            onChange(numberValue);
+                                        }}
+                                    />
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
