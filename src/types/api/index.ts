@@ -1,6 +1,6 @@
 import { type AxiosError } from 'axios';
 
-interface ErrorApiResponse {
+export interface ErrorApiResponse {
     message: string;
     statusCode?: number;
     error?: string;

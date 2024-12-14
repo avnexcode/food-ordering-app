@@ -3,6 +3,7 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -13,6 +14,7 @@ import { useState } from 'react';
 
 export const CreateProductDialog = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isPending, setIsPending] = useState<boolean>(false);
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
@@ -32,8 +34,24 @@ export const CreateProductDialog = () => {
                     </DialogDescription>
                 </DialogHeader>
                 <div>
-                    <CreateProductForm setIsOpen={setIsOpen} />
+                    <CreateProductForm setIsPending={setIsPending} />
                 </div>
+                <DialogFooter>
+                    <Button
+                        size={'sm'}
+                        variant={'default'}
+                        onClick={() => setIsOpen(false)}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        size={'sm'}
+                        variant={'default'}
+                        form="create-product-form"
+                    >
+                        {isPending ? 'Adding...' : 'Add'}
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );

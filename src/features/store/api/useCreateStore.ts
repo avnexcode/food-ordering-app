@@ -1,5 +1,5 @@
 import { axiosAuth } from '@/lib/axios';
-import type { ApiProps, ApiResponse } from '@/types/client/api';
+import type { ApiProps, ApiResponse } from '@/types/api';
 import { useMutation } from '@tanstack/react-query';
 import type { CreateStoreFormSchema } from '../types';
 

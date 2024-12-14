@@ -1,4 +1,4 @@
-import type { ApiProps, ApiResponse } from '@/types/client/api';
+import type { ApiProps, ApiResponse } from '@/types/api';
 import { useMutation } from '@tanstack/react-query';
 import type { UpdateProductFormSchema } from '../types';
 import { type Product } from '@prisma/client';

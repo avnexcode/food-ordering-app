@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { UpdateAddressDialog } from './dialog/UpdateAddressDialog';
 import type { Address, District, Regency, Village } from '@prisma/client';
-import { useProfile } from '@/features/profile/api';
 import { DeleteAddressButton } from './button/DeleteAddressButton';
+import { useAuth } from '@/features/auth/api/useAuth';
 
 type AddressListItemProps = {
     address: Address & {
@@ -14,7 +14,7 @@ type AddressListItemProps = {
 };
 
 export const AddressListItem = (props: AddressListItemProps) => {
-    const { data: user } = useProfile();
+    const { data: user } = useAuth();
     return (
         <Card className="w-full border border-gray-200 shadow-sm rounded-lg">
             <CardContent className="px-6 py-4">

@@ -29,6 +29,7 @@ export const registerFormSchema = z
             ),
         password: z
             .string()
+            .min(1, { message: 'Password is required.' })
             .min(8, { message: 'Password must be at least 8 characters long.' })
             .max(100, { message: 'Password must not exceed 100 characters.' })
             .regex(
@@ -72,6 +73,7 @@ export const updatePasswordSchema = z
         password: z.string().min(1).min(8),
         new_password: z
             .string()
+            .min(1, { message: 'Password is required.' })
             .min(8, { message: 'Password must be at least 8 characters long.' })
             .max(100, { message: 'Password must not exceed 100 characters.' })
             .regex(

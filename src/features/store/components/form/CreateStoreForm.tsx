@@ -20,10 +20,17 @@ export const CreateStoreForm = () => {
 
     const { mutate: createStore, isPending: isCreateStorePending } =
         useCreateStore({
-            onSuccess: () => {
+            onSuccess: async () => {
                 toast({
                     title: 'Success',
                     description: 'Success create store',
+                });
+            },
+            onError: async () => {
+                toast({
+                    title: 'Error',
+                    variant: 'destructive',
+                    description: 'Error create store',
                 });
             },
         });
@@ -32,10 +39,6 @@ export const CreateStoreForm = () => {
         defaultValues: {
             name: '',
             description: '',
-            bank_name: '',
-            image: '',
-            bank_account: '',
-            bank_holder: '',
         },
         resolver: zodResolver(createStoreFormSchema),
     });

@@ -1,5 +1,5 @@
 import { axiosAuth } from '@/lib/axios';
-import type { ApiResponse } from '@/types/client/api';
+import type { ApiResponse } from '@/types/api';
 import { type Regency } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 

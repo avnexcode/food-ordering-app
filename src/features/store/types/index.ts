@@ -5,6 +5,9 @@ export const createStoreFormSchema = z.object({
     description: z
         .string()
         .max(65535, 'Description must be 65535 characters or less'),
+});
+
+export const updateStoreFormSchema = createStoreFormSchema.partial().extend({
     image: z
         .string()
         .max(255, 'Image URL must be 255 characters or less')
@@ -22,8 +25,6 @@ export const createStoreFormSchema = z.object({
         .max(100, 'Bank holder name must be 100 characters or less')
         .optional(),
 });
-
-export const updateStoreFormSchema = createStoreFormSchema.partial();
 
 export type CreateStoreFormSchema = z.infer<typeof createStoreFormSchema>;
 export type UpdateStoreFormSchema = z.infer<typeof updateStoreFormSchema>;

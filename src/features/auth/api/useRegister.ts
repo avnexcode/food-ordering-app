@@ -1,7 +1,7 @@
 import { axiosInstance } from '@/lib/axios';
 import { useMutation } from '@tanstack/react-query';
 import { type RegisterFormSchema } from '../types';
-import type { ApiProps, ApiResponse } from '@/types/client/api';
+import type { ApiProps, ApiResponse } from '@/types/api';
 
 export const useRegister = ({ onSuccess, onError }: ApiProps) => {
     return useMutation({

@@ -8,7 +8,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { ValidatedPasswordList } from '@/features/auth/validation/ValidatedPasswordList';
+import { ValidatedPasswordList } from '@/features/auth/components/validation/ValidatedPasswordList';
 import { PasswordViewButton } from '@/features/auth/components/button/PasswordView';
 import { useState } from 'react';
 
@@ -21,8 +21,9 @@ export const UpdatePasswordFormInner = (
     props: UpdatePasswordFormInnerProps,
 ) => {
     const { form_id, form, onSubmit } = props;
-    const [passwordView, setPasswordView] = useState<boolean>(false);
-    const [newPasswordView, setNewPasswordView] = useState<boolean>(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+    const [newPasswordIsVisible, setNewPasswordIsVisible] =
+        useState<boolean>(false);
 
     const passwordValidation = {
         lowercase: /(?=.*[a-z])/.test(form.watch('new_password')),
@@ -50,72 +51,88 @@ export const UpdatePasswordFormInner = (
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4 w-full"
         >
-            <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                    <FormItem className="relative">
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                            <Input
-                                type={passwordView ? 'text' : 'password'}
-                                placeholder="Password"
-                                {...field}
+            <div>
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem className="relative">
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                                <Input
+                                    type={
+                                        isPasswordVisible ? 'text' : 'password'
+                                    }
+                                    placeholder="Password"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <PasswordViewButton
+                                passwordView={isPasswordVisible}
+                                setPasswordView={setIsPasswordVisible}
                             />
-                        </FormControl>
-                        <PasswordViewButton
-                            passwordView={passwordView}
-                            setPasswordView={setPasswordView}
-                        />
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="new_password"
-                render={({ field }) => (
-                    <FormItem className="relative">
-                        <FormLabel>New Password</FormLabel>
-                        <FormControl>
-                            <Input
-                                type={newPasswordView ? 'text' : 'password'}
-                                placeholder="New Password"
-                                {...field}
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+            <div>
+                <FormField
+                    control={form.control}
+                    name="new_password"
+                    render={({ field }) => (
+                        <FormItem className="relative">
+                            <FormLabel>New Password</FormLabel>
+                            <FormControl>
+                                <Input
+                                    type={
+                                        newPasswordIsVisible
+                                            ? 'text'
+                                            : 'password'
+                                    }
+                                    placeholder="New Password"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                            <PasswordViewButton
+                                passwordView={newPasswordIsVisible}
+                                setPasswordView={setNewPasswordIsVisible}
                             />
-                        </FormControl>
-                        <FormMessage />
-                        <PasswordViewButton
-                            passwordView={newPasswordView}
-                            setPasswordView={setNewPasswordView}
-                        />
-                        <div className="grid items-center justify-center py-5">
-                            <ValidatedPasswordList
-                                validationRules={validationRules}
-                                columns={4}
-                                className="flex gap-14"
-                            />
-                        </div>
-                    </FormItem>
-                )}
-            />
-            <FormField
-                control={form.control}
-                name="confirm_password"
-                render={({ field }) => (
-                    <FormItem className="relative">
-                        <FormLabel>New Password Confirm</FormLabel>
-                        <FormControl>
-                            <Input
-                                type={newPasswordView ? 'text' : 'password'}
-                                placeholder="New Password Confirm"
-                                {...field}
-                            />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                )}
-            />
+                            <div className="grid items-center justify-center py-5">
+                                <ValidatedPasswordList
+                                    validationRules={validationRules}
+                                    columns={4}
+                                    className="flex gap-14"
+                                />
+                            </div>
+                        </FormItem>
+                    )}
+                />
+            </div>
+            <div>
+                <FormField
+                    control={form.control}
+                    name="confirm_password"
+                    render={({ field }) => (
+                        <FormItem className="relative">
+                            <FormLabel>New Password Confirm</FormLabel>
+                            <FormControl>
+                                <Input
+                                    type={
+                                        newPasswordIsVisible
+                                            ? 'text'
+                                            : 'password'
+                                    }
+                                    placeholder="New Password Confirm"
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
         </form>
     );
 };
