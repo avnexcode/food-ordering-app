@@ -49,7 +49,7 @@ export const storeService = {
             user_id,
         );
 
-        await userService.update(user_id, { role: UserRole.SELLER });
+        await userService.update(user_id, { role: UserRole.SELLER, store_id: store.id });
 
         return toStoreResponse(store);
     },

@@ -1,6 +1,5 @@
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CirclePlus } from 'lucide-react';
+import { CreateProductCategoryDialog } from '../dialog/CreateProductCategoryDialog';
 
 export const ProductCategoryTableHeader = () => {
     return (
@@ -9,13 +8,7 @@ export const ProductCategoryTableHeader = () => {
                 <Input className="w-1/2" placeholder="Search" />
             </div>
             <div className="">
-                <Button
-                    size={'sm'}
-                    className="rounded-full bg-green-600 px-6 hover:bg-green-700"
-                >
-                    <CirclePlus />
-                    New
-                </Button>
+                <CreateProductCategoryDialog/>
             </div>
         </header>
     );
