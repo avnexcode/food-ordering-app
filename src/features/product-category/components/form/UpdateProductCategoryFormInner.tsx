@@ -1,5 +1,4 @@
 import {
-    Form,
     FormControl,
     FormField,
     FormItem,
@@ -7,28 +6,20 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useForm } from 'react-hook-form';
-
-type UpdateProductCategoryFormValues = {
-    name: string;
-    description: string;
+import {  UseFormReturn } from 'react-hook-form';
+import { UpdateProductCategoryFormSchema } from '../../types';
+type UpdateProfileFormInnerProps = {
+    form_id: string;
+    form: UseFormReturn<UpdateProductCategoryFormSchema>;
+    onSubmit: (values: UpdateProductCategoryFormSchema) => void;
 };
 
-export const UpdateProductCategoryFormInner = () => {
-    const form = useForm<UpdateProductCategoryFormValues>({
-        defaultValues: {
-            name: '',
-            description: '',
-        },
-    });
-
-    const onSubmit = (values: UpdateProductCategoryFormValues) => {
-        console.log('Form submitted with values:', values);
-    };
+export const UpdateProductCategoryFormInner = (props: UpdateProfileFormInnerProps) => {
+    const { form_id, form, onSubmit } = props;
 
     return (
-        <Form {...form}>
             <form
+                id={form_id}
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
             >
@@ -68,13 +59,6 @@ export const UpdateProductCategoryFormInner = () => {
                         )}
                     />
                 </div>
-                <button
-                    type="submit"
-                    className="self-start px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                    Submit
-                </button>
             </form>
-        </Form>
     );
 };

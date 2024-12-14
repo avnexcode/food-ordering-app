@@ -1,19 +1,21 @@
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { UpdateProductCategoryFormInner } from "./UpdateProductCategoryFormInner";
-import { useProductCategories } from "../../api";
+
 import { useUpdateProductCategory } from "../../api/useUpdateProductCategory";
 import { type UpdateProductCategoryFormSchema } from "../../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { updateAddressFormSchema } from "@/features/address/types";
 import { useToast } from "@/hooks/use-toast";
+import { useProductCategoriesId } from "../../api/useProductCategoryId";
+import { Form } from "@/components/ui/form";
 
 export const UpdateProductCategorForm = () => {
-    const toast = useToast();
-    const {data: productCategories, refetch: refetchProductCategories} = useProductCategories();
+    const {toast} = useToast();
+    const {data: productCategory, refetch: refetchProductCategories} = useProductCategoriesId('');
 
     const {mutate: updateProductCategory, isPending: isUpdateProductCategoryPending} = 
         useUpdateProductCategory({
-            id: productCategories?.id,
+            id: productCategory?.id,
             onSuccess: async() => {
                 await refetchProductCategories();
                 toast({
@@ -38,7 +40,7 @@ export const UpdateProductCategorForm = () => {
             resolver: zodResolver(updateAddressFormSchema)
         })
 
-        const onSubmit = (Values: UpdateProductCategoryFormSchema) => updateProductCategory(values)
+        const onSubmit = (values: UpdateProductCategoryFormSchema) => updateProductCategory(values)
 
 
     return (
