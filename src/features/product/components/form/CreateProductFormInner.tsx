@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { type UseFormReturn } from 'react-hook-form';
 import type { CreateProductFormSchema } from '../../types';
 import { CreateProductCategoryOption } from '../option/CreateProductCategoryOption';
+import { Textarea } from '@/components/ui/textarea';
 
 type CreateProductFormInnerProps = {
     form_id: string;
@@ -23,7 +24,7 @@ export const CreateProductFormInner = (props: CreateProductFormInnerProps) => {
         <form
             id={form_id}
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-2 w-full"
+            className="flex flex-col gap-4 w-full"
         >
             <div>
                 <FormField
@@ -42,6 +43,9 @@ export const CreateProductFormInner = (props: CreateProductFormInnerProps) => {
                         </FormItem>
                     )}
                 />
+            </div>
+            <div>
+                <CreateProductCategoryOption form={form} className="w-full" />
             </div>
             <div>
                 <FormField
@@ -79,15 +83,64 @@ export const CreateProductFormInner = (props: CreateProductFormInnerProps) => {
                     )}
                 />
             </div>
-            <div className="flex gap-2 items-center">
-                <CreateProductCategoryOption form={form} />
+            <div>
                 <FormField
                     control={form.control}
-                    name="images"
-                    render={({ field }) => (
+                    name="stock"
+                    render={({ field: { onChange, value, ...field } }) => (
                         <FormItem>
+                            <FormLabel>Stock</FormLabel>
                             <FormControl>
-                                <Input type="file" placeholder="" {...field} />
+                                <Input
+                                    type="text"
+                                    placeholder="0"
+                                    {...field}
+                                    value={value}
+                                    onChange={e => {
+                                        const rawValue = e.target.value.replace(
+                                            /[^\d]/g,
+                                            '',
+                                        );
+                                        const numberValue = Number(rawValue);
+                                        onChange(numberValue);
+                                    }}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+            </div>
+            <div>
+                <FormField
+                    control={form.control}
+                    name="weight"
+                    render={({ field: { onChange, value, ...field } }) => (
+                        <FormItem>
+                            <FormLabel>Weight</FormLabel>
+                            <FormControl>
+                                <div className="relative flex items-center">
+                                    <Input
+                                        type="text"
+                                        placeholder="0"
+                                        className="pr-12"
+                                        {...field}
+                                        value={value}
+                                        onChange={e => {
+                                            const rawValue =
+                                                e.target.value.replace(
+                                                    /[^\d]/g,
+                                                    '',
+                                                );
+                                            const numberValue =
+                                                Number(rawValue);
+                                            onChange(numberValue);
+                                        }}
+                                    />
+                                    <span className="absolute right-3 text-gray-500">
+                                        gram
+                                    </span>
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -102,40 +155,10 @@ export const CreateProductFormInner = (props: CreateProductFormInnerProps) => {
                         <FormItem>
                             <FormLabel>Description</FormLabel>
                             <FormControl>
-                                <Input
+                                <Textarea
                                     placeholder="Input product description"
                                     {...field}
                                 />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </div>
-            <div>
-                <FormField
-                    control={form.control}
-                    name="stock"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Stock</FormLabel>
-                            <FormControl>
-                                <Input placeholder="0" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </div>
-            <div>
-                <FormField
-                    control={form.control}
-                    name="weight"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Weight</FormLabel>
-                            <FormControl>
-                                <Input placeholder="0" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

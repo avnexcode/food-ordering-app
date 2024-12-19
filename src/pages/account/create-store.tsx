@@ -1,1 +1,1 @@
-export { AccountCreateStorePage as default } from '@/components/pages/account/store/create-store';
+export { AccountCreateStorePage as default } from '@/components/pages/account/store/create-store-page';

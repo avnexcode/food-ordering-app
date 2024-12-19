@@ -12,7 +12,7 @@ export const HomePage = () => {
             <Head>
                 <title>Foodzy</title>
             </Head>
-            <main className="px-20">
+            <main className="px-20 pt-10">
                 <header className="flex gap-10">
                     <MainHero />
                     <DiscountBanner />

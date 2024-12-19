@@ -6,23 +6,26 @@ import {
     type CreateProductFormSchema,
 } from '../../types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CreateProductDialog } from '../dialog/CreateProductDialog';
 import { useCreateProduct } from '../../api/useCreateProduct';
 import { useToast } from '@/hooks/use-toast';
+import { useEffect } from 'react';
+import { useStore } from '@/features/store/api/useStore';
 
 type CreateProductFormProps = {
     setIsPending: (isPending: boolean) => void;
+    setIsOpen: (isOpen: boolean) => void;
 };
 
 export const CreateProductForm = (props: CreateProductFormProps) => {
-    const { setIsPending } = props;
+    const { setIsPending, setIsOpen } = props;
     const { toast } = useToast();
+    const { refetch: storeRefetch } = useStore();
+
     const form = useForm<CreateProductFormSchema>({
         defaultValues: {
             name: '',
             price: 0,
             description: '',
-            images: [],
             stock: 0,
             weight: 0,
             category_id: '',
@@ -32,13 +35,17 @@ export const CreateProductForm = (props: CreateProductFormProps) => {
 
     const onSubmit = (values: CreateProductFormSchema) => {
         setIsPending(isCreateProductPending);
-        console.log(values);
+        createProduct(values);
     };
 
     const { mutate: createProduct, isPending: isCreateProductPending } =
         useCreateProduct({
-            onSuccess: async () => {
+            onMutate: async () => {
                 setIsPending(isCreateProductPending);
+            },
+            onSuccess: async () => {
+                await storeRefetch();
+                setIsOpen(false);
                 toast({
                     title: 'Success',
                     description: 'Success create product',
@@ -50,8 +57,15 @@ export const CreateProductForm = (props: CreateProductFormProps) => {
                     description: error.response?.data?.error ?? error.message,
                     variant: 'destructive',
                 });
+                setIsOpen(false);
             },
         });
+
+    useEffect(() => {
+        if (!isCreateProductPending) {
+            setIsPending(false);
+        }
+    }, [isCreateProductPending, setIsPending]);
 
     return (
         <Form {...form}>

@@ -20,9 +20,11 @@ export const LoginFormLayout = (props: LoginFormLayoutProps) => {
     const { children, isPending } = props;
 
     return (
-        <Card className="w-full border-none">
+        <Card className="w-full border-none shadow-none">
             <CardHeader>
-                <CardTitle className="text-3xl">Sign In</CardTitle>
+                <CardTitle>
+                    <h3>Sign In</h3>
+                </CardTitle>
                 <CardDescription>
                     Welcome back! please sign in to continue.
                 </CardDescription>

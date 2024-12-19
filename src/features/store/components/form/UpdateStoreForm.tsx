@@ -6,14 +6,15 @@ import { Form } from '@/components/ui/form';
 import { UpdateStoreFormLayout } from '../../layout/UpdateStoreFormLayout';
 import { useToast } from '@/hooks/use-toast';
 import { useUpdateStore } from '../../api/useUpdateStore';
-import { useAuth } from '@/features/auth/api/useAuth';
 import { UpdateStoreImageForm } from './UpdateStoreImageForm';
 import { useEffect } from 'react';
+import { useStore } from '../../api/useStore';
 
 export const UpdateStoreForm = () => {
     const { toast } = useToast();
-    const { data: user } = useAuth();
-    
+    const { data: store } = useStore();
+    console.log(store);
+
     const form = useForm<UpdateStoreFormSchema>({
         defaultValues: {
             name: '',
@@ -27,9 +28,9 @@ export const UpdateStoreForm = () => {
 
     const onsubmit = (values: UpdateStoreFormSchema) => updateStore(values);
 
-    const { mutate: updateStore, isPending: isUpdateStoreSettingPending } =
+    const { mutate: updateStore, isPending: isUpdateStorePending } =
         useUpdateStore({
-            id: user?.store_id ?? undefined,
+            id: store?.id ?? undefined,
             onSuccess: async () => {
                 toast({
                     title: 'Success',
@@ -46,23 +47,23 @@ export const UpdateStoreForm = () => {
         });
 
     useEffect(() => {
-        if (user) {
+        if (store) {
             form.reset({
-                name: user.store?.name,
-                description: user.store?.description,
-                bank_name: user.store?.bank_name,
-                bank_account: user.store?.bank_account,
-                bank_holder: user.store?.bank_holder,
+                name: store?.name,
+                description: store?.description ?? '',
+                bank_name: store?.bank_name ?? '',
+                bank_account: store?.bank_account ?? '',
+                bank_holder: store?.bank_holder ?? '',
             });
         }
-    }, [form, user]);
+    }, [form, store]);
 
     return (
-        <UpdateStoreFormLayout isPending={isUpdateStoreSettingPending}>
+        <UpdateStoreFormLayout isPending={isUpdateStorePending}>
             <UpdateStoreImageForm />
             <Form {...form}>
                 <UpdateStoreFormInner
-                    form_id="update-store-setting"
+                    form_id="update-store-form"
                     form={form}
                     onSubmit={onsubmit}
                 />

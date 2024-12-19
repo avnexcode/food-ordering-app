@@ -4,6 +4,7 @@ import { type ProductCategory } from '@prisma/client';
 import { toFormatDate } from '@/utils/toFormatDate';
 
 type ProductCategoryTableItemProps = {
+    index: number;
     category: ProductCategory;
 };
 
@@ -12,13 +13,13 @@ export const ProductCategoryTableItem = (
 ) => {
     return (
         <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
+            <TableCell className="font-medium">{props.index + 1}</TableCell>
             <TableCell>{props.category.name}</TableCell>
             <TableCell>
                 {toFormatDate(new Date(props.category.created_at))}
             </TableCell>
             <TableCell>
-                <ProductCategoryTableMenu />
+                <ProductCategoryTableMenu id={props.category.id} />
             </TableCell>
         </TableRow>
     );

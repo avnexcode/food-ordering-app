@@ -1,16 +1,21 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import { ProductTableMenu } from './ProductTableMenu';
+import type { Product } from '@prisma/client';
 
-export const ProductTableItem = () => {
+type ProductTableItemProps = {
+    product: Product;
+};
+
+export const ProductTableItem = (props: ProductTableItemProps) => {
     return (
         <TableRow>
             <TableCell className="font-medium">INV001</TableCell>
-            <TableCell>Burger King</TableCell>
+            <TableCell>{props.product.name}</TableCell>
             <TableCell>Snack</TableCell>
             <TableCell>$250.00</TableCell>
             <TableCell>Hari ini</TableCell>
             <TableCell>
-                <ProductTableMenu />
+                <ProductTableMenu id={props.product.id} />
             </TableCell>
         </TableRow>
     );

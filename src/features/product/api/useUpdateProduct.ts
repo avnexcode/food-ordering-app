@@ -4,16 +4,14 @@ import type { UpdateProductFormSchema } from '../types';
 import { type Product } from '@prisma/client';
 import { axiosAuth } from '@/lib/axios';
 
-export const useUpdateProduct = ({ onSuccess, onError }: ApiProps) => {
+export const useUpdateProduct = ({
+    id,
+    onSuccess,
+    onError,
+}: { id?: string } & ApiProps) => {
     return useMutation({
         mutationKey: ['products'],
-        mutationFn: async ({
-            id,
-            values,
-        }: {
-            id?: string;
-            values: UpdateProductFormSchema;
-        }) => {
+        mutationFn: async (values: UpdateProductFormSchema) => {
             if (!id) throw new Error('Tidak ada id');
             const response = await axiosAuth.put<ApiResponse<Product>>(
                 `/products/${id}`,

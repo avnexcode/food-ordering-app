@@ -8,13 +8,13 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUpdateProduct } from '../../api/useUpdateProduct';
 import { useToast } from '@/hooks/use-toast';
+import { UpdateProductFormLayout } from '../../layout/UpdateProductFormLayout';
+import { useRouter } from 'next/router';
 
-type UpdateProductFormProps = {
-    setIsPending: (isPending: boolean) => void;
-};
+export const UpdateProductForm = () => {
+    const router = useRouter();
+    const { id } = router.query as { id: string };
 
-export const UpdateProductForm = (props: UpdateProductFormProps) => {
-    const { setIsPending } = props;
     const { toast } = useToast();
     const form = useForm<UpdateProductFormSchema>({
         defaultValues: {
@@ -30,14 +30,13 @@ export const UpdateProductForm = (props: UpdateProductFormProps) => {
     });
 
     const onSubmit = (values: UpdateProductFormSchema) => {
-        setIsPending(isUpdateProductPending);
         console.log(values);
     };
 
     const { mutate: updateProduct, isPending: isUpdateProductPending } =
         useUpdateProduct({
+            id,
             onSuccess: async () => {
-                setIsPending(isUpdateProductPending);
                 toast({
                     title: 'Success',
                     description: 'Success update product',
@@ -53,12 +52,14 @@ export const UpdateProductForm = (props: UpdateProductFormProps) => {
         });
 
     return (
-        <Form {...form}>
-            <UpdateProductFormInner
-                form_id="update-product-form"
-                form={form}
-                onSubmit={onSubmit}
-            />
-        </Form>
+        <UpdateProductFormLayout isPending={isUpdateProductPending}>
+            <Form {...form}>
+                <UpdateProductFormInner
+                    form_id="update-product-form"
+                    form={form}
+                    onSubmit={onSubmit}
+                />
+            </Form>
+        </UpdateProductFormLayout>
     );
 };

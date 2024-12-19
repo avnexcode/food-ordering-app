@@ -5,12 +5,12 @@ export const createStoreSchema = z.object({
         .string()
         .min(1, { message: 'Name is required' })
         .max(100, { message: 'Name must not exceed 100 characters.' }),
-    description: z
-        .string()
-        .max(65535, {
-            message: 'Description must not exceed 65535 characters.',
-        })
-        .optional(),
+    description: z.string().max(65535, {
+        message: 'Description must not exceed 65535 characters.',
+    }),
+});
+
+export const updateStoreSchema = createStoreSchema.partial().extend({
     image: z
         .string()
         // .url({ message: 'Image must be a valid URL.' })
@@ -29,5 +29,3 @@ export const createStoreSchema = z.object({
         .max(100, { message: 'Bank holder must not exceed 100 characters.' })
         .optional(),
 });
-
-export const updateStoreSchema = createStoreSchema.partial();

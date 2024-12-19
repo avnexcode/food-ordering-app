@@ -1,1 +1,1 @@
-export { DashboardUserPage as default } from '@/components/pages/dashboard/admin/dashboard-user';
+export { DashboardUserPage as default } from '@/components/pages/dashboard/admin/dashboard-user-page';

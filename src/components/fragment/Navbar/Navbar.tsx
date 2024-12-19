@@ -33,7 +33,7 @@ const NavbarAuth = () => {
     return (
         <Button
             size={'sm'}
-            className="rounded-full"
+            className="rounded-full bg-green-700"
             onClick={() => router.push('/auth/login')}
         >
             <LogIn />

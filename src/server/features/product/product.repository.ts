@@ -46,6 +46,28 @@ export const productRepository = {
         return product;
     },
 
+    findUniqueSlug: async (
+        slug: string,
+    ): Promise<ProductWithRelations | null> => {
+        const product = await db.product.findFirst({
+            where: { slug },
+            include: {
+                store: {
+                    include: {
+                        owner: {
+                            include: {
+                                addresses: true,
+                            },
+                        },
+                    },
+                },
+                category: true,
+            },
+        });
+
+        return product;
+    },
+
     countById: async (id: string): Promise<number> => {
         const productCount = await db.product.count({ where: { id } });
         return productCount;

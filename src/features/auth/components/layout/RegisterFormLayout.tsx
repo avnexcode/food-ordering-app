@@ -18,9 +18,11 @@ type RegisterFormLayoutProps = {
 export const RegisterFormLayout = (props: RegisterFormLayoutProps) => {
     const { children, isPending } = props;
     return (
-        <Card className="w-full border-none">
+        <Card className="w-full border-none shadow-none">
             <CardHeader>
-                <CardTitle className="text-3xl">Sign Up</CardTitle>
+                <CardTitle>
+                    <h3>Sign Up</h3>
+                </CardTitle>
                 <CardDescription>
                     Create an account to get started.
                 </CardDescription>

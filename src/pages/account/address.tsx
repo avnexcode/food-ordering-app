@@ -1,1 +1,1 @@
-export { AccountAddressPage as default } from '@/components/pages/account/address/address';
+export { AccountAddressPage as default } from '@/components/pages/account/address/address-page';

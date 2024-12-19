@@ -13,8 +13,22 @@ import {
 import { validateSchema } from '@/server/service';
 import { createProductSchema } from './product.validation';
 import { userService } from '../user';
+import { createSlug } from '@/server/utils/create-slug';
 
 export const productService = {
+    generateUniqueSlug: async (name: string): Promise<string> => {
+        const slug = createSlug(name);
+        let uniqueSlug = slug;
+        let counter = 1;
+
+        while (await productRepository.findUniqueSlug(uniqueSlug)) {
+            uniqueSlug = `${slug}-${counter}`;
+            counter++;
+        }
+
+        return uniqueSlug;
+    },
+
     getAll: async (): Promise<ProductWithRelations[]> => {
         const response = await productRepository.findMany();
 
@@ -35,6 +49,16 @@ export const productService = {
         return toProductWithRelationsResponse(product);
     },
 
+    getBySlug: async (slug: string): Promise<ProductWithRelations> => {
+        const product = await productRepository.findUniqueSlug(slug);
+
+        if (!product) {
+            throw new NotFoundException('Product not found');
+        }
+
+        return toProductWithRelationsResponse(product);
+    },
+
     create: async (
         request: CreateProductRequest,
         user_id: string,
@@ -43,6 +67,14 @@ export const productService = {
 
         if (!user.store) {
             throw new NotFoundException('User have no store');
+        }
+
+        request.slug = await productService.generateUniqueSlug(request.name);
+
+        const existsSlug = await productRepository.findUniqueSlug(request.slug);
+
+        if (existsSlug) {
+            request.slug += 1;
         }
 
         const validatedRequest: CreateProductRequest = validateSchema(

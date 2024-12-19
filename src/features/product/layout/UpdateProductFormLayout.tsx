@@ -8,26 +8,31 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 
-type UpdateStoreFormLayoutProps = {
+type UpdateProductFormLayoutProps = {
     children: React.ReactNode;
     isPending: boolean;
 };
 
-export const UpdateStoreFormLayout = (props: UpdateStoreFormLayoutProps) => {
+export const UpdateProductFormLayout = (
+    props: UpdateProductFormLayoutProps,
+) => {
     const { children, isPending } = props;
     return (
         <Card className="border-none shadow-none">
             <CardHeader>
                 <CardTitle>
-                    <h3 className="text-green-700">Store Setting</h3>
+                    <h4 className="text-green-700">Update Product</h4>
                 </CardTitle>
-                <CardDescription>DDDes</CardDescription>
+                <CardDescription>Des</CardDescription>
             </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-                {children}
-            </CardContent>
-            <CardFooter className="place-content-end pt-5">
-                <Button form="update-store-form">
+            <CardContent>{children}</CardContent>
+            <CardFooter className="place-content-end gap-5">
+                <Button
+                    size={'sm'}
+                    variant={'default'}
+                    form="create-product-form"
+                    disabled={isPending}
+                >
                     {isPending ? 'Updating...' : 'Update'}
                 </Button>
             </CardFooter>

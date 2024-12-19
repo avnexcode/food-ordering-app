@@ -2,6 +2,7 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from '@/components/ui/form';
 import {
@@ -13,7 +14,7 @@ import {
 } from '@/components/ui/select';
 import { type UseFormReturn } from 'react-hook-form';
 import type { CreateProductFormSchema } from '../../types';
-import { useProductCategories } from '@/features/product-category/api';
+import { useStore } from '@/features/store/api/useStore';
 
 type CreateProductCategoryOptionProps = {
     form: UseFormReturn<CreateProductFormSchema>;
@@ -24,25 +25,35 @@ export const CreateProductCategoryOption = (
     props: CreateProductCategoryOptionProps,
 ) => {
     const { form, className } = props;
-    const { data: productCategories } = useProductCategories();
+    const { data: store } = useStore();
+
     return (
         <FormField
             control={form.control}
             name={'category_id'}
             render={({ field }) => (
-                <FormItem>
+                <FormItem className={`${className}`}>
                     <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        onValueChange={value => {
+                            field.onChange(value === 'none' ? null : value);
+                        }}
+                        value={field.value ?? 'none'}
                     >
+                        <FormLabel>Category</FormLabel>
                         <FormControl>
                             <SelectTrigger className={`${className}`}>
-                                <SelectValue placeholder={'Category'} />
+                                <SelectValue placeholder="Select category" />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            {productCategories?.map((category, index) => (
-                                <SelectItem key={index} value={category.id}>
+                            <SelectItem value="none">
+                                Select category
+                            </SelectItem>
+                            {store?.product_categories.map(category => (
+                                <SelectItem
+                                    key={category.id}
+                                    value={category.id}
+                                >
                                     {category.name}
                                 </SelectItem>
                             ))}

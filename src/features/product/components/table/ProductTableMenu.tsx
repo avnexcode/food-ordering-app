@@ -5,8 +5,13 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Ellipsis, Pencil, Trash2, View } from 'lucide-react';
+import Link from 'next/link';
 
-export const ProductTableMenu = () => {
+type ProductTableMenuProps = {
+    id: string;
+};
+
+export const ProductTableMenu = (props: ProductTableMenuProps) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="rounded-full">
@@ -18,8 +23,10 @@ export const ProductTableMenu = () => {
                     Detail
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                    <Pencil />
-                    Edit
+                    <Link href={`/dashboard/store/product/${props.id}`}>
+                        <Pencil />
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <Trash2 />

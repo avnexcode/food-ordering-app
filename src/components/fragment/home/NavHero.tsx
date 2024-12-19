@@ -3,7 +3,7 @@ import { NavHeroCarousel } from './NavHeroCarousel';
 
 export const NavHero = () => {
     return (
-        <div className="flex flex-col gap-10 shadow-md p-4">
+        <div className="flex flex-col gap-10 p-4">
             <div className="flex items-center">
                 <div className="w-1/2">
                     <NavHeroCarousel />

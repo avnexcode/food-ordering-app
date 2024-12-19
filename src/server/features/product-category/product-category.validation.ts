@@ -13,8 +13,5 @@ export const createProductCategorySchema = z.object({
         .optional(),
 });
 
-export const updateProductCategorySchema = createProductCategorySchema
-    .partial()
-    .extend({
-        store_id: z.string().min(1, { message: 'Store ID is required.' }),
-    });
+export const updateProductCategorySchema =
+    createProductCategorySchema.partial();

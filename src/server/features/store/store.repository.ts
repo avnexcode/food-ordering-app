@@ -56,10 +56,7 @@ export const storeRepository = {
         request: CreateStoreRequest,
         owner_id: string,
     ): Promise<Store> => {
-        const newStoreData = {
-            name: request.name,
-            owner_id,
-        };
+        const newStoreData = { ...request, owner_id };
 
         const store = await db.store.create({ data: newStoreData });
 
@@ -70,14 +67,11 @@ export const storeRepository = {
         id: string,
         request: UpdateStoreRequest,
     ): Promise<Store> => {
-        const updateStoreData = {
-            name: request.name,
-        };
+        const updateStoreData = { ...request };
 
         const store = await db.store.update({
             where: { id },
             data: updateStoreData,
-            include: {},
         });
 
         return store;

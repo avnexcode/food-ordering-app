@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { AccountCreateAddressPage } from './create-address';
+import { AccountCreateAddressPage } from './create-address-page';
 import { AccountLayout } from '@/components/layout/AccountLayout';
 
 export const AccountAddressPage = () => {

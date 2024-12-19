@@ -1,6 +1,6 @@
-import Head from "next/head";
-import { DashboardStoreLayout } from "@/components/layout/DashboardStoreLayout";
-import { UpdateProductCategorForm } from "@/features/product-category/components/form/UpdateProductCategoryForm";
+import Head from 'next/head';
+import { DashboardStoreLayout } from '@/components/layout/DashboardStoreLayout';
+import { UpdateProductCategorForm } from '@/features/product-category/components/form/UpdateProductCategoryForm';
 
 export const DashboardStoreCategoryEditPage = () => {
     return (
@@ -8,9 +8,7 @@ export const DashboardStoreCategoryEditPage = () => {
             <Head>
                 <title>Dashboard - Store Category</title>
             </Head>
-            <main>
-                <UpdateProductCategorForm />
-            </main>
+            <UpdateProductCategorForm />
         </>
     );
 };

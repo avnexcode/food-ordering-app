@@ -1,1 +1,1 @@
-export { AccountOrderPage as default } from '@/components/pages/account/order/order';
+export { AccountOrderPage as default } from '@/components/pages/account/order/order-page';

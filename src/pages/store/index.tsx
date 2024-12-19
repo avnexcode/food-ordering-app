@@ -1,1 +1,1 @@
-export { StorePage as default } from '@/components/pages/store/store';
+export { StorePage as default } from '@/components/pages/store/store-page';

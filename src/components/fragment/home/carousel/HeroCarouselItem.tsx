@@ -1,10 +1,12 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { CarouselItem } from '@/components/ui/carousel';
-import { Fullscreen } from 'lucide-react';
 import Image from 'next/image';
 
 type HeroCarouselItemProps = {
-    label: string;
+    image: {
+        label: string;
+        src: string;
+    };
 };
 
 export const HeroCarouselItem = (props: HeroCarouselItemProps) => {
@@ -15,8 +17,8 @@ export const HeroCarouselItem = (props: HeroCarouselItemProps) => {
                     <CardContent className="flex h-[470px] w-full items-center justify-center p-6">
                         <div className="overflow-hidden h-[470px] rounded-lg w-full">
                             <Image
-                                src="https://res.cloudinary.com/dkmlayydv/image/upload/v1734160926/BannerFoodtzy_1_ecebvk.png"
-                                alt={props.label}
+                                src={props.image.src}
+                                alt={props.image.label}
                                 width={1300}
                                 height={400}
                                 className="object-cover w-full h-full"

@@ -1,1 +1,1 @@
-export { CheckoutPage as default } from '@/components/pages/beranda/checkout';
+export { CheckoutPage as default } from '@/components/pages/beranda/checkout-page';

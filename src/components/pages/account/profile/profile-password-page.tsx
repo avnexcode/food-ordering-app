@@ -1,6 +1,5 @@
 import { AccountLayout } from '@/components/layout/AccountLayout';
 import { UpdatePasswordForm } from '@/features/auth/components/form/UpdatePasswordForm';
-// import { UpdatePasswordForm } from '@/features/settings/profile/components/form/UpdatePasswordForm';
 import Head from 'next/head';
 
 export const AccountPasswordPage = () => {
@@ -17,3 +16,4 @@ export const AccountPasswordPage = () => {
 AccountPasswordPage.getLayout = (page: React.ReactElement) => (
     <AccountLayout>{page}</AccountLayout>
 );
+ 

@@ -26,7 +26,7 @@ export const CreateProductDialog = () => {
                     New
                 </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-2xl max-h-[85vh] overflow-auto">
                 <DialogHeader>
                     <DialogTitle>Add New Product</DialogTitle>
                     <DialogDescription>
@@ -34,13 +34,17 @@ export const CreateProductDialog = () => {
                     </DialogDescription>
                 </DialogHeader>
                 <div>
-                    <CreateProductForm setIsPending={setIsPending} />
+                    <CreateProductForm
+                        setIsPending={setIsPending}
+                        setIsOpen={setIsOpen}
+                    />
                 </div>
-                <DialogFooter>
+                <DialogFooter className="gap-y-2">
                     <Button
                         size={'sm'}
                         variant={'default'}
                         onClick={() => setIsOpen(false)}
+                        className="px-10"
                     >
                         Cancel
                     </Button>
@@ -48,6 +52,7 @@ export const CreateProductDialog = () => {
                         size={'sm'}
                         variant={'default'}
                         form="create-product-form"
+                        className="px-10"
                     >
                         {isPending ? 'Adding...' : 'Add'}
                     </Button>

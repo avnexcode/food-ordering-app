@@ -4,7 +4,11 @@ import type { CreateProductFormSchema } from '../types';
 import { type Product } from '@prisma/client';
 import { axiosAuth } from '@/lib/axios';
 
-export const useCreateProduct = ({ onSuccess, onError }: ApiProps) => {
+export const useCreateProduct = ({
+    onMutate,
+    onSuccess,
+    onError,
+}: ApiProps) => {
     return useMutation({
         mutationKey: ['products'],
         mutationFn: async (values: CreateProductFormSchema) => {
@@ -14,6 +18,7 @@ export const useCreateProduct = ({ onSuccess, onError }: ApiProps) => {
             );
             return response.data.data;
         },
+        onMutate,
         onSuccess,
         onError,
     });
