@@ -9,7 +9,7 @@ export const StorePage = () => {
 
     return (
         <div className="w-full flex justify-center">
-            <main className="w-[80%] flex flex-col gap-[50px]">
+            <main className="w-[80%] flex flex-col">
                 <header>
                     <StoreHeader storeId={id} />
                 </header>
