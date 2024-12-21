@@ -2,9 +2,8 @@ import { useForm } from 'react-hook-form';
 import { UpdateProductCategoryFormInner } from './UpdateProductCategoryFormInner';
 
 import { useUpdateProductCategory } from '../../api/useUpdateProductCategory';
-import { type UpdateProductCategoryFormSchema } from '../../types';
+import { updateProductCategoryFormSchema, type UpdateProductCategoryFormSchema } from '../../types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { updateAddressFormSchema } from '@/features/address/types';
 import { useToast } from '@/hooks/use-toast';
 import { useProductCategoriesId } from '../../api/useProductCategoryId';
 import { Form } from '@/components/ui/form';
@@ -45,11 +44,12 @@ export const UpdateProductCategorForm = () => {
             name: '',
             description: '',
         },
-        resolver: zodResolver(updateAddressFormSchema),
+        resolver: zodResolver(updateProductCategoryFormSchema),
     });
 
-    const onSubmit = (values: UpdateProductCategoryFormSchema) =>
+    const onSubmit = (values: UpdateProductCategoryFormSchema) => {
         updateProductCategory(values);
+    }
 
     useEffect(() => {
         if (productCategory) {
