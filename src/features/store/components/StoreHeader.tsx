@@ -13,7 +13,7 @@ export const StoreHeader = (props: StoreHeaderProps) => {
 
     useEffect(() => {
         if (store?.image) {
-            setAvatarSrc(store?.image);
+            setAvatarSrc(store.image);
         }
     }, [store]);
 
