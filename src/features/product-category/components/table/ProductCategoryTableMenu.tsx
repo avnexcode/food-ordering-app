@@ -5,7 +5,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { DeleteProductCategoryButton } from '@/features/product-category/components/button/DeleteProductCategoryButton';
-import { Ellipsis, Pencil, View } from 'lucide-react';
+import { Ellipsis, Pencil} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 type ProductCategoryTableMenuProps = {
@@ -22,16 +22,6 @@ export const ProductCategoryTableMenu = (
                 <Ellipsis size={20} strokeWidth={2} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="[&>*]:cursor-pointer">
-                <DropdownMenuItem
-                    onClick={() =>
-                        router.push(
-                            `/dashboard/store/product-category/${props.id}`,
-                        )
-                    }
-                >
-                    <View />
-                    Detail
-                </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() =>
                         router.push(
