@@ -26,23 +26,26 @@ export const StoreHeader = (props: StoreHeaderProps) => {
     }
 
     return (
-        <div className="flex justify-start items-center w-full border-2 border-gray-100 p-4">
-            <div className="logo w-[20%] flex items-center justify-center">
-                <Avatar className="w-16 h-16 border-2 border-gray-300 rounded-full overflow-hidden shadow-lg">
-                    <AvatarImage
-                        src={avatarSrc}
-                        alt={store?.name ?? 'Store Avatar'}
-                        className="w-full h-full object-cover"
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-            </div>
-            <div className="w-[80%] flex flex-col pl-4">
-                <div className="text-xl font-semibold">
-                    <span>{store?.name}</span>
+        <div className="flex justify-center items-center w-full border-[1px] border-[#e5e7eb] rounded-lg p-[16px] my-[16px]">
+            <div className="w-full flex gap-[10px]">
+                <div className="logo w-[10%] flex items-center justify-center">
+                    <Avatar className="w-full h-full">
+                        <AvatarImage
+                            src={avatarSrc}
+                            alt={store?.name ?? 'Store Avatar'}
+                        />
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
                 </div>
-                <div className="text-gray-500 text-sm">
-                    <span>{store?.description ?? 'Deskripsi toko belum tersedia.'}</span>
+                <div className="w-[90%] flex items-center pl-5">
+                    <div className='flex flex-col gap-1'>
+                        <div className="text-xl font-semibold">
+                            <span>{store?.name}</span>
+                        </div>
+                        <div className="text-base">
+                            <span>{store?.description}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

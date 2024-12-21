@@ -78,20 +78,8 @@ export const UpdateProductFormInner = (props: UpdateProductFormInnerProps) => {
                     )}
                 />
             </div>
-            <div className="flex gap-2 items-center">
+            <div>
                 <UpdateProductCategoryOption form={form} />
-                <FormField
-                    control={form.control}
-                    name="images"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormControl>
-                                <Input type="file" placeholder="" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
             </div>
             <div>
                 <FormField
