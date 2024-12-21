@@ -9,7 +9,7 @@ export const useProducts = () =>
         queryFn: async () => {
             const response =
                 await axiosInstance.get<ApiResponse<ProductWithRelations>>(
-                    '/products',
+                    '/public/products',
                 );
             return response.data.data;
         },

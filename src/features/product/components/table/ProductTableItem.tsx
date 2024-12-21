@@ -1,19 +1,24 @@
 import { TableCell, TableRow } from '@/components/ui/table';
 import { ProductTableMenu } from './ProductTableMenu';
-import type { Product } from '@prisma/client';
+import type { ProductWithRelations } from '../../types';
+import { toIDR } from '@/utils';
+import { toFormatDate } from '@/utils/toFormatDate';
 
 type ProductTableItemProps = {
-    product: Product;
+    index: number;
+    product: ProductWithRelations;
 };
 
 export const ProductTableItem = (props: ProductTableItemProps) => {
     return (
         <TableRow>
-            <TableCell className="font-medium">INV001</TableCell>
+            <TableCell className="font-medium">{props.index + 1}</TableCell>
             <TableCell>{props.product.name}</TableCell>
-            <TableCell>Snack</TableCell>
-            <TableCell>$250.00</TableCell>
-            <TableCell>Hari ini</TableCell>
+            <TableCell>{props.product.category?.name}</TableCell>
+            <TableCell>{toIDR(Number(props.product.price))}</TableCell>
+            <TableCell>
+                {toFormatDate(new Date(props.product.created_at))}
+            </TableCell>
             <TableCell>
                 <ProductTableMenu id={props.product.id} />
             </TableCell>

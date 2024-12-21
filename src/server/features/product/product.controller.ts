@@ -106,8 +106,7 @@ export const handlers = {
                     requestBody.price &&
                     requestBody.description &&
                     requestBody.stock &&
-                    requestBody.category_id &&
-                    requestBody.store_id
+                    requestBody.category_id
                 )
             ) {
                 throw new NotFoundException('Some fields are missing');

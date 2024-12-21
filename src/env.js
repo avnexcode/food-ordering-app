@@ -24,6 +24,15 @@ export const env = createEnv({
     },
 
     client: {
+        NEXT_PUBLIC_MIDTRANS_MERCHANT_ID: z
+            .string()
+            .min(1, { message: 'App name must be defined' }),
+        NEXT_PUBLIC_MIDTRANS_CLIENT_KEY: z
+            .string()
+            .min(1, { message: 'App name must be defined' }),
+        NEXT_PUBLIC_MIDTRANS_SERVER_KEY: z
+            .string()
+            .min(1, { message: 'App name must be defined' }),
         NEXT_PUBLIC_APP_NAME: z
             .string()
             .min(1, { message: 'App name must be defined' }),
@@ -33,6 +42,12 @@ export const env = createEnv({
     },
 
     runtimeEnv: {
+        NEXT_PUBLIC_MIDTRANS_MERCHANT_ID:
+            process.env.NEXT_PUBLIC_MIDTRANS_MERCHANT_ID,
+        NEXT_PUBLIC_MIDTRANS_CLIENT_KEY:
+            process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY,
+        NEXT_PUBLIC_MIDTRANS_SERVER_KEY:
+            process.env.NEXT_PUBLIC_MIDTRANS_SERVER_KEY,
         NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
         AUTH_SECRET: process.env.AUTH_SECRET,
         NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,

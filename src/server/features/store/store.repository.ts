@@ -15,7 +15,11 @@ export const storeRepository = {
                         addresses: true,
                     },
                 },
-                products: true,
+                products: {
+                    include: {
+                        category: true,
+                    },
+                },
                 product_categories: true,
                 orders: true,
                 transactions: true,
@@ -36,7 +40,11 @@ export const storeRepository = {
                         addresses: true,
                     },
                 },
-                products: true,
+                products: {
+                    include: {
+                        category: true,
+                    },
+                },
                 product_categories: true,
                 orders: true,
                 transactions: true,

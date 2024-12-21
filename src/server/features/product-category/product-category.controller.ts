@@ -110,13 +110,7 @@ export const handlers = {
             const requestBody =
                 (await request.json()) as UpdateProductCategoryRequest;
 
-            if (
-                !(
-                    requestBody.name &&
-                    requestBody.description &&
-                    requestBody.store_id
-                )
-            ) {
+            if (!(requestBody.name && requestBody.description)) {
                 throw new NotFoundException('Some fields are missing');
             }
             const data = await productCategoryService.update(id, requestBody);
