@@ -4,29 +4,24 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Ellipsis, Pencil, Trash2, View } from 'lucide-react';
-import Link from 'next/link';
+import { Ellipsis, Pencil, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 type ProductTableMenuProps = {
     id: string;
 };
 
-export const ProductTableMenu = (props: ProductTableMenuProps) => {
+export const ProductTableMenu = (props: ProductTableMenuProps, ) => {
+    const router = useRouter();
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="rounded-full">
                 <Ellipsis size={20} strokeWidth={2} />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="[&>*]:cursor-pointer">
-                <DropdownMenuItem>
-                    <View />
-                    Detail
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <Link href={`/dashboard/store/product/${props.id}`}>
+                <DropdownMenuItem onClick={() => router.push(`/dashboard/store/product/edit/${props.id}`,)}>
                         <Pencil />
                         Edit
-                    </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     <Trash2 />

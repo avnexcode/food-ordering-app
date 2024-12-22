@@ -23,14 +23,14 @@ export const UpdateProductFormLayout = (
                 <CardTitle>
                     <h4 className="text-green-700">Update Product</h4>
                 </CardTitle>
-                <CardDescription>Des</CardDescription>
+                <CardDescription>Update your product from your store</CardDescription>
             </CardHeader>
             <CardContent>{children}</CardContent>
             <CardFooter className="place-content-end gap-5">
                 <Button
                     size={'sm'}
                     variant={'default'}
-                    form="create-product-form"
+                    form="update-product-form"
                     disabled={isPending}
                 >
                     {isPending ? 'Updating...' : 'Update'}

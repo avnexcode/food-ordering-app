@@ -10,12 +10,15 @@ import { useUpdateProduct } from '../../api/useUpdateProduct';
 import { useToast } from '@/hooks/use-toast';
 import { UpdateProductFormLayout } from '../../layout/UpdateProductFormLayout';
 import { useRouter } from 'next/router';
+import { use, useEffect } from 'react';
+import { useProductId } from '../../api';
 
 export const UpdateProductForm = () => {
     const router = useRouter();
     const { id } = router.query as { id: string };
 
     const { toast } = useToast();
+    const { data: product } = useProductId(id);
     const form = useForm<UpdateProductFormSchema>({
         defaultValues: {
             name: '',
@@ -30,7 +33,7 @@ export const UpdateProductForm = () => {
     });
 
     const onSubmit = (values: UpdateProductFormSchema) => {
-        console.log(values);
+        updateProduct(values);
     };
 
     const { mutate: updateProduct, isPending: isUpdateProductPending } =
@@ -50,6 +53,19 @@ export const UpdateProductForm = () => {
                 });
             },
         });
+
+    useEffect(() => {
+        if (product) {
+            form.reset({
+                name: product?.name ?? '',
+                price: product?.price ?? 0,
+                description: product?.description ?? '',
+                stock: product?.stock ?? 0,
+                weight: product?.weight ?? 0,
+                category_id: product?.category_id ?? '',
+            })
+        }
+    }, [form, product]);
 
     return (
         <UpdateProductFormLayout isPending={isUpdateProductPending}>
