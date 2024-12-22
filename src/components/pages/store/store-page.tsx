@@ -1,4 +1,5 @@
 import { MainLayout } from '@/components/layout/MainLayout';
+import { StoreCategory } from '@/features/store/components/StoreCategory';
 import { StoreHeader } from '@/features/store/components/StoreHeader';
 import { StoreProduct } from '@/features/store/components/StoreProduct';
 import { useRouter } from 'next/router';
@@ -15,6 +16,9 @@ export const StorePage = () => {
                 </header>
                 <section>
                     <StoreProduct storeId={id} />
+                </section>
+                <section>
+                    <StoreCategory storeId={id} />
                 </section>
             </main>
         </div>
