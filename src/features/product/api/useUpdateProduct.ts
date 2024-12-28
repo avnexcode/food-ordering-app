@@ -13,7 +13,7 @@ export const useUpdateProduct = ({
         mutationKey: ['products'],
         mutationFn: async (values: UpdateProductFormSchema) => {
             if (!id) throw new Error('Tidak ada id');
-            const response = await axiosAuth.put<ApiResponse<Product>>(
+            const response = await axiosAuth.patch<ApiResponse<Product>>(
                 `/products/${id}`,
                 values,
             );
