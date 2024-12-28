@@ -100,14 +100,27 @@ export const UpdateProductFormInner = (props: UpdateProductFormInnerProps) => {
                 />
             </div>
             <div>
-                <FormField
+            <FormField
                     control={form.control}
                     name="stock"
-                    render={({ field }) => (
+                    render={({ field: { onChange, value, ...field } }) => (
                         <FormItem>
                             <FormLabel>Stock</FormLabel>
                             <FormControl>
-                                <Input placeholder="0" {...field} />
+                                <Input
+                                    type="text"
+                                    placeholder="0"
+                                    {...field}
+                                    value={value}
+                                    onChange={e => {
+                                        const rawValue = e.target.value.replace(
+                                            /[^\d]/g,
+                                            '',
+                                        );
+                                        const numberValue = Number(rawValue);
+                                        onChange(numberValue);
+                                    }}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

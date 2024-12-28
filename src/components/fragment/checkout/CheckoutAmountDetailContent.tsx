@@ -44,13 +44,13 @@ export const CheckoutAmountDetailContent = ({
                     </div>
                     <div className="flex gap-2 font-semibold">
                         <h6 >Stok : </h6>
-                        <h6 className="text-orange-500">Sisa {stock}</h6>
+                        <h6 className="text-orange-500"> {stock}</h6>
                     </div>
                 </div>
             </div>
             <div className="w-full flex justify-between items-center text-2xl">
                 <h6 className="font-light text-gray-500">Subtotal</h6>
-                <h6 className="font-bold">Rp. {toIDR(subtotal.toFixed(2))}</h6>
+                <h6 className="font-bold">{toIDR(subtotal.toFixed(2))}</h6>
             </div>
         </div>
     );

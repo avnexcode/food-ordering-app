@@ -9,6 +9,9 @@ import {
     createMessagePostSuccess,
     createMessagePutSuccess,
 } from '@/server/helper';
+import { midtransSnap } from '@/lib/midtrans';
+import { CreateTransactionRequest } from './transaction.model';
+import { Transaction } from '@prisma/client';
 
 export const handlers = {
     GET: async (
@@ -33,17 +36,25 @@ export const handlers = {
         }
     },
 
-    POST: async (
-        request: NextRequest,
-    ): Promise<NextResponse<WebModel<string>>> => {
+    POST: async (request: NextRequest) => {
         try {
-            const data = '';
+            const requestBody =
+                (await request.json()) as CreateTransactionRequest;
+
+            const parameter = {
+                transaction_details: {
+                    order_id: requestBody.order_id,
+                    gross_amount: requestBody.amount,
+                },
+            };
+
+            const data = await midtransSnap.createTransaction(parameter);
 
             return NextResponse.json(
                 {
                     status: true,
                     statusCode: 201,
-                    message: createMessagePostSuccess('Address'),
+                    message: createMessagePostSuccess('Transaction'),
                     data,
                 },
                 { status: 201 },

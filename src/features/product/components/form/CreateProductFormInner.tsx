@@ -84,7 +84,7 @@ export const CreateProductFormInner = (props: CreateProductFormInnerProps) => {
                 />
             </div>
             <div>
-                <FormField
+            <FormField
                     control={form.control}
                     name="stock"
                     render={({ field: { onChange, value, ...field } }) => (
